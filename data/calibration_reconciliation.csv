@@ -1,0 +1,11 @@
+scenario,source,design,n,pi,reps,B,rejections_at_0.05,rejection_rate
+published_calibration,data/calibration_null.csv,independent_uniform,150,1.00,300,999,22,0.0733
+published_calibration,data/calibration_null.csv,independent_uniform,150,0.95,300,999,8,0.0267
+published_calibration,data/calibration_null.csv,independent_uniform,150,0.90,300,999,10,0.0333
+published_strength0,data/power_curve.csv,strength_zero,120,0.95,150,499,7,0.0467
+harmonized_strength0,strength_zero,150,1.00,300,999,17,0.0567
+harmonized_strength0,strength_zero,150,0.95,300,999,16,0.0533
+harmonized_strength0,strength_zero,150,0.90,300,999,16,0.0533
+harmonized_uniform120,independent_uniform,120,1.00,150,499,6,0.0400
+harmonized_uniform120,independent_uniform,120,0.95,150,499,6,0.0400
+harmonized_uniform120,independent_uniform,120,0.90,150,499,6,0.0400

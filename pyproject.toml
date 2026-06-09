@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qnca"
+version = "0.3.1"
+description = "Quantile Necessary Condition Analysis (QNCA): a tolerance-parameterised generalisation of Dul's NCA."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "GPL-3.0-only" }
+authors = [{ name = "QNCA authors" }]
+keywords = ["necessary condition analysis", "NCA", "quantile", "soft computing", "isotonic"]
+dependencies = ["numpy>=1.21"]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
