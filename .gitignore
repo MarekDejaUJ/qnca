@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+build/
+dist/
+.pytest_cache/
+
+# R
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj.user/
+*.Rcheck/
+*.tar.gz
+
+# Julia
+Manifest.toml
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+paper/figures/tikz-cache/
+
+# OS files
+.DS_Store
+Thumbs.db
