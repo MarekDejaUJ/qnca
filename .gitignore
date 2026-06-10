@@ -14,7 +14,7 @@ dist/
 *.Rproj.user/
 *.Rcheck/
 *.tar.gz
-
+qnq_title_page.tex
 # Julia
 Manifest.toml
 
