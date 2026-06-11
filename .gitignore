@@ -14,6 +14,7 @@ dist/
 *.Rproj.user/
 *.Rcheck/
 *.tar.gz
+paper/qnq_title_page.tex
 paper/qnq_title_page.pdf
 paper/qnq_cover_letter.tex
 paper/qnq_cover_letter.pdf
