@@ -11,38 +11,10 @@ frontier is less dependent on unusually efficient boundary observations. The
 reported result is therefore a tolerance-indexed family of bottlenecks rather
 than a single deterministic floor.
 
-## Repository Layout
-
-The `main` branch contains the manuscript source, the compiled manuscript PDF,
-and the data files used for the reported paper results.
-
-Language implementations are published on separate branches:
-
-| Language | Branch | Install |
-|---|---|---|
-| R | `qnca@R` | `remotes::install_github("MarekDejaUJ/qnca", ref = "qnca@R")` |
-| Python | `qnca@py` | `python -m pip install "git+https://github.com/MarekDejaUJ/qnca.git@qnca%40py"` |
-| Julia | `qnca@Julia` | `Pkg.add(url="https://github.com/MarekDejaUJ/qnca.git", rev="qnca@Julia")` |
-
-Quote branch names in shell commands because they contain `@`.
-
-## Paper
-
-The manuscript files are under `paper/`.
-
-```bash
-Rscript build.R
-```
-
-The build uses the Springer Nature `sn-jnl` template with `pdflatex` and
-BibTeX. The compiled manuscript is `paper/sn-article.pdf`.
-
 ## Data
 
 The `data/` directory contains the synthetic datasets and result tables used by
-the manuscript: strict-limit validation, cross-language agreement, bottleneck
-comparisons, outlier-fragility diagnostics, calibration checks, power checks,
-and the pi-resolved spuriousness-band illustration.
+the package examples and validation checks.
 
 ## Basic Use
 
