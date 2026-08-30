@@ -32,7 +32,10 @@ Manifest.toml
 *.toc
 *.lof
 *.lot
-paper/figures/tikz-cache/
+
+# Private manuscript and submission files
+paper/
+qnca_qnq/
 
 # OS files
 .DS_Store
