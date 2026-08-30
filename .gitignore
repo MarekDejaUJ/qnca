@@ -14,10 +14,6 @@ dist/
 *.Rproj.user/
 *.Rcheck/
 *.tar.gz
-paper/qnq_title_page.tex
-paper/qnq_title_page.pdf
-paper/qnq_cover_letter.tex
-paper/qnq_cover_letter.pdf
 # Julia
 Manifest.toml
 
@@ -35,7 +31,10 @@ Manifest.toml
 *.toc
 *.lof
 *.lot
-paper/figures/tikz-cache/
+
+# Private manuscript and submission files
+paper/
+qnca_qnq/
 
 # OS files
 .DS_Store

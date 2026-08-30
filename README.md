@@ -13,8 +13,7 @@ than a single deterministic floor.
 
 ## Repository Layout
 
-The `main` branch contains the manuscript source, the compiled manuscript PDF,
-and the data files used for the reported paper results.
+The `main` branch contains the shared datasets and validation results.
 
 Language implementations are published on separate branches:
 
@@ -26,21 +25,10 @@ Language implementations are published on separate branches:
 
 Quote branch names in shell commands because they contain `@`.
 
-## Paper
-
-The manuscript files are under `paper/`.
-
-```bash
-Rscript build.R
-```
-
-The build uses the Springer Nature `sn-jnl` template with `pdflatex` and
-BibTeX. The compiled manuscript is `paper/sn-article.pdf`.
-
 ## Data
 
-The `data/` directory contains the synthetic datasets and result tables used by
-the manuscript: strict-limit validation, cross-language agreement, bottleneck
+The `data/` directory contains the synthetic datasets and result tables used for
+strict-limit validation, cross-language agreement, bottleneck
 comparisons, outlier-fragility diagnostics, calibration checks, power checks,
 and the pi-resolved spuriousness-band illustration.
 
@@ -243,7 +231,7 @@ The null calibration run uses 300 independent null samples and `B = 999`.
 
 Interpretation: under independence, the tolerant frontiers sit below the 0.05
 nominal level in this fixed-seed run, while the strict `pi = 1` frontier is
-somewhat liberal. That is consistent with the paper's caution that the strict
+somewhat liberal. That is consistent with the method's limitation that the strict
 CE-FDH limit inherits boundary fragility.
 
 The power study varies ceiling strength directly. At strength 0, there is no
@@ -261,28 +249,6 @@ uses 150 samples and `B = 499`.
 
 Interpretation: both the rejection rate and mean tolerant effect size rise as
 the empty corner becomes a stronger structural feature of the data.
-
-## Figures
-
-The paper-ready figure PDFs are under `paper/figures/`; their scripts are under
-`replication/R/figures/`. The language QA figure exports Python, R, and Julia
-frontiers from the same dataset and shows that the plotted thresholds coincide.
-
-| Label | Output | Source |
-|---|---|---|
-| `fig:qnca-frontier-geometry` | `paper/figures/qnca_frontier_geometry.pdf` | `replication/R/figures/frontier_geometry.R` |
-| `fig:qnca-pi-reduction` | `paper/figures/qnca_pi_reduction.pdf` | `replication/R/figures/pi_reduction.R` |
-| `fig:qnca-outlier-fragility` | `paper/figures/qnca_outlier_fragility.pdf` | `replication/R/figures/outlier_fragility.R` |
-| `fig:qnca-power` | `paper/figures/qnca_power.pdf` | `replication/R/figures/power_curve.R` |
-| `fig:qnca-language-qa` | `paper/figures/qnca_language_qa.pdf` | `replication/R/figures/language_qa.R` |
-
-## Repository Layout
-
-```text
-paper/                         manuscript template
-paper/figures/                 paper-ready PDF figures
-data/                          shipped datasets and result tables
-```
 
 ## Basic Use
 
