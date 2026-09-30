@@ -5,6 +5,40 @@ using .QNCA
 
 const SCOPE = (0.0, 100.0, 0.0, 100.0)
 
+@testset "decimal tolerance selects the stated type-1 rank" begin
+    @test qnca_rank(100, 0.95) == 5
+    @test qnca_rank(20, 0.95) == 1
+    @test qnca_rank(21, 0.95) == 2
+    @test qnca_rank(10, 0.90) == 1
+    @test qnca_rank(11, 0.90) == 2
+    @test qnca_rank(100, 1.0) == 1
+    @test qnca_rank(100, 19 // 20) == 5
+    @test quantile_type1_pi(collect(1.0:100.0), 0.95) == 5.0
+    for k in 1:500
+        @test qnca_rank(k, 0.95) == max(1, ceil(Int, k // 20))
+        @test qnca_rank(k, 0.90) == max(1, ceil(Int, k // 10))
+    end
+    @test_throws ArgumentError qnca_rank(100, 0.0)
+    @test_throws ArgumentError qnca_rank(100, 1.01)
+end
+
+@testset "orientation sentinel distinguishes X from Y" begin
+    X = [0.10, 0.20, 0.40, 0.80, 0.90]
+    Y = [0.10, 0.20, 0.60, 0.70, 0.95]
+    condition_required = only(qnca_frontier(X, Y, 1.0, [0.60]))
+    swapped_required = only(qnca_frontier(Y, X, 1.0, [0.60]))
+    @test condition_required == 0.40
+    @test swapped_required == 0.70
+    @test condition_required != swapped_required
+end
+
+@testset "frontier uses the corrected rank at a decimal boundary" begin
+    X = collect(1.0:100.0)
+    Y = collect(1.0:100.0)
+    phi = qnca_frontier(X, Y, 0.95, [1.0])
+    @test phi == [5.0]
+end
+
 @testset "validation invariant: d_pi(pi=1) == native CE-FDH" begin
     for n in (100, 200, 500, 1000)
         rng = MersenneTwister(42)
@@ -44,6 +78,33 @@ end
     res = qnca(X, Y; pi=0.95, B=B, scope=SCOPE, seed=1)
     @test res.p_pi >= 1/(B+1) - 1e-12
     @test res.p_pi <= 1.0
+end
+
+@testset "generated permutation stream is reproducible" begin
+    rng = MersenneTwister(8)
+    X, Y = generate_reverse_L(120; rng=rng)
+    a = qnca(X, Y; pi=0.95, B=79, scope=SCOPE, seed=20260830)
+    b = qnca(X, Y; pi=0.95, B=79, scope=SCOPE, seed=20260830)
+    @test a.p_pi == b.p_pi
+    @test a.d_pi == b.d_pi
+end
+
+@testset "invalid inputs and scopes fail explicitly" begin
+    @test_throws ArgumentError qnca([1.0, 2.0], [1.0]; B=0)
+    @test_throws ArgumentError qnca([1.0, NaN], [1.0, 2.0]; B=0)
+    @test_throws ArgumentError qnca([1.0, 1.0], [1.0, 2.0]; B=0)
+    @test_throws ArgumentError qnca([1.0, 2.0], [1.0, 2.0]; B=0,
+                                    scope=(0.0, 1.5, 0.0, 2.0))
+    @test_throws ArgumentError qnca([1.0, 2.0], [1.0, 2.0]; B=0, n_grid=1)
+end
+
+@testset "zero-valued cohorts remain valid observations" begin
+    X = [0.0, 0.20, 0.40, 0.80]
+    Y = [0.0, 0.25, 0.50, 0.75]
+    result = qnca(X, Y; pi=0.95, n_grid=101, B=0,
+                  scope=(0.0, 1.0, 0.0, 1.0))
+    @test isfinite(result.d_pi)
+    @test 0.0 <= result.d_pi <= 1.0
 end
 
 @testset "supplied permutations control p-value" begin

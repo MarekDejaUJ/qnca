@@ -6,16 +6,18 @@ of Dul's Necessary Condition Analysis. The deterministic NCA CE-FDH ceiling is
 the `pi == 1` limit of the QNCA frontier family. Lowering `pi` discards the most
 efficient cases and raises the necessity floor, trading crispness for robustness.
 
-The implementation mirrors the R and Python siblings to floating point: the same
-pool-adjacent-violators isotonic fit, the same inverse-empirical-CDF quantile,
-and the same carry-forward of the frontier to the scope ceiling.
+The implementation uses the same pool-adjacent-violators isotonic fit,
+inverse-empirical-CDF quantile, and carry-forward of the frontier to the scope
+ceiling as the R and Python siblings. Configured decimal tolerances are converted
+to exact rational ranks before frontier evaluation.
 """
 module QNCA
 
 using Random, Statistics, Printf, Base.Threads
 
 export generate_reverse_L, isotonic_increasing, qnca_frontier, qnca_d,
-       nca_ce_fdh_d, qnca, spuriousness_band, consistency_probe
+       nca_ce_fdh_d, qnca, qnca_rank, quantile_type1_pi,
+       spuriousness_band, consistency_probe
 
 "Generate a reverse-L necessity scatter (condition X, outcome Y), clamped to [0,100]."
 function generate_reverse_L(n; ci=15.0, cs=0.85, k=2.0, noise=4.0, rng=Random.GLOBAL_RNG)
@@ -34,6 +36,70 @@ function quantile_type1(values::AbstractVector{<:Real}, prob::Float64)
     prob >= 1.0 && return x[end]
     idx = clamp(ceil(Int, length(x) * prob), 1, length(x))
     return x[idx]
+end
+
+function decimal_rational(value::Real)
+    value isa Rational &&
+        return BigInt(Base.numerator(value)) // BigInt(Base.denominator(value))
+    s = string(value)
+    parsed = match(r"^([+-]?)([0-9]+)(?:\.([0-9]*))?(?:[eE]([+-]?[0-9]+))?$", s)
+    parsed === nothing && throw(ArgumentError("value must have a decimal representation"))
+    sign_part, integer_part, fraction_part, exponent_part = parsed.captures
+    fraction = fraction_part === nothing ? "" : fraction_part
+    exponent = exponent_part === nothing ? 0 : parse(Int, exponent_part)
+    decimal_numerator = parse(BigInt, integer_part * fraction)
+    sign_part == "-" && (decimal_numerator = -decimal_numerator)
+    scale = length(fraction) - exponent
+    return scale >= 0 ? decimal_numerator // big(10)^scale :
+                        (decimal_numerator * big(10)^(-scale)) // big(1)
+end
+
+"Return `1-pi` as an exact rational from the configured decimal representation."
+function decimal_tail_probability(pi::Real)
+    isfinite(pi) || throw(ArgumentError("pi must be finite"))
+    p = decimal_rational(pi)
+    (0 < p <= 1) ||
+        throw(ArgumentError("pi must be in (0, 1]"))
+    return 1 - p
+end
+
+"Selected type-1 order-statistic rank `max(1, ceil(k*(1-pi)))`."
+function qnca_rank(k::Integer, pi::Real)
+    k > 0 || throw(ArgumentError("conditioning-set size must be positive"))
+    q = decimal_tail_probability(pi)
+    return clamp(ceil(Int, k * q), 1, k)
+end
+
+"Type-1 quantile parameterised by QNCA tolerance `pi`."
+function quantile_type1_pi(values::AbstractVector{<:Real}, pi::Real)
+    isempty(values) && return NaN
+    x = sort(collect(float.(values)))
+    return x[qnca_rank(length(x), pi)]
+end
+
+function validate_xy(X, Y)
+    length(X) == length(Y) || throw(ArgumentError("X and Y must have equal lengths"))
+    length(X) >= 2 || throw(ArgumentError("X and Y must contain at least two observations"))
+    all(isfinite, X) || throw(ArgumentError("X must contain only finite values"))
+    all(isfinite, Y) || throw(ArgumentError("Y must contain only finite values"))
+    minimum(X) < maximum(X) || throw(ArgumentError("X must be non-degenerate"))
+    minimum(Y) < maximum(Y) || throw(ArgumentError("Y must be non-degenerate"))
+    return nothing
+end
+
+function validated_scope(X, Y, scope)
+    bounds = scope === nothing ?
+        (minimum(X), maximum(X), minimum(Y), maximum(Y)) : Tuple(float.(scope))
+    length(bounds) == 4 || throw(ArgumentError("scope must contain x_min, x_max, y_min, y_max"))
+    x_min, x_max, y_min, y_max = bounds
+    all(isfinite, bounds) || throw(ArgumentError("scope bounds must be finite"))
+    x_min < x_max || throw(ArgumentError("scope requires x_min < x_max"))
+    y_min < y_max || throw(ArgumentError("scope requires y_min < y_max"))
+    minimum(X) >= x_min && maximum(X) <= x_max ||
+        throw(ArgumentError("X observations must lie inside scope"))
+    minimum(Y) >= y_min && maximum(Y) <= y_max ||
+        throw(ArgumentError("Y observations must lie inside scope"))
+    return (x_min, x_max, y_min, y_max)
 end
 
 "Pool-adjacent-violators isotonic regression (non-decreasing, unit weights)."
@@ -65,12 +131,24 @@ trailing (high-outcome) NaN levels. Under a fixed scope, pass `x_max` so the
 whole high-outcome band is counted as empty, matching CE-FDH.
 """
 function qnca_frontier(X, Y, pi, y_grid; x_max=nothing)
+    Xf = collect(float.(X)); Yf = collect(float.(Y)); grid = collect(float.(y_grid))
+    validate_xy(Xf, Yf)
+    isempty(grid) && throw(ArgumentError("y_grid must not be empty"))
+    all(isfinite, grid) || throw(ArgumentError("y_grid must contain only finite values"))
+    issorted(grid) || throw(ArgumentError("y_grid must be non-decreasing"))
+    q = decimal_tail_probability(pi)
+    return qnca_frontier_validated(Xf, Yf, q, grid; x_max=x_max)
+end
+
+function qnca_frontier_validated(X, Y, q::Rational{BigInt}, y_grid; x_max=nothing)
     m = length(y_grid)
     phi = fill(NaN, m)
     @inbounds for j in 1:m
         idx = findall(>=(y_grid[j]), Y)
         if !isempty(idx)
-            phi[j] = quantile_type1(@view(X[idx]), 1.0 - pi)
+            x = sort(collect(@view(X[idx])))
+            rank = clamp(ceil(Int, length(x) * q), 1, length(x))
+            phi[j] = x[rank]
         end
     end
     fin = findall(!isnan, phi)
@@ -202,8 +280,7 @@ function quantile_type7(values, prob)
 end
 
 function scope_tuple(X, Y, scope)
-    scope === nothing && return (minimum(X), maximum(X), minimum(Y), maximum(Y))
-    return scope
+    return validated_scope(X, Y, scope)
 end
 
 function d_for_pi(X, Y, pi, scope, n_grid)
@@ -219,12 +296,9 @@ Equals `qnca`'s d at pi = 1 up to grid discretization. This is the validation
 invariant.
 """
 function nca_ce_fdh_d(X, Y; scope=nothing)
-    if scope === nothing
-        x_min, x_max = minimum(X), maximum(X)
-        y_min, y_max = minimum(Y), maximum(Y)
-    else
-        x_min, x_max, y_min, y_max = scope
-    end
+    X = collect(float.(X)); Y = collect(float.(Y))
+    validate_xy(X, Y)
+    x_min, x_max, y_min, y_max = validated_scope(X, Y, scope)
     scope_area = (x_max - x_min) * (y_max - y_min)
     scope_area <= 0.0 && return 0.0
 
@@ -262,49 +336,45 @@ the outcome grid and the required-X frontier.
 """
 function qnca(X, Y; pi=1.0, n_grid=50, B=1999, scope=nothing, seed=nothing,
               permutations=nothing)
-    if scope === nothing
-        x_min, x_max = minimum(X), maximum(X)
-        y_min, y_max = minimum(Y), maximum(Y)
-    else
-        x_min, x_max, y_min, y_max = scope
-    end
+    X = collect(float.(X)); Y = collect(float.(Y))
+    validate_xy(X, Y)
+    n_grid >= 2 || throw(ArgumentError("n_grid must be at least 2"))
+    B >= 0 || throw(ArgumentError("B must be non-negative"))
+    q = decimal_tail_probability(pi)
+    x_min, x_max, y_min, y_max = validated_scope(X, Y, scope)
     scope_area = (x_max - x_min) * (y_max - y_min)
     y_grid = collect(range(y_min, y_max, length=n_grid))
-    phi_obs = qnca_frontier(X, Y, pi, y_grid; x_max=x_max)
+    phi_obs = qnca_frontier_validated(X, Y, q, y_grid; x_max=x_max)
     d_obs = qnca_d(phi_obs, y_grid, x_min, scope_area)
 
     p_pi = NaN
     if permutations !== nothing
         perm = validate_permutations(permutations, length(Y))
-        count = 0
-        for b in 1:size(perm, 1)
+        hits = zeros(UInt8, size(perm, 1))
+        @threads for b in 1:size(perm, 1)
             Yp = Y[vec(perm[b, :])]
-            d_p = qnca_d(qnca_frontier(X, Yp, pi, y_grid; x_max=x_max), y_grid, x_min, scope_area)
+            d_p = qnca_d(qnca_frontier_validated(X, Yp, q, y_grid; x_max=x_max),
+                          y_grid, x_min, scope_area)
             if d_p >= d_obs
-                count += 1
+                hits[b] = 1
             end
         end
-        p_pi = (1 + count) / (size(perm, 1) + 1)
+        p_pi = (1 + sum(hits)) / (size(perm, 1) + 1)
     elseif B > 0
-        nt = nthreads()
-        base = div(B, nt); rem_ = mod(B, nt)
-        bsize = [base + (t <= rem_ ? 1 : 0) for t in 1:nt]
-        counts = zeros(Int, nt)
         seed0 = seed === nothing ? 42 : seed
-        @threads for t in 1:nt
-            rng = MersenneTwister(hash((seed0, t, pi, B, n_grid)))
-            Yp = copy(Y)
-            local_count = 0
-            for _ in 1:bsize[t]
-                shuffle!(rng, Yp)
-                d_p = qnca_d(qnca_frontier(X, Yp, pi, y_grid; x_max=x_max), y_grid, x_min, scope_area)
-                if d_p >= d_obs
-                    local_count += 1
-                end
-            end
-            counts[t] = local_count
+        rng = MersenneTwister(seed0)
+        perm = Matrix{Int}(undef, B, length(Y))
+        for b in 1:B
+            perm[b, :] = randperm(rng, length(Y))
         end
-        p_pi = (1 + sum(counts)) / (B + 1)
+        hits = zeros(UInt8, B)
+        @threads for b in 1:B
+            Yp = Y[vec(perm[b, :])]
+            d_p = qnca_d(qnca_frontier_validated(X, Yp, q, y_grid; x_max=x_max),
+                          y_grid, x_min, scope_area)
+            hits[b] = d_p >= d_obs ? 1 : 0
+        end
+        p_pi = (1 + sum(hits)) / (B + 1)
     end
     return (pi=pi, d_pi=d_obs, p_pi=p_pi, y_grid=y_grid, x_required=phi_obs, scope=scope_area)
 end
@@ -324,7 +394,11 @@ function spuriousness_band(X, Y; pi_grid=[1.0, 0.95, 0.90], n_grid=50, M=999,
                            scope=nothing, seed=nothing, normal_draws=nothing,
                            uniform_draws=nothing)
     X = collect(float.(X)); Y = collect(float.(Y))
+    validate_xy(X, Y)
+    n_grid >= 2 || throw(ArgumentError("n_grid must be at least 2"))
     pi_vals = collect(float.(pi_grid))
+    isempty(pi_vals) && throw(ArgumentError("pi_grid must not be empty"))
+    decimal_tail_probability.(pi_vals)
     n = length(X)
     fixed_scope = scope_tuple(X, Y, scope)
     if normal_draws !== nothing && uniform_draws !== nothing
@@ -355,7 +429,7 @@ function spuriousness_band(X, Y; pi_grid=[1.0, 0.95, 0.90], n_grid=50, M=999,
     d_null = Matrix{Float64}(undef, M, length(pi_vals))
     r = rank_normal_correlation(X, Y)
     scale = sqrt(max(0.0, 1.0 - r * r))
-    for j in 1:M
+    @threads for j in 1:M
         if uniforms !== nothing
             Xj = empirical_quantile_values(X, vec(uniforms[j, :, 1]))
             Yj = empirical_quantile_values(Y, vec(uniforms[j, :, 2]))
