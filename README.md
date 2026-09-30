@@ -53,6 +53,10 @@ res = qnca(X, Y; pi=0.95, B=1999, scope=(0.0, 100.0, 0.0, 100.0), seed=1)
 res.d_pi, res.p_pi
 ```
 
+## Versions
+
+Changes between releases are listed in `CHANGELOG.md`.
+
 ## License
 
 GPL-3.0-only.

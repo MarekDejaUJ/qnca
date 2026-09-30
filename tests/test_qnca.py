@@ -150,3 +150,57 @@ def test_consistency_probe_shape_and_finite_slopes():
     assert np.all(np.isfinite(res.sd_d))
     assert np.all(np.isfinite(res.beta_drift))
     assert np.isfinite(res.divergence)
+
+
+def test_decimal_tolerance_selects_stated_rank():
+    from fractions import Fraction
+
+    from qnca import qnca_rank, quantile_type1_pi
+
+    assert qnca_rank(100, 0.95) == 5
+    assert qnca_rank(20, 0.95) == 1
+    assert qnca_rank(21, 0.95) == 2
+    assert qnca_rank(10, 0.90) == 1
+    assert qnca_rank(11, 0.90) == 2
+    assert qnca_rank(100, 1.0) == 1
+    assert qnca_rank(100, Fraction(19, 20)) == 5
+    assert quantile_type1_pi(np.arange(1.0, 101.0), 0.95) == 5.0
+    for k in range(1, 501):
+        assert qnca_rank(k, 0.95) == max(1, -(-k // 20))
+        assert qnca_rank(k, 0.90) == max(1, -(-k // 10))
+    with pytest.raises(ValueError):
+        qnca_rank(100, 0.0)
+    with pytest.raises(ValueError):
+        qnca_rank(100, 1.01)
+
+
+def test_orientation_sentinel_distinguishes_x_from_y():
+    X = np.array([0.10, 0.20, 0.40, 0.80, 0.90])
+    Y = np.array([0.10, 0.20, 0.60, 0.70, 0.95])
+    assert qnca_frontier(X, Y, 1.0, np.array([0.60]))[0] == 0.40
+    assert qnca_frontier(Y, X, 1.0, np.array([0.60]))[0] == 0.70
+
+
+def test_frontier_uses_corrected_rank_at_decimal_boundary():
+    v = np.arange(1.0, 101.0)
+    assert qnca_frontier(v, v, 0.95, np.array([1.0]))[0] == 5.0
+
+
+def test_invalid_inputs_and_scopes_fail_explicitly():
+    with pytest.raises(ValueError):
+        qnca([1.0, 2.0], [1.0], B=None)
+    with pytest.raises(ValueError):
+        qnca([1.0, np.nan], [1.0, 2.0], B=None)
+    with pytest.raises(ValueError):
+        qnca([1.0, 1.0], [1.0, 2.0], B=None)
+    with pytest.raises(ValueError):
+        qnca([1.0, 2.0], [1.0, 2.0], B=None, scope=(0.0, 1.5, 0.0, 2.0))
+    with pytest.raises(ValueError):
+        qnca([1.0, 2.0], [1.0, 2.0], B=None, n_grid=1)
+
+
+def test_zero_valued_cohorts_remain_valid():
+    res = qnca([0.0, 0.2, 0.4, 0.8], [0.0, 0.25, 0.5, 0.75], pi=0.95,
+               n_grid=101, B=None, scope=(0.0, 1.0, 0.0, 1.0))
+    assert np.isfinite(res.d_pi)
+    assert 0.0 <= res.d_pi <= 1.0

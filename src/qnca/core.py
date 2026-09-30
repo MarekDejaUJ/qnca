@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
+from fractions import Fraction
 from statistics import NormalDist
 
 import numpy as np
@@ -36,6 +37,8 @@ __all__ = [
     "SpuriousnessBandResult",
     "ConsistencyProbeResult",
     "quantile_type1",
+    "quantile_type1_pi",
+    "qnca_rank",
     "isotonic_increasing",
     "qnca_frontier",
     "qnca_d",
@@ -129,6 +132,98 @@ def quantile_type1(values: np.ndarray, prob: float) -> float:
     return float(x[idx])
 
 
+def _tail_fraction(pi) -> Fraction:
+    """Return ``1 - pi`` as an exact fraction of the configured decimal tolerance.
+
+    A float tolerance is read through its shortest round-trip decimal, so
+    ``0.95`` means nineteen twentieths exactly. Fractions are accepted as given.
+    """
+    if isinstance(pi, Fraction):
+        p = pi
+    else:
+        value = float(pi)
+        if not math.isfinite(value):
+            raise ValueError("pi must be finite")
+        p = Fraction(repr(value))
+    if not (0 < p <= 1):
+        raise ValueError("pi must be in (0, 1]")
+    return 1 - p
+
+
+def _rank_from_tail(k: int, q: Fraction) -> int:
+    rank = -((-k * q.numerator) // q.denominator)
+    return min(max(rank, 1), k)
+
+
+def qnca_rank(k: int, pi) -> int:
+    """Selected type-1 order-statistic rank ``max(1, ceil(k * (1 - pi)))``.
+
+    The ceiling is evaluated exactly from the decimal tolerance, so ``pi = 0.95``
+    with ``k = 100`` selects rank 5.
+    """
+    k = int(k)
+    if k < 1:
+        raise ValueError("conditioning-set size must be positive")
+    return _rank_from_tail(k, _tail_fraction(pi))
+
+
+def quantile_type1_pi(values: np.ndarray, pi) -> float:
+    """Type-1 quantile parameterised by the QNCA tolerance ``pi``."""
+    x = np.sort(np.asarray(values, dtype=float))
+    if x.size == 0:
+        return math.nan
+    return float(x[qnca_rank(x.size, pi) - 1])
+
+
+def _validate_xy(X: np.ndarray, Y: np.ndarray) -> None:
+    if X.shape != Y.shape or X.ndim != 1:
+        raise ValueError("X and Y must be one-dimensional with equal lengths")
+    if X.size < 2:
+        raise ValueError("X and Y must contain at least two observations")
+    if not np.all(np.isfinite(X)):
+        raise ValueError("X must contain only finite values")
+    if not np.all(np.isfinite(Y)):
+        raise ValueError("Y must contain only finite values")
+    if not np.min(X) < np.max(X):
+        raise ValueError("X must be non-degenerate")
+    if not np.min(Y) < np.max(Y):
+        raise ValueError("Y must be non-degenerate")
+
+
+def _validated_scope(
+    X: np.ndarray,
+    Y: np.ndarray,
+    scope: tuple[float, float, float, float] | None,
+) -> tuple[float, float, float, float]:
+    if scope is None:
+        bounds = (float(np.min(X)), float(np.max(X)), float(np.min(Y)), float(np.max(Y)))
+    else:
+        bounds = tuple(float(v) for v in scope)
+    if len(bounds) != 4:
+        raise ValueError("scope must contain x_min, x_max, y_min, y_max")
+    if not all(math.isfinite(v) for v in bounds):
+        raise ValueError("scope bounds must be finite")
+    x_min, x_max, y_min, y_max = bounds
+    if not x_min < x_max:
+        raise ValueError("scope requires x_min < x_max")
+    if not y_min < y_max:
+        raise ValueError("scope requires y_min < y_max")
+    if np.min(X) < x_min or np.max(X) > x_max:
+        raise ValueError("X observations must lie inside scope")
+    if np.min(Y) < y_min or np.max(Y) > y_max:
+        raise ValueError("Y observations must lie inside scope")
+    return bounds  # type: ignore[return-value]
+
+
+def _validate_grid(y_grid: np.ndarray) -> None:
+    if y_grid.size == 0:
+        raise ValueError("y_grid must not be empty")
+    if not np.all(np.isfinite(y_grid)):
+        raise ValueError("y_grid must contain only finite values")
+    if np.any(np.diff(y_grid) < 0):
+        raise ValueError("y_grid must be non-decreasing")
+
+
 def isotonic_increasing(y: np.ndarray) -> np.ndarray:
     """Pool-adjacent-violators isotonic regression (non-decreasing, unit weights).
 
@@ -172,12 +267,27 @@ def qnca_frontier(
     Levels with no qualifying case are carried to x_max when a fixed x ceiling is
     supplied; otherwise they keep the last finite frontier value.
     """
+    X = np.asarray(X, dtype=float)
+    Y = np.asarray(Y, dtype=float)
+    y_grid = np.asarray(y_grid, dtype=float)
+    _validate_xy(X, Y)
+    _validate_grid(y_grid)
+    return _frontier_validated(X, Y, _tail_fraction(pi), y_grid, x_max=x_max)
+
+
+def _frontier_validated(
+    X: np.ndarray,
+    Y: np.ndarray,
+    q: Fraction,
+    y_grid: np.ndarray,
+    x_max: float | None = None,
+) -> np.ndarray:
     phi = np.full(y_grid.shape, np.nan, dtype=float)
-    prob = 1.0 - pi
     for j, y in enumerate(y_grid):
         hit = Y >= y
         if np.any(hit):
-            phi[j] = quantile_type1(X[hit], prob)
+            x = np.sort(X[hit])
+            phi[j] = x[_rank_from_tail(x.size, q) - 1]
     finite = np.isfinite(phi)
     if np.count_nonzero(finite) >= 2:
         phi[finite] = isotonic_increasing(phi[finite])
@@ -239,6 +349,7 @@ def permutation_test(
     else:
         iterator = (rng.permutation(Y) for _ in range(B))
 
+    q = _tail_fraction(pi)
     count = 0
     y_range = y_grid[-1] - y_grid[0]
     frontier_x_max = x_max if x_max is not None else (
@@ -246,7 +357,7 @@ def permutation_test(
     )
     for Yp in iterator:
         d_p = qnca_d(
-            qnca_frontier(X, Yp, pi, y_grid, x_max=frontier_x_max),
+            _frontier_validated(X, Yp, q, y_grid, x_max=frontier_x_max),
             y_grid,
             x_min,
             scope,
@@ -275,14 +386,7 @@ def _scope_tuple(
     Y: np.ndarray,
     scope: tuple[float, float, float, float] | None,
 ) -> tuple[float, float, float, float]:
-    if scope is None:
-        return (
-            float(np.min(X)),
-            float(np.max(X)),
-            float(np.min(Y)),
-            float(np.max(Y)),
-        )
-    return tuple(float(v) for v in scope)  # type: ignore[return-value]
+    return _validated_scope(X, Y, scope)
 
 
 def _d_for_pi(
@@ -390,15 +494,17 @@ def qnca(
     """
     X = np.asarray(X, dtype=float)
     Y = np.asarray(Y, dtype=float)
-    if scope is None:
-        x_min, x_max = float(np.min(X)), float(np.max(X))
-        y_min, y_max = float(np.min(Y)), float(np.max(Y))
-    else:
-        x_min, x_max, y_min, y_max = (float(v) for v in scope)
+    _validate_xy(X, Y)
+    if int(n_grid) < 2:
+        raise ValueError("n_grid must be at least 2")
+    if B is not None and B < 0:
+        raise ValueError("B must be non-negative or None")
+    q = _tail_fraction(pi)
+    x_min, x_max, y_min, y_max = _validated_scope(X, Y, scope)
     scope_area = (x_max - x_min) * (y_max - y_min)
-    y_grid = np.linspace(y_min, y_max, n_grid)
+    y_grid = np.linspace(y_min, y_max, int(n_grid))
 
-    phi_obs = qnca_frontier(X, Y, pi, y_grid, x_max=x_max)
+    phi_obs = _frontier_validated(X, Y, q, y_grid, x_max=x_max)
     d_obs = qnca_d(phi_obs, y_grid, x_min, scope_area)
 
     p_pi: float | None = None
@@ -451,11 +557,8 @@ def nca_ce_fdh_d(
     """
     X = np.asarray(X, dtype=float)
     Y = np.asarray(Y, dtype=float)
-    if scope is None:
-        x_min, x_max = float(np.min(X)), float(np.max(X))
-        y_min, y_max = float(np.min(Y)), float(np.max(Y))
-    else:
-        x_min, x_max, y_min, y_max = (float(v) for v in scope)
+    _validate_xy(X, Y)
+    x_min, x_max, y_min, y_max = _validated_scope(X, Y, scope)
     scope_area = (x_max - x_min) * (y_max - y_min)
     if scope_area <= 0.0:
         return 0.0
@@ -520,7 +623,14 @@ def spuriousness_band(
     """
     X = np.asarray(X, dtype=float)
     Y = np.asarray(Y, dtype=float)
+    _validate_xy(X, Y)
+    if int(n_grid) < 2:
+        raise ValueError("n_grid must be at least 2")
     pi_vals = np.asarray(pi_grid, dtype=float)
+    if pi_vals.size == 0:
+        raise ValueError("pi_grid must not be empty")
+    for pi in pi_vals:
+        _tail_fraction(float(pi))
     scope_tuple = _scope_tuple(X, Y, scope)
 
     if normal_draws is not None and uniform_draws is not None:
