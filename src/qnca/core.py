@@ -4,15 +4,18 @@ QNCA generalises Dul's Necessary Condition Analysis (NCA). NCA draws a single
 deterministic ceiling along the upper-left edge of an (X, Y) scatter and reads a
 bottleneck off it. That ceiling is fixed by a handful of extreme points, so one
 unusually efficient case can drag the whole envelope toward the floor. QNCA
-replaces the single deterministic envelope by a *family* of frontiers indexed by
-a tolerance parameter ``pi`` in (0, 1], where each frontier is a conditional
-quantile of the condition among cases that reached an outcome level. The
-deterministic NCA ceiling re-emerges as the ``pi == 1`` limit, which is the
-method's validation anchor (see :func:`nca_ce_fdh_d`).
+reports tolerance-indexed frontiers: for a tolerance ``pi`` in (0, 1], each
+frontier is a low type-1 quantile of the condition among cases that reached an
+outcome level. The deterministic NCA ceiling re-emerges as the ``pi == 1``
+member, which is the method's validation anchor (see :func:`nca_ce_fdh_d`).
+
+The raw quantile frontier is made non-decreasing by its monotone envelope, the
+running maximum over outcome targets (the default), or by least-squares isotonic
+projection (``monotone="isotonic"``, the 0.3 behaviour).
 
 The estimator has four moving parts, kept deliberately small:
 
-1. ``qnca_frontier``    -- the quantile necessity frontier phi_pi(y), isotonic-fit.
+1. ``qnca_frontier``    -- the quantile necessity frontier phi_pi(y), made monotone.
 2. ``qnca_d``           -- the effect size d_pi: empty-zone area / scope.
 3. ``permutation_test`` -- the identification p-value, weight-light, Dul-style.
 4. ``qnca``             -- the user-facing wrapper returning all of the above.
@@ -28,6 +31,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 from fractions import Fraction
+from itertools import combinations
 from statistics import NormalDist
 
 import numpy as np
@@ -40,6 +44,13 @@ __all__ = [
     "quantile_type1_pi",
     "qnca_rank",
     "isotonic_increasing",
+    "monotone_envelope",
+    "qnca_resolution",
+    "qnca_outliers",
+    "qnca_sensitivity",
+    "ResolutionResult",
+    "OutlierScreenResult",
+    "SensitivityResult",
     "qnca_frontier",
     "qnca_d",
     "permutation_test",
@@ -63,6 +74,7 @@ class QNCAResult:
     x_required: np.ndarray = field(repr=False)
     scope: float = field(repr=False)
     n_perm: int | None = None
+    monotone: str = "envelope"
 
     @property
     def bottleneck(self) -> np.ndarray:
@@ -96,6 +108,49 @@ class SpuriousnessBandResult:
             self.excess,
             self.p_null,
         ])
+
+
+@dataclass(frozen=True)
+class ResolutionResult:
+    """Target-by-target account of one tolerance-indexed frontier."""
+
+    y: np.ndarray = field(repr=False)
+    k: np.ndarray = field(repr=False)
+    rank: np.ndarray = field(repr=False)
+    raw: np.ndarray = field(repr=False)
+    fitted: np.ndarray = field(repr=False)
+    inherited: np.ndarray = field(repr=False)
+    below: np.ndarray = field(repr=False)
+    exception_share: np.ndarray = field(repr=False)
+    resistance: np.ndarray = field(repr=False)
+    pi: float = 1.0
+    monotone: str = "envelope"
+
+
+@dataclass(frozen=True)
+class OutlierScreenResult:
+    """Deletion influence on ``d_pi`` across a tolerance grid."""
+
+    pi: np.ndarray = field(repr=False)
+    d: np.ndarray = field(repr=False)
+    cases: list = field(repr=False)
+    d_without: np.ndarray = field(repr=False)
+    dif_abs: np.ndarray = field(repr=False)
+    dif_rel: np.ndarray = field(repr=False)
+    flagged: np.ndarray = field(repr=False)
+    k: int = 1
+    monotone: str = "envelope"
+
+
+@dataclass(frozen=True)
+class SensitivityResult:
+    """Empirical breakdown curve of ``d_pi`` under added cases."""
+
+    counts: np.ndarray = field(repr=False)
+    pi: np.ndarray = field(repr=False)
+    d: np.ndarray = field(repr=False)
+    retention: np.ndarray = field(repr=False)
+    monotone: str = "envelope"
 
 
 @dataclass(frozen=True)
@@ -252,45 +307,46 @@ def isotonic_increasing(y: np.ndarray) -> np.ndarray:
     return out
 
 
-def qnca_frontier(
-    X: np.ndarray,
-    Y: np.ndarray,
-    pi: float,
-    y_grid: np.ndarray,
-    x_max: float | None = None,
-) -> np.ndarray:
-    """Quantile necessity frontier phi_pi(y), isotonic-fit to be non-decreasing.
+def monotone_envelope(v: np.ndarray) -> np.ndarray:
+    """Least non-decreasing majorant of ``v``: the running maximum.
 
-    For each outcome level y on the grid, look only at the cases that reached it
-    ({i : Y_i >= y}) and take the (1 - pi)-quantile of their condition values.
-    At pi == 1 this is the per-level minimum -- Dul's CE-FDH leftmost boundary.
-    Levels with no qualifying case are carried to x_max when a fixed x ceiling is
-    supplied; otherwise they keep the last finite frontier value.
+    Applied to the raw quantile frontier, a requirement established at a lower
+    outcome target is carried to every higher target, so a sparse high target
+    cannot lower it.
     """
-    X = np.asarray(X, dtype=float)
-    Y = np.asarray(Y, dtype=float)
-    y_grid = np.asarray(y_grid, dtype=float)
-    _validate_xy(X, Y)
-    _validate_grid(y_grid)
-    return _frontier_validated(X, Y, _tail_fraction(pi), y_grid, x_max=x_max)
+    return np.maximum.accumulate(np.asarray(v, dtype=float))
 
 
-def _frontier_validated(
-    X: np.ndarray,
-    Y: np.ndarray,
-    q: Fraction,
-    y_grid: np.ndarray,
-    x_max: float | None = None,
-) -> np.ndarray:
-    phi = np.full(y_grid.shape, np.nan, dtype=float)
+def _monotone_mode(monotone: str) -> str:
+    if monotone not in ("envelope", "isotonic"):
+        raise ValueError('monotone must be "envelope" or "isotonic"')
+    return monotone
+
+
+def _raw_frontier(
+    X: np.ndarray, Y: np.ndarray, q: Fraction, y_grid: np.ndarray
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    m = y_grid.size
+    phi = np.full(m, np.nan, dtype=float)
+    k = np.zeros(m, dtype=int)
+    h = np.zeros(m, dtype=int)
     for j, y in enumerate(y_grid):
         hit = Y >= y
         if np.any(hit):
             x = np.sort(X[hit])
-            phi[j] = x[_rank_from_tail(x.size, q) - 1]
+            k[j] = x.size
+            h[j] = _rank_from_tail(x.size, q)
+            phi[j] = x[h[j] - 1]
+    return phi, k, h
+
+
+def _fit_frontier(phi: np.ndarray, x_max: float | None, mode: str) -> np.ndarray:
     finite = np.isfinite(phi)
     if np.count_nonzero(finite) >= 2:
-        phi[finite] = isotonic_increasing(phi[finite])
+        phi[finite] = (
+            isotonic_increasing(phi[finite]) if mode == "isotonic"
+            else monotone_envelope(phi[finite])
+        )
     # Scope reading: above the highest observed outcome the conditioning set is
     # empty. Under a fixed scope Dul's CE-FDH counts the whole top band as empty,
     # so the inverse frontier carries to the scope's x ceiling. Frontier-only
@@ -301,6 +357,45 @@ def _frontier_validated(
         if last + 1 < phi.size:
             phi[last + 1 :] = phi[last] if x_max is None else float(x_max)
     return phi
+
+
+def qnca_frontier(
+    X: np.ndarray,
+    Y: np.ndarray,
+    pi: float,
+    y_grid: np.ndarray,
+    x_max: float | None = None,
+    monotone: str = "envelope",
+) -> np.ndarray:
+    """Quantile necessity frontier phi_pi(y), made non-decreasing.
+
+    For each outcome level y on the grid, look only at the cases that reached it
+    ({i : Y_i >= y}) and take the (1 - pi)-quantile of their condition values.
+    At pi == 1 this is the per-level minimum -- Dul's CE-FDH leftmost boundary.
+    ``monotone="envelope"`` takes the running maximum of the raw frontier;
+    ``monotone="isotonic"`` applies least-squares isotonic projection. Levels
+    with no qualifying case are carried to x_max when a fixed x ceiling is
+    supplied; otherwise they keep the last finite frontier value.
+    """
+    X = np.asarray(X, dtype=float)
+    Y = np.asarray(Y, dtype=float)
+    y_grid = np.asarray(y_grid, dtype=float)
+    _validate_xy(X, Y)
+    _validate_grid(y_grid)
+    return _frontier_validated(X, Y, _tail_fraction(pi), y_grid, x_max=x_max,
+                               monotone=_monotone_mode(monotone))
+
+
+def _frontier_validated(
+    X: np.ndarray,
+    Y: np.ndarray,
+    q: Fraction,
+    y_grid: np.ndarray,
+    x_max: float | None = None,
+    monotone: str = "envelope",
+) -> np.ndarray:
+    phi, _, _ = _raw_frontier(X, Y, q, y_grid)
+    return _fit_frontier(phi, x_max, monotone)
 
 
 def qnca_d(phi: np.ndarray, y_grid: np.ndarray, x_min: float, scope: float) -> float:
@@ -332,6 +427,7 @@ def permutation_test(
     rng: np.random.Generator,
     permutations: np.ndarray | None = None,
     x_max: float | None = None,
+    monotone: str = "envelope",
 ) -> float:
     """Finite-sample permutation p-value for identification.
 
@@ -350,6 +446,7 @@ def permutation_test(
         iterator = (rng.permutation(Y) for _ in range(B))
 
     q = _tail_fraction(pi)
+    mode = _monotone_mode(monotone)
     count = 0
     y_range = y_grid[-1] - y_grid[0]
     frontier_x_max = x_max if x_max is not None else (
@@ -357,7 +454,7 @@ def permutation_test(
     )
     for Yp in iterator:
         d_p = qnca_d(
-            _frontier_validated(X, Yp, q, y_grid, x_max=frontier_x_max),
+            _frontier_validated(X, Yp, q, y_grid, x_max=frontier_x_max, monotone=mode),
             y_grid,
             x_min,
             scope,
@@ -395,8 +492,9 @@ def _d_for_pi(
     pi: float,
     scope: tuple[float, float, float, float],
     n_grid: int,
+    monotone: str = "envelope",
 ) -> float:
-    return qnca(X, Y, pi=pi, n_grid=n_grid, B=None, scope=scope).d_pi
+    return qnca(X, Y, pi=pi, n_grid=n_grid, B=None, scope=scope, monotone=monotone).d_pi
 
 
 def _average_ranks(values: np.ndarray) -> np.ndarray:
@@ -470,6 +568,7 @@ def qnca(
     scope: tuple[float, float, float, float] | None = None,
     seed: int | None = None,
     permutations: np.ndarray | None = None,
+    monotone: str = "envelope",
 ) -> QNCAResult:
     """Fit QNCA at a single tolerance ``pi``.
 
@@ -491,6 +590,8 @@ def qnca(
     permutations : array-like or None
         Optional one-based B x n permutation matrix. When supplied, these
         permutations are used instead of drawing from the RNG.
+    monotone : {"envelope", "isotonic"}
+        Monotone step applied to the raw quantile frontier.
     """
     X = np.asarray(X, dtype=float)
     Y = np.asarray(Y, dtype=float)
@@ -500,11 +601,12 @@ def qnca(
     if B is not None and B < 0:
         raise ValueError("B must be non-negative or None")
     q = _tail_fraction(pi)
+    mode = _monotone_mode(monotone)
     x_min, x_max, y_min, y_max = _validated_scope(X, Y, scope)
     scope_area = (x_max - x_min) * (y_max - y_min)
     y_grid = np.linspace(y_min, y_max, int(n_grid))
 
-    phi_obs = _frontier_validated(X, Y, q, y_grid, x_max=x_max)
+    phi_obs = _frontier_validated(X, Y, q, y_grid, x_max=x_max, monotone=mode)
     d_obs = qnca_d(phi_obs, y_grid, x_min, scope_area)
 
     p_pi: float | None = None
@@ -515,13 +617,14 @@ def qnca(
             rng = np.random.default_rng(seed)
             p_pi = permutation_test(
                 X, Y, pi, d_obs, y_grid, x_min, scope_area, perm.shape[0], rng, perm,
-                x_max=x_max
+                x_max=x_max, monotone=mode
             )
             n_perm = int(perm.shape[0])
     elif B is not None and B > 0:
         rng = np.random.default_rng(seed)
         p_pi = permutation_test(
-            X, Y, pi, d_obs, y_grid, x_min, scope_area, B, rng, x_max=x_max
+            X, Y, pi, d_obs, y_grid, x_min, scope_area, B, rng, x_max=x_max,
+            monotone=mode,
         )
 
     return QNCAResult(
@@ -532,6 +635,7 @@ def qnca(
         x_required=phi_obs,
         scope=scope_area,
         n_perm=n_perm,
+        monotone=mode,
     )
 
 
@@ -611,6 +715,7 @@ def spuriousness_band(
     seed: int | None = None,
     normal_draws: np.ndarray | None = None,
     uniform_draws: np.ndarray | None = None,
+    monotone: str = "envelope",
 ) -> SpuriousnessBandResult:
     """Proposed pi-resolved spuriousness band.
 
@@ -631,6 +736,7 @@ def spuriousness_band(
         raise ValueError("pi_grid must not be empty")
     for pi in pi_vals:
         _tail_fraction(float(pi))
+    mode = _monotone_mode(monotone)
     scope_tuple = _scope_tuple(X, Y, scope)
 
     if normal_draws is not None and uniform_draws is not None:
@@ -654,7 +760,7 @@ def spuriousness_band(
     if M <= 0:
         raise ValueError("M must be positive")
 
-    d_obs = np.array([_d_for_pi(X, Y, pi, scope_tuple, n_grid) for pi in pi_vals])
+    d_obs = np.array([_d_for_pi(X, Y, pi, scope_tuple, n_grid, mode) for pi in pi_vals])
     d_null = np.empty((int(M), pi_vals.size), dtype=float)
     r = _rank_normal_correlation(X, Y)
     scale = math.sqrt(max(0.0, 1.0 - r * r))
@@ -669,7 +775,7 @@ def spuriousness_band(
             Xj = _empirical_quantile_values(X, _normal_cdf_array(zx))
             Yj = _empirical_quantile_values(Y, _normal_cdf_array(zy))
         for k, pi in enumerate(pi_vals):
-            d_null[j, k] = _d_for_pi(Xj, Yj, float(pi), scope_tuple, n_grid)
+            d_null[j, k] = _d_for_pi(Xj, Yj, float(pi), scope_tuple, n_grid, mode)
 
     lower = np.array([_quantile_type7(d_null[:, k], 0.025) for k in range(pi_vals.size)])
     median = np.array([_quantile_type7(d_null[:, k], 0.500) for k in range(pi_vals.size)])
@@ -700,6 +806,7 @@ def consistency_probe(
     scope: tuple[float, float, float, float] | None = None,
     seed: int | None = None,
     subsamples: list[np.ndarray] | None = None,
+    monotone: str = "envelope",
 ) -> ConsistencyProbeResult:
     """Proposed extreme-vs-consistent consistency probe.
 
@@ -748,7 +855,9 @@ def consistency_probe(
         for r_idx in range(int(reps)):
             idx = rows[r_idx, :] - 1
             for p_idx, pi in enumerate(pi_vals):
-                effects[k, r_idx, p_idx] = _d_for_pi(X[idx], Y[idx], float(pi), scope_tuple, n_grid)
+                effects[k, r_idx, p_idx] = _d_for_pi(
+                    X[idx], Y[idx], float(pi), scope_tuple, n_grid, _monotone_mode(monotone)
+                )
 
     mean_d = np.mean(effects, axis=1)
     sd_d = np.std(effects, axis=1, ddof=1) if reps > 1 else np.zeros_like(mean_d)
@@ -770,3 +879,181 @@ def consistency_probe(
         divergence=divergence,
         effects=effects,
     )
+
+
+def qnca_resolution(
+    X: np.ndarray,
+    Y: np.ndarray,
+    pi: float = 1.0,
+    n_grid: int = 50,
+    scope: tuple[float, float, float, float] | None = None,
+    monotone: str = "envelope",
+) -> ResolutionResult:
+    """Target-by-target account of one tolerance-indexed frontier.
+
+    For each outcome target on the grid: the conditioning-set size ``k``, the
+    selected type-1 rank, the raw order statistic, the fitted (monotone)
+    requirement, whether the fitted value was inherited from a lower target, the
+    number and share of attaining cases strictly below the fitted requirement,
+    and the resistance ``rank - 1``: the number of added cases the raw ordinate
+    absorbs without falling below the smallest condition value of the original
+    attaining cases.
+    """
+    X = np.asarray(X, dtype=float)
+    Y = np.asarray(Y, dtype=float)
+    _validate_xy(X, Y)
+    if int(n_grid) < 2:
+        raise ValueError("n_grid must be at least 2")
+    q = _tail_fraction(pi)
+    mode = _monotone_mode(monotone)
+    x_min, x_max, y_min, y_max = _validated_scope(X, Y, scope)
+    y_grid = np.linspace(y_min, y_max, int(n_grid))
+    raw, k, h = _raw_frontier(X, Y, q, y_grid)
+    fitted = _fit_frontier(raw.copy(), x_max, mode)
+    m = y_grid.size
+    below = np.zeros(m, dtype=int)
+    share = np.full(m, np.nan)
+    inherited = np.zeros(m, dtype=bool)
+    for j in range(m):
+        if k[j] == 0:
+            continue
+        tol = 1e-10 * max(1.0, abs(fitted[j]))
+        below[j] = int(np.count_nonzero((Y >= y_grid[j]) & (X < fitted[j] - tol)))
+        share[j] = below[j] / k[j]
+        inherited[j] = fitted[j] > raw[j] + tol
+    return ResolutionResult(
+        y=y_grid, k=k, rank=h, raw=raw, fitted=fitted, inherited=inherited,
+        below=below, exception_share=share, resistance=np.maximum(h - 1, 0),
+        pi=float(pi), monotone=mode,
+    )
+
+
+def qnca_outliers(
+    X: np.ndarray,
+    Y: np.ndarray,
+    pi_grid: tuple[float, ...] | list[float] | np.ndarray = (1.0, 0.95, 0.90),
+    k: int = 1,
+    n_grid: int = 50,
+    scope: tuple[float, float, float, float] | None = None,
+    monotone: str = "envelope",
+    max_candidates: int = 12,
+    min_dif: float = 0.01,
+) -> OutlierScreenResult:
+    """Deletion influence on ``d_pi`` across a tolerance grid.
+
+    In the form of the NCA outlier screen. With ``k = 1`` every case is deleted
+    in turn. With ``k > 1`` all combinations of ``k`` cases are deleted among the
+    ``max_candidates`` cases lying farthest below the most tolerant frontier at a
+    target they attain, which keeps cases that mask one another together. The
+    scope stays fixed at the full-sample rectangle. Rows are sorted by the
+    largest absolute change over the grid, and a row is flagged when a relative
+    change reaches ``min_dif`` at some tolerance. Case numbers are one-based.
+    """
+    X = np.asarray(X, dtype=float)
+    Y = np.asarray(Y, dtype=float)
+    _validate_xy(X, Y)
+    n = X.size
+    if int(n_grid) < 2:
+        raise ValueError("n_grid must be at least 2")
+    if k < 1 or k >= n - 1:
+        raise ValueError("k must be at least 1 and below n - 1")
+    pi_vals = np.asarray(pi_grid, dtype=float)
+    if pi_vals.size == 0:
+        raise ValueError("pi_grid must not be empty")
+    for pi in pi_vals:
+        _tail_fraction(float(pi))
+    mode = _monotone_mode(monotone)
+    bounds = _validated_scope(X, Y, scope)
+    d_full = np.array([_d_for_pi(X, Y, float(p), bounds, n_grid, mode) for p in pi_vals])
+
+    if k == 1:
+        combos = [[i] for i in range(1, n + 1)]
+    else:
+        loose = float(pi_vals[int(np.argmin(pi_vals))])
+        y_grid = np.linspace(bounds[2], bounds[3], int(n_grid))
+        phi = _frontier_validated(X, Y, _tail_fraction(loose), y_grid, x_max=bounds[1],
+                                  monotone=mode)
+        idx = np.searchsorted(y_grid, Y, side="right") - 1
+        gap = phi[idx] - X
+        order = sorted(range(n), key=lambda i: (-gap[i], i))
+        cand = [i + 1 for i in order if gap[i] >= 0.0][: int(max_candidates)]
+        combos = [list(c) for c in combinations(cand, k)]
+
+    d_without = np.empty((len(combos), pi_vals.size))
+    for r, combo in enumerate(combos):
+        keep = np.ones(n, dtype=bool)
+        keep[np.asarray(combo) - 1] = False
+        for p_idx, p in enumerate(pi_vals):
+            d_without[r, p_idx] = _d_for_pi(X[keep], Y[keep], float(p), bounds, n_grid, mode)
+    dif_abs = d_without - d_full.reshape(1, -1)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        dif_rel = dif_abs / d_full.reshape(1, -1)
+    dif_rel[:, d_full == 0.0] = np.nan
+    maxabs = np.max(np.abs(dif_abs), axis=1)
+    order = sorted(range(len(combos)), key=lambda r: (-maxabs[r], r))
+    d_without = d_without[order]
+    dif_abs = dif_abs[order]
+    dif_rel = dif_rel[order]
+    combos = [combos[r] for r in order]
+    flagged = np.array([
+        bool(np.any(np.isfinite(row) & (np.abs(row) >= min_dif))) for row in dif_rel
+    ])
+    return OutlierScreenResult(
+        pi=pi_vals, d=d_full, cases=combos, d_without=d_without, dif_abs=dif_abs,
+        dif_rel=dif_rel, flagged=flagged, k=int(k), monotone=mode,
+    )
+
+
+def qnca_sensitivity(
+    X: np.ndarray,
+    Y: np.ndarray,
+    points,
+    counts=range(6),
+    pi_grid: tuple[float, ...] | list[float] | np.ndarray = (1.0, 0.95, 0.90),
+    n_grid: int = 50,
+    scope: tuple[float, float, float, float] | None = None,
+    monotone: str = "envelope",
+) -> SensitivityResult:
+    """Empirical breakdown curve of ``d_pi`` under added cases.
+
+    Adds ``c`` cases for each ``c`` in ``counts`` and recomputes ``d_pi`` on the
+    fixed scope of the original sample. ``points`` is one ``(x, y)`` position,
+    repeated ``c`` times, or a sequence of at least ``max(counts)`` positions, of
+    which the first ``c`` are added.
+    """
+    X = np.asarray(X, dtype=float)
+    Y = np.asarray(Y, dtype=float)
+    _validate_xy(X, Y)
+    if int(n_grid) < 2:
+        raise ValueError("n_grid must be at least 2")
+    pi_vals = np.asarray(pi_grid, dtype=float)
+    if pi_vals.size == 0:
+        raise ValueError("pi_grid must not be empty")
+    for pi in pi_vals:
+        _tail_fraction(float(pi))
+    mode = _monotone_mode(monotone)
+    bounds = _validated_scope(X, Y, scope)
+    cs = np.asarray(list(counts), dtype=int)
+    if cs.size == 0 or np.any(cs < 0):
+        raise ValueError("counts must be non-negative")
+    pts = np.asarray(points, dtype=float)
+    if pts.ndim == 1:
+        pts = pts.reshape(1, -1)
+    if pts.shape[1] != 2:
+        raise ValueError("each point must be an (x, y) pair")
+    inside = ((pts[:, 0] >= bounds[0]) & (pts[:, 0] <= bounds[1])
+              & (pts[:, 1] >= bounds[2]) & (pts[:, 1] <= bounds[3]))
+    if not np.all(inside):
+        raise ValueError("added points must lie inside the scope")
+    if pts.shape[0] != 1 and pts.shape[0] < int(cs.max()):
+        raise ValueError("supply one point or at least max(counts) points")
+    d = np.empty((cs.size, pi_vals.size))
+    for r, c in enumerate(cs):
+        added = np.repeat(pts, c, axis=0) if pts.shape[0] == 1 else pts[:c]
+        Xc = np.concatenate([X, added[:, 0]])
+        Yc = np.concatenate([Y, added[:, 1]])
+        for p_idx, p in enumerate(pi_vals):
+            d[r, p_idx] = _d_for_pi(Xc, Yc, float(p), bounds, n_grid, mode)
+    base = np.flatnonzero(cs == 0)
+    retention = d / d[base[0]].reshape(1, -1) if base.size else np.full(d.shape, np.nan)
+    return SensitivityResult(counts=cs, pi=pi_vals, d=d, retention=retention, monotone=mode)

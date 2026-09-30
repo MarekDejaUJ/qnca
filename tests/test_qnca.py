@@ -204,3 +204,78 @@ def test_zero_valued_cohorts_remain_valid():
                n_grid=101, B=None, scope=(0.0, 1.0, 0.0, 1.0))
     assert np.isfinite(res.d_pi)
     assert 0.0 <= res.d_pi <= 1.0
+
+
+def test_envelope_leaves_strict_member_unchanged():
+    rng = np.random.default_rng(401)
+    for n in (60, 300):
+        X, Y = generate_reverse_l(n, rng=rng)
+        a = qnca(X, Y, pi=1.0, n_grid=120, B=None, scope=SCOPE)
+        b = qnca(X, Y, pi=1.0, n_grid=120, B=None, scope=SCOPE, monotone="isotonic")
+        assert np.array_equal(a.x_required, b.x_required)
+        assert a.d_pi == b.d_pi
+    from qnca import monotone_envelope
+
+    assert monotone_envelope([3.0, 1.0, 4.0, 2.0, 5.0]).tolist() == [3.0, 3.0, 4.0, 4.0, 5.0]
+    with pytest.raises(ValueError):
+        qnca([1.0, 2.0], [1.0, 2.0], B=None, monotone="median")
+
+
+def test_tolerance_path_is_monotone_in_pi():
+    rng = np.random.default_rng(402)
+    grid = [1.0, 0.99, 0.975, 0.95, 0.925, 0.90, 0.85, 0.80, 0.50]
+    for _ in range(10):
+        X, Y = generate_reverse_l(150, rng=rng)
+        for mode in ("envelope", "isotonic"):
+            d = [qnca(X, Y, pi=p, n_grid=60, B=None, scope=SCOPE, monotone=mode).d_pi for p in grid]
+            assert np.all(np.diff(d) >= -1e-12)
+
+
+def test_resolution_table_agrees_with_fitted_frontier():
+    from qnca import qnca_resolution
+
+    rng = np.random.default_rng(404)
+    X, Y = generate_reverse_l(250, rng=rng)
+    Xa = np.append(X, 2.0)
+    Ya = np.append(Y, 95.0)
+    for mode in ("envelope", "isotonic"):
+        res = qnca_resolution(Xa, Ya, pi=0.95, n_grid=80, scope=SCOPE, monotone=mode)
+        fit = qnca(Xa, Ya, pi=0.95, n_grid=80, B=None, scope=SCOPE, monotone=mode)
+        assert np.array_equal(res.fitted, fit.x_required)
+        ok = res.k > 0
+        assert np.all(res.resistance[ok] == res.rank[ok] - 1)
+        if mode == "envelope":
+            keep = ok & ~res.inherited
+            assert np.all(res.below[keep] <= res.rank[keep] - 1)
+            assert np.any(res.inherited)
+
+
+def test_deletion_screen_across_tolerance_grid():
+    from qnca import qnca_outliers
+
+    rng = np.random.default_rng(405)
+    X, Y = generate_reverse_l(600, rng=rng)
+    Xa = np.append(X, 1.0)
+    Ya = np.append(Y, 50.0)
+    out = qnca_outliers(Xa, Ya, pi_grid=(1.0, 0.95), scope=SCOPE, n_grid=60)
+    assert len(out.cases) == 601
+    assert out.cases[0] == [601]
+    assert out.flagged[0]
+    assert out.dif_abs[0, 0] > 10 * abs(out.dif_abs[0, 1])
+    joint = qnca_outliers(Xa[:200], Ya[:200], pi_grid=(1.0, 0.95), k=2, scope=SCOPE,
+                          n_grid=60, max_candidates=6)
+    assert len(joint.cases) == 15
+    assert all(len(c) == 2 for c in joint.cases)
+
+
+def test_breakdown_curve_under_added_efficient_cases():
+    from qnca import qnca_sensitivity
+
+    rng = np.random.default_rng(406)
+    X, Y = generate_reverse_l(300, rng=rng)
+    res = qnca_sensitivity(X, Y, points=(3.0, 60.0), counts=range(7), scope=SCOPE, n_grid=80)
+    assert np.all(res.retention[0] == 1.0)
+    assert np.all(np.diff(res.d, axis=0) <= 1e-12)
+    assert res.retention[1, 0] < res.retention[1, 1]
+    with pytest.raises(ValueError):
+        qnca_sensitivity(X, Y, points=(150.0, 60.0), scope=SCOPE)
