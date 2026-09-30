@@ -1,7 +1,7 @@
 name = "QNCA"
 uuid = "b3e1c0a2-7d4f-4e2a-9c1b-2f6a8d3e5c10"
 authors = ["QNCA authors"]
-version = "0.3.2"
+version = "0.4.0"
 license = "GPL-3.0-only"
 
 [deps]

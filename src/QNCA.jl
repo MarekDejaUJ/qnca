@@ -2,21 +2,25 @@
     QNCA
 
 Quantile Necessary Condition Analysis: a tolerance-parameterised generalisation
-of Dul's Necessary Condition Analysis. The deterministic NCA CE-FDH ceiling is
-the `pi == 1` limit of the QNCA frontier family. Lowering `pi` discards the most
-efficient cases and raises the necessity floor, trading crispness for robustness.
+of Dul's Necessary Condition Analysis. At each outcome target the frontier is a
+low type-1 quantile of the condition among the cases attaining the target; the
+deterministic NCA CE-FDH ceiling is the `pi == 1` member of these
+tolerance-indexed frontiers.
 
-The implementation uses the same pool-adjacent-violators isotonic fit,
-inverse-empirical-CDF quantile, and carry-forward of the frontier to the scope
-ceiling as the R and Python siblings. Configured decimal tolerances are converted
-to exact rational ranks before frontier evaluation.
+The raw quantile frontier is made non-decreasing by its monotone envelope, the
+running maximum over outcome targets (the default), or by least-squares isotonic
+projection (`monotone = :isotonic`, the 0.3 behaviour). The implementation uses
+the same inverse-empirical-CDF quantile, monotone step, and carry-forward of the
+frontier to the scope ceiling as the R and Python siblings. Configured decimal
+tolerances are converted to exact rational ranks before frontier evaluation.
 """
 module QNCA
 
 using Random, Statistics, Printf, Base.Threads
 
-export generate_reverse_L, isotonic_increasing, qnca_frontier, qnca_d,
-       nca_ce_fdh_d, qnca, qnca_rank, quantile_type1_pi,
+export generate_reverse_L, isotonic_increasing, monotone_envelope,
+       qnca_frontier, qnca_d, nca_ce_fdh_d, qnca, qnca_rank, quantile_type1_pi,
+       qnca_resolution, qnca_outliers, qnca_sensitivity,
        spuriousness_band, consistency_probe
 
 "Generate a reverse-L necessity scatter (condition X, outcome Y), clamped to [0,100]."
@@ -124,36 +128,64 @@ function isotonic_increasing(y::AbstractVector{<:Real})
 end
 
 """
-    qnca_frontier(X, Y, pi, y_grid; x_max=nothing)
+    monotone_envelope(v)
 
-Quantile necessity frontier phi_pi(y), isotonic-fit and carried forward over
-trailing (high-outcome) NaN levels. Under a fixed scope, pass `x_max` so the
-whole high-outcome band is counted as empty, matching CE-FDH.
+Least non-decreasing majorant of `v`: the running maximum. Applied to the raw
+quantile frontier, a requirement established at a lower outcome target is
+carried to every higher target, so a sparse high target cannot lower it.
 """
-function qnca_frontier(X, Y, pi, y_grid; x_max=nothing)
-    Xf = collect(float.(X)); Yf = collect(float.(Y)); grid = collect(float.(y_grid))
-    validate_xy(Xf, Yf)
-    isempty(grid) && throw(ArgumentError("y_grid must not be empty"))
-    all(isfinite, grid) || throw(ArgumentError("y_grid must contain only finite values"))
-    issorted(grid) || throw(ArgumentError("y_grid must be non-decreasing"))
-    q = decimal_tail_probability(pi)
-    return qnca_frontier_validated(Xf, Yf, q, grid; x_max=x_max)
+function monotone_envelope(v::AbstractVector{<:Real})
+    out = collect(float.(v))
+    @inbounds for i in 2:length(out)
+        if out[i] < out[i-1]
+            out[i] = out[i-1]
+        end
+    end
+    return out
 end
 
-function qnca_frontier_validated(X, Y, q::Rational{BigInt}, y_grid; x_max=nothing)
+function monotone_mode(monotone)
+    mode = Symbol(monotone)
+    mode in (:envelope, :isotonic) ||
+        throw(ArgumentError("monotone must be :envelope or :isotonic"))
+    return mode
+end
+
+function tail_parts(q::Rational{BigInt})
+    a = numerator(q); d = denominator(q)
+    (a <= typemax(Int64) && d <= typemax(Int64)) || return nothing
+    return (Int128(a), Int128(d))
+end
+
+function selected_rank(k::Int, q::Rational{BigInt}, parts)
+    r = parts === nothing ? cld(big(k) * numerator(q), denominator(q)) :
+                            cld(Int128(k) * parts[1], parts[2])
+    return clamp(Int(r), 1, k)
+end
+
+"Raw type-1 quantile frontier with conditioning-set sizes and selected ranks."
+function raw_frontier(X, Y, q::Rational{BigInt}, y_grid)
     m = length(y_grid)
-    phi = fill(NaN, m)
+    phi = fill(NaN, m); k = zeros(Int, m); h = zeros(Int, m)
+    parts = tail_parts(q)
     @inbounds for j in 1:m
         idx = findall(>=(y_grid[j]), Y)
         if !isempty(idx)
-            x = sort(collect(@view(X[idx])))
-            rank = clamp(ceil(Int, length(x) * q), 1, length(x))
-            phi[j] = x[rank]
+            x = sort(X[idx])
+            k[j] = length(x)
+            h[j] = selected_rank(k[j], q, parts)
+            phi[j] = x[h[j]]
         end
     end
+    return phi, k, h
+end
+
+function fit_frontier!(phi, x_max, mode::Symbol)
+    m = length(phi)
     fin = findall(!isnan, phi)
     if length(fin) >= 2
-        phi[fin] = isotonic_increasing(phi[fin])
+        phi[fin] = mode === :isotonic ? isotonic_increasing(phi[fin]) :
+                                        monotone_envelope(phi[fin])
     end
     if !isempty(fin)
         last = fin[end]
@@ -162,6 +194,32 @@ function qnca_frontier_validated(X, Y, q::Rational{BigInt}, y_grid; x_max=nothin
         end
     end
     return phi
+end
+
+"""
+    qnca_frontier(X, Y, pi, y_grid; x_max=nothing, monotone=:envelope)
+
+Quantile necessity frontier phi_pi(y), made non-decreasing and carried forward
+over trailing (high-outcome) NaN levels. `monotone = :envelope` takes the running
+maximum of the raw frontier; `monotone = :isotonic` applies least-squares
+isotonic projection. Under a fixed scope, pass `x_max` so the whole high-outcome
+band is counted as empty, matching CE-FDH.
+"""
+function qnca_frontier(X, Y, pi, y_grid; x_max=nothing, monotone=:envelope)
+    Xf = collect(float.(X)); Yf = collect(float.(Y)); grid = collect(float.(y_grid))
+    validate_xy(Xf, Yf)
+    isempty(grid) && throw(ArgumentError("y_grid must not be empty"))
+    all(isfinite, grid) || throw(ArgumentError("y_grid must contain only finite values"))
+    issorted(grid) || throw(ArgumentError("y_grid must be non-decreasing"))
+    q = decimal_tail_probability(pi)
+    return qnca_frontier_validated(Xf, Yf, q, grid; x_max=x_max,
+                                   monotone=monotone_mode(monotone))
+end
+
+function qnca_frontier_validated(X, Y, q::Rational{BigInt}, y_grid; x_max=nothing,
+                                 monotone::Symbol=:envelope)
+    phi, _, _ = raw_frontier(X, Y, q, y_grid)
+    return fit_frontier!(phi, x_max, monotone)
 end
 
 "Effect size d_pi: trapezoidal empty-zone area left of the frontier / scope."
@@ -283,8 +341,8 @@ function scope_tuple(X, Y, scope)
     return validated_scope(X, Y, scope)
 end
 
-function d_for_pi(X, Y, pi, scope, n_grid)
-    return qnca(X, Y; pi=pi, n_grid=n_grid, B=0, scope=scope).d_pi
+function d_for_pi(X, Y, pi, scope, n_grid, monotone=:envelope)
+    return qnca(X, Y; pi=pi, n_grid=n_grid, B=0, scope=scope, monotone=monotone).d_pi
 end
 
 """
@@ -335,16 +393,17 @@ instead of drawing random permutations. Returns a named tuple with pi, d_pi, p_p
 the outcome grid and the required-X frontier.
 """
 function qnca(X, Y; pi=1.0, n_grid=50, B=1999, scope=nothing, seed=nothing,
-              permutations=nothing)
+              permutations=nothing, monotone=:envelope)
     X = collect(float.(X)); Y = collect(float.(Y))
     validate_xy(X, Y)
     n_grid >= 2 || throw(ArgumentError("n_grid must be at least 2"))
     B >= 0 || throw(ArgumentError("B must be non-negative"))
     q = decimal_tail_probability(pi)
+    mode = monotone_mode(monotone)
     x_min, x_max, y_min, y_max = validated_scope(X, Y, scope)
     scope_area = (x_max - x_min) * (y_max - y_min)
     y_grid = collect(range(y_min, y_max, length=n_grid))
-    phi_obs = qnca_frontier_validated(X, Y, q, y_grid; x_max=x_max)
+    phi_obs = qnca_frontier_validated(X, Y, q, y_grid; x_max=x_max, monotone=mode)
     d_obs = qnca_d(phi_obs, y_grid, x_min, scope_area)
 
     p_pi = NaN
@@ -353,7 +412,8 @@ function qnca(X, Y; pi=1.0, n_grid=50, B=1999, scope=nothing, seed=nothing,
         hits = zeros(UInt8, size(perm, 1))
         @threads for b in 1:size(perm, 1)
             Yp = Y[vec(perm[b, :])]
-            d_p = qnca_d(qnca_frontier_validated(X, Yp, q, y_grid; x_max=x_max),
+            d_p = qnca_d(qnca_frontier_validated(X, Yp, q, y_grid; x_max=x_max,
+                                                 monotone=mode),
                           y_grid, x_min, scope_area)
             if d_p >= d_obs
                 hits[b] = 1
@@ -370,13 +430,15 @@ function qnca(X, Y; pi=1.0, n_grid=50, B=1999, scope=nothing, seed=nothing,
         hits = zeros(UInt8, B)
         @threads for b in 1:B
             Yp = Y[vec(perm[b, :])]
-            d_p = qnca_d(qnca_frontier_validated(X, Yp, q, y_grid; x_max=x_max),
+            d_p = qnca_d(qnca_frontier_validated(X, Yp, q, y_grid; x_max=x_max,
+                                                 monotone=mode),
                           y_grid, x_min, scope_area)
             hits[b] = d_p >= d_obs ? 1 : 0
         end
         p_pi = (1 + sum(hits)) / (B + 1)
     end
-    return (pi=pi, d_pi=d_obs, p_pi=p_pi, y_grid=y_grid, x_required=phi_obs, scope=scope_area)
+    return (pi=pi, d_pi=d_obs, p_pi=p_pi, y_grid=y_grid, x_required=phi_obs,
+            scope=scope_area, monotone=mode)
 end
 
 """
@@ -392,13 +454,14 @@ modify the QNCA estimator.
 """
 function spuriousness_band(X, Y; pi_grid=[1.0, 0.95, 0.90], n_grid=50, M=999,
                            scope=nothing, seed=nothing, normal_draws=nothing,
-                           uniform_draws=nothing)
+                           uniform_draws=nothing, monotone=:envelope)
     X = collect(float.(X)); Y = collect(float.(Y))
     validate_xy(X, Y)
     n_grid >= 2 || throw(ArgumentError("n_grid must be at least 2"))
     pi_vals = collect(float.(pi_grid))
     isempty(pi_vals) && throw(ArgumentError("pi_grid must not be empty"))
     decimal_tail_probability.(pi_vals)
+    mode = monotone_mode(monotone)
     n = length(X)
     fixed_scope = scope_tuple(X, Y, scope)
     if normal_draws !== nothing && uniform_draws !== nothing
@@ -425,7 +488,7 @@ function spuriousness_band(X, Y; pi_grid=[1.0, 0.95, 0.90], n_grid=50, M=999,
     end
     M > 0 || error("M must be positive")
 
-    d_obs = [d_for_pi(X, Y, pi, fixed_scope, n_grid) for pi in pi_vals]
+    d_obs = [d_for_pi(X, Y, pi, fixed_scope, n_grid, mode) for pi in pi_vals]
     d_null = Matrix{Float64}(undef, M, length(pi_vals))
     r = rank_normal_correlation(X, Y)
     scale = sqrt(max(0.0, 1.0 - r * r))
@@ -440,7 +503,7 @@ function spuriousness_band(X, Y; pi_grid=[1.0, 0.95, 0.90], n_grid=50, M=999,
             Yj = empirical_quantile_values(Y, normcdf.(zy))
         end
         for k in eachindex(pi_vals)
-            d_null[j, k] = d_for_pi(Xj, Yj, pi_vals[k], fixed_scope, n_grid)
+            d_null[j, k] = d_for_pi(Xj, Yj, pi_vals[k], fixed_scope, n_grid, mode)
         end
     end
 
@@ -463,7 +526,8 @@ across increasing subsample sizes for `pi = 1` and a lower tolerance. It is
 descriptive and can be confounded by hard support bounds or marginal skewness.
 """
 function consistency_probe(X, Y; pi_pair=(1.0, 0.90), sizes=nothing, reps=100,
-                           n_grid=50, scope=nothing, seed=nothing, subsamples=nothing)
+                           n_grid=50, scope=nothing, seed=nothing, subsamples=nothing,
+                           monotone=:envelope)
     X = collect(float.(X)); Y = collect(float.(Y))
     n = length(X)
     pi_vals = collect(float.(pi_pair))
@@ -502,7 +566,8 @@ function consistency_probe(X, Y; pi_pair=(1.0, 0.90), sizes=nothing, reps=100,
         for rr in 1:reps
             idx = vec(rows[rr, :])
             for p in eachindex(pi_vals)
-                effects[k, rr, p] = d_for_pi(X[idx], Y[idx], pi_vals[p], fixed_scope, n_grid)
+                effects[k, rr, p] = d_for_pi(X[idx], Y[idx], pi_vals[p], fixed_scope,
+                                             n_grid, monotone)
             end
         end
     end
@@ -531,6 +596,162 @@ function consistency_probe(X, Y; pi_pair=(1.0, 0.90), sizes=nothing, reps=100,
                sd_d=vec(sd_d))
     return (summary=summary, effects=effects, beta_drift=beta,
             divergence=divergence, sizes=size_vals, pi_values=pi_vals)
+end
+
+"""
+    qnca_resolution(X, Y; pi=1.0, n_grid=50, scope=nothing, monotone=:envelope)
+
+Target-by-target account of one tolerance-indexed frontier. For each outcome
+target `y` on the grid it reports the conditioning-set size `k`, the selected
+type-1 rank, the raw order statistic, the fitted (monotone) requirement, whether
+the fitted value was inherited from a lower target, the number and share of
+attaining cases strictly below the fitted requirement, and the resistance
+`rank - 1`: the number of added cases the raw ordinate absorbs without falling
+below the smallest condition value of the original attaining cases.
+"""
+function qnca_resolution(X, Y; pi=1.0, n_grid=50, scope=nothing, monotone=:envelope)
+    X = collect(float.(X)); Y = collect(float.(Y))
+    validate_xy(X, Y)
+    n_grid >= 2 || throw(ArgumentError("n_grid must be at least 2"))
+    q = decimal_tail_probability(pi)
+    mode = monotone_mode(monotone)
+    x_min, x_max, y_min, y_max = validated_scope(X, Y, scope)
+    y_grid = collect(range(y_min, y_max, length=n_grid))
+    raw, k, h = raw_frontier(X, Y, q, y_grid)
+    fitted = fit_frontier!(copy(raw), x_max, mode)
+    m = length(y_grid)
+    below = zeros(Int, m)
+    share = fill(NaN, m)
+    inherited = falses(m)
+    for j in 1:m
+        k[j] == 0 && continue
+        below[j] = count(i -> Y[i] >= y_grid[j] && X[i] < fitted[j], eachindex(X))
+        share[j] = below[j] / k[j]
+        inherited[j] = fitted[j] > raw[j]
+    end
+    return (y=y_grid, k=k, rank=h, raw=raw, fitted=fitted, inherited=inherited,
+            below=below, exception_share=share, resistance=max.(h .- 1, 0),
+            pi=pi, monotone=mode)
+end
+
+function combinations_of(items::Vector{Int}, r::Int)
+    out = Vector{Vector{Int}}()
+    n = length(items)
+    (r < 1 || r > n) && return out
+    idx = collect(1:r)
+    while true
+        push!(out, items[idx])
+        i = r
+        while i >= 1 && idx[i] == n - r + i
+            i -= 1
+        end
+        i == 0 && break
+        idx[i] += 1
+        for j in i+1:r
+            idx[j] = idx[j-1] + 1
+        end
+    end
+    return out
+end
+
+"""
+    qnca_outliers(X, Y; pi_grid=[1.0, 0.95, 0.90], k=1, n_grid=50, scope=nothing,
+                  monotone=:envelope, max_candidates=12, min_dif=0.01)
+
+Deletion influence on `d_pi` across the tolerance grid, in the form of the NCA
+outlier screen. With `k = 1` every case is deleted in turn. With `k > 1` all
+combinations of `k` cases are deleted among the `max_candidates` cases lying
+farthest below the most tolerant frontier at a target they attain, which keeps
+cases that mask one another together. The scope stays fixed at the full-sample
+rectangle. Rows are sorted by the largest absolute change over the grid, and a
+row is flagged when a relative change reaches `min_dif` at some tolerance.
+"""
+function qnca_outliers(X, Y; pi_grid=[1.0, 0.95, 0.90], k=1, n_grid=50, scope=nothing,
+                       monotone=:envelope, max_candidates=12, min_dif=0.01)
+    X = collect(float.(X)); Y = collect(float.(Y))
+    validate_xy(X, Y)
+    n = length(X)
+    n_grid >= 2 || throw(ArgumentError("n_grid must be at least 2"))
+    (k >= 1 && k < n - 1) || throw(ArgumentError("k must be at least 1 and below n - 1"))
+    pi_vals = collect(float.(pi_grid))
+    isempty(pi_vals) && throw(ArgumentError("pi_grid must not be empty"))
+    decimal_tail_probability.(pi_vals)
+    mode = monotone_mode(monotone)
+    bounds = validated_scope(X, Y, scope)
+    d_full = [d_for_pi(X, Y, p, bounds, n_grid, mode) for p in pi_vals]
+
+    if k == 1
+        combos = [[i] for i in 1:n]
+    else
+        loose = pi_vals[argmin(pi_vals)]
+        y_grid = collect(range(bounds[3], bounds[4], length=n_grid))
+        phi = qnca_frontier_validated(X, Y, decimal_tail_probability(loose), y_grid;
+                                      x_max=bounds[2], monotone=mode)
+        gap = [phi[searchsortedlast(y_grid, Y[i])] - X[i] for i in 1:n]
+        cand = [i for i in sortperm(gap; rev=true) if gap[i] >= 0.0]
+        cand = cand[1:min(length(cand), max_candidates)]
+        combos = combinations_of(cand, k)
+    end
+
+    d_without = Matrix{Float64}(undef, length(combos), length(pi_vals))
+    @threads for r in eachindex(combos)
+        keep = trues(n); keep[combos[r]] .= false
+        for p in eachindex(pi_vals)
+            d_without[r, p] = d_for_pi(X[keep], Y[keep], pi_vals[p], bounds, n_grid, mode)
+        end
+    end
+    dif_abs = d_without .- reshape(d_full, 1, :)
+    dif_rel = dif_abs ./ reshape(d_full, 1, :)
+    dif_rel[:, d_full .== 0.0] .= NaN
+    order = sortperm([maximum(abs.(dif_abs[r, :])) for r in eachindex(combos)]; rev=true)
+    flagged = [any(x -> isfinite(x) && abs(x) >= min_dif, dif_rel[r, :]) for r in order]
+    return (pi=pi_vals, d=d_full, cases=combos[order], d_without=d_without[order, :],
+            dif_abs=dif_abs[order, :], dif_rel=dif_rel[order, :], flagged=flagged,
+            k=k, monotone=mode)
+end
+
+"""
+    qnca_sensitivity(X, Y; points, counts=0:5, pi_grid=[1.0, 0.95, 0.90],
+                     n_grid=50, scope=nothing, monotone=:envelope)
+
+Empirical breakdown curve. Adds `c` cases for each `c` in `counts` and
+recomputes `d_pi` on the fixed scope of the original sample. `points` is one
+`(x, y)` position, repeated `c` times, or a list of at least `maximum(counts)`
+positions, of which the first `c` are added. Returns the effects and their
+ratio to the effect without added cases.
+"""
+function qnca_sensitivity(X, Y; points, counts=0:5, pi_grid=[1.0, 0.95, 0.90],
+                          n_grid=50, scope=nothing, monotone=:envelope)
+    X = collect(float.(X)); Y = collect(float.(Y))
+    validate_xy(X, Y)
+    n_grid >= 2 || throw(ArgumentError("n_grid must be at least 2"))
+    pi_vals = collect(float.(pi_grid))
+    isempty(pi_vals) && throw(ArgumentError("pi_grid must not be empty"))
+    decimal_tail_probability.(pi_vals)
+    mode = monotone_mode(monotone)
+    bounds = validated_scope(X, Y, scope)
+    cs = collect(Int.(counts))
+    (isempty(cs) || any(<(0), cs)) && throw(ArgumentError("counts must be non-negative"))
+    pts = points isa Tuple ? [points] : collect(points)
+    all(p -> length(p) == 2, pts) || throw(ArgumentError("each point must be an (x, y) pair"))
+    for (px, py) in pts
+        (bounds[1] <= px <= bounds[2] && bounds[3] <= py <= bounds[4]) ||
+            throw(ArgumentError("added points must lie inside the scope"))
+    end
+    length(pts) == 1 || length(pts) >= maximum(cs) ||
+        throw(ArgumentError("supply one point or at least maximum(counts) points"))
+    d = Matrix{Float64}(undef, length(cs), length(pi_vals))
+    for (r, c) in enumerate(cs)
+        added = length(pts) == 1 ? fill(pts[1], c) : pts[1:c]
+        Xc = vcat(X, Float64[float(p[1]) for p in added])
+        Yc = vcat(Y, Float64[float(p[2]) for p in added])
+        for p in eachindex(pi_vals)
+            d[r, p] = d_for_pi(Xc, Yc, pi_vals[p], bounds, n_grid, mode)
+        end
+    end
+    base = findfirst(==(0), cs)
+    retention = base === nothing ? fill(NaN, size(d)) : d ./ reshape(d[base, :], 1, :)
+    return (counts=cs, pi=pi_vals, d=d, retention=retention, monotone=mode)
 end
 
 end # module

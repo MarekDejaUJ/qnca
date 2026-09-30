@@ -173,3 +173,102 @@ end
     @test all(isfinite, res.beta_drift)
     @test isfinite(res.divergence)
 end
+
+@testset "envelope leaves the strict member unchanged" begin
+    rng = MersenneTwister(401)
+    for n in (60, 300)
+        X, Y = generate_reverse_L(n; rng=rng)
+        a = qnca(X, Y; pi=1.0, n_grid=120, B=0, scope=SCOPE, monotone=:envelope)
+        b = qnca(X, Y; pi=1.0, n_grid=120, B=0, scope=SCOPE, monotone=:isotonic)
+        @test a.x_required == b.x_required
+        @test a.d_pi == b.d_pi
+    end
+    @test monotone_envelope([3.0, 1.0, 4.0, 2.0, 5.0]) == [3.0, 3.0, 4.0, 4.0, 5.0]
+    @test_throws ArgumentError qnca([1.0, 2.0], [1.0, 2.0]; B=0, monotone=:median)
+end
+
+@testset "tolerance path is monotone in pi" begin
+    rng = MersenneTwister(402)
+    grid = [1.0, 0.99, 0.975, 0.95, 0.925, 0.90, 0.85, 0.80, 0.50]
+    for rep in 1:20, mode in (:envelope, :isotonic)
+        X, Y = generate_reverse_L(150; rng=rng)
+        d = [qnca(X, Y; pi=p, n_grid=60, B=0, scope=SCOPE, monotone=mode).d_pi for p in grid]
+        @test all(diff(d) .>= -1e-12)
+    end
+end
+
+@testset "added cases cannot push the raw ordinate below the stated order statistic" begin
+    rng = MersenneTwister(403)
+    grid = collect(range(0.0, 100.0, length=40))
+    for rep in 1:40
+        X, Y = generate_reverse_L(200; rng=rng)
+        c = rand(rng, 1:4)
+        Xa = vcat(X, 20 .* rand(rng, c)); Ya = vcat(Y, 40 .+ 60 .* rand(rng, c))
+        for p in (0.95, 0.90)
+            q = QNCA.decimal_tail_probability(p)
+            _, k, h = QNCA.raw_frontier(X, Y, q, grid)
+            raw_a, _, _ = QNCA.raw_frontier(Xa, Ya, q, grid)
+            env_a = monotone_envelope(raw_a[.!isnan.(raw_a)])
+            bound = fill(-Inf, length(grid))
+            for j in eachindex(grid)
+                k[j] == 0 && continue
+                xs = sort(X[Y .>= grid[j]])
+                if h[j] > c
+                    @test raw_a[j] >= xs[h[j] - c]
+                    bound[j] = xs[h[j] - c]
+                end
+            end
+            running = accumulate(max, bound)
+            for j in eachindex(env_a)
+                @test env_a[j] >= running[j]
+            end
+        end
+    end
+end
+
+@testset "resolution table agrees with the fitted frontier" begin
+    rng = MersenneTwister(404)
+    X, Y = generate_reverse_L(250; rng=rng)
+    Xa = vcat(X, 2.0); Ya = vcat(Y, 95.0)
+    for mode in (:envelope, :isotonic)
+        res = qnca_resolution(Xa, Ya; pi=0.95, n_grid=80, scope=SCOPE, monotone=mode)
+        fit = qnca(Xa, Ya; pi=0.95, n_grid=80, B=0, scope=SCOPE, monotone=mode)
+        @test res.fitted == fit.x_required
+        ok = res.k .> 0
+        @test all(res.rank[ok] .== [qnca_rank(kk, 0.95) for kk in res.k[ok]])
+        @test all(res.resistance[ok] .== res.rank[ok] .- 1)
+        if mode === :envelope
+            @test all(res.below[ok .& .!res.inherited] .<= res.rank[ok .& .!res.inherited] .- 1)
+            @test any(res.inherited)
+        end
+    end
+end
+
+@testset "deletion screen across the tolerance grid" begin
+    rng = MersenneTwister(405)
+    X, Y = generate_reverse_L(600; rng=rng)
+    Xa = vcat(X, 1.0); Ya = vcat(Y, 50.0)
+    out = qnca_outliers(Xa, Ya; pi_grid=[1.0, 0.95], scope=SCOPE, n_grid=60)
+    @test length(out.cases) == 601
+    @test out.cases[1] == [601]
+    @test out.flagged[1]
+    @test out.dif_abs[1, 1] > 10 * abs(out.dif_abs[1, 2])
+    top = qnca_outliers(vcat(X[1:150], 1.0), vcat(Y[1:150], 95.0);
+                        pi_grid=[1.0, 0.95], scope=SCOPE, n_grid=60)
+    @test top.cases[1] == [151]
+    @test top.dif_abs[1, 1] > top.dif_abs[1, 2] > 0.0
+    joint = qnca_outliers(Xa[1:200], Ya[1:200]; pi_grid=[1.0, 0.95], k=2, scope=SCOPE,
+                          n_grid=60, max_candidates=6)
+    @test length(joint.cases) == 15
+    @test all(length.(joint.cases) .== 2)
+end
+
+@testset "breakdown curve under added efficient cases" begin
+    rng = MersenneTwister(406)
+    X, Y = generate_reverse_L(300; rng=rng)
+    res = qnca_sensitivity(X, Y; points=(3.0, 60.0), counts=0:6, scope=SCOPE, n_grid=80)
+    @test all(res.retention[1, :] .== 1.0)
+    @test all(diff(res.d; dims=1) .<= 1e-12)
+    @test res.retention[2, 1] < res.retention[2, 2]
+    @test_throws ArgumentError qnca_sensitivity(X, Y; points=(150.0, 60.0), scope=SCOPE)
+end
