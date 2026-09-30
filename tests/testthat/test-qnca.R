@@ -109,3 +109,45 @@ test_that("consistency probe returns finite summaries", {
   expect_true(all(is.finite(res$beta_drift)))
   expect_true(is.finite(res$divergence))
 })
+
+test_that("decimal tolerance selects the stated type-1 rank", {
+  expect_equal(qnca_rank(100, 0.95), 5L)
+  expect_equal(qnca_rank(20, 0.95), 1L)
+  expect_equal(qnca_rank(21, 0.95), 2L)
+  expect_equal(qnca_rank(10, 0.90), 1L)
+  expect_equal(qnca_rank(11, 0.90), 2L)
+  expect_equal(qnca_rank(100, 1), 1L)
+  expect_equal(qnca_quantile_type1_pi(1:100, 0.95), 5)
+  for (k in 1:500) {
+    expect_equal(qnca_rank(k, 0.95), max(1L, as.integer(ceiling(k / 20))))
+    expect_equal(qnca_rank(k, 0.90), max(1L, as.integer(ceiling(k / 10))))
+  }
+  expect_error(qnca_rank(100, 0), "pi must be in")
+  expect_error(qnca_rank(100, 1.01), "pi must be in")
+})
+
+test_that("orientation sentinel distinguishes X from Y", {
+  X <- c(0.10, 0.20, 0.40, 0.80, 0.90)
+  Y <- c(0.10, 0.20, 0.60, 0.70, 0.95)
+  expect_equal(qnca_frontier(X, Y, 1, 0.60), 0.40)
+  expect_equal(qnca_frontier(Y, X, 1, 0.60), 0.70)
+})
+
+test_that("frontier uses the corrected rank at a decimal boundary", {
+  expect_equal(qnca_frontier(1:100, 1:100, 0.95, 1), 5)
+})
+
+test_that("invalid inputs and scopes fail explicitly", {
+  expect_error(qnca(c(1, 2), 1, B = 0), "equal lengths")
+  expect_error(qnca(c(1, NaN), c(1, 2), B = 0), "finite")
+  expect_error(qnca(c(1, 1), c(1, 2), B = 0), "non-degenerate")
+  expect_error(qnca(c(1, 2), c(1, 2), B = 0, scope = c(0, 1.5, 0, 2)), "inside scope")
+  expect_error(qnca(c(1, 2), c(1, 2), B = 0, n_grid = 1L), "n_grid")
+})
+
+test_that("zero-valued cohorts remain valid observations", {
+  res <- qnca(c(0, 0.2, 0.4, 0.8), c(0, 0.25, 0.5, 0.75), pi = 0.95,
+              n_grid = 101L, B = 0, scope = c(0, 1, 0, 1))
+  expect_true(is.finite(res$d_pi))
+  expect_true(res$d_pi >= 0 && res$d_pi <= 1)
+})
