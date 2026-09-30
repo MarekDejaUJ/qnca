@@ -625,9 +625,10 @@ function qnca_resolution(X, Y; pi=1.0, n_grid=50, scope=nothing, monotone=:envel
     inherited = falses(m)
     for j in 1:m
         k[j] == 0 && continue
-        below[j] = count(i -> Y[i] >= y_grid[j] && X[i] < fitted[j], eachindex(X))
+        tol = 1e-10 * max(1.0, abs(fitted[j]))
+        below[j] = count(i -> Y[i] >= y_grid[j] && X[i] < fitted[j] - tol, eachindex(X))
         share[j] = below[j] / k[j]
-        inherited[j] = fitted[j] > raw[j]
+        inherited[j] = fitted[j] > raw[j] + tol
     end
     return (y=y_grid, k=k, rank=h, raw=raw, fitted=fitted, inherited=inherited,
             below=below, exception_share=share, resistance=max.(h .- 1, 0),
