@@ -1,9 +1,12 @@
 #' Quantile Necessary Condition Analysis (QNCA)
 #'
-#' QNCA generalises Dul's Necessary Condition Analysis. The deterministic NCA
-#' ceiling is the \code{pi = 1} limit of the QNCA frontier family; lowering
-#' \code{pi} discards the most efficient cases and raises the necessity floor,
-#' trading a controlled amount of crispness for robustness to outliers.
+#' QNCA generalises Dul's Necessary Condition Analysis. At each outcome target
+#' the frontier is a low type-1 quantile of the condition among the cases that
+#' attain the target; the deterministic NCA CE-FDH ceiling is the \code{pi = 1}
+#' member of these tolerance-indexed frontiers. The raw frontier is made
+#' non-decreasing by its monotone envelope (the running maximum over targets,
+#' the default) or by least-squares isotonic projection
+#' (\code{monotone = "isotonic"}, the 0.3 behaviour).
 #'
 #' This file is intentionally dependency-free (base R + \pkg{stats} only) so it
 #' agrees, to floating point, with the Python and Julia siblings. Tolerances are
@@ -108,34 +111,67 @@ qnca_validate_grid <- function(y_grid) {
   invisible(NULL)
 }
 
-#' Quantile necessity frontier phi_pi(y), isotonic-fit and carried forward to the
-#' scope ceiling so a fixed scope reproduces NCA's effect size.
+#' Least non-decreasing majorant: the running maximum of a sequence.
 #'
-#' @param X,Y numeric vectors (condition, outcome).
-#' @param pi tolerance in (0, 1].
-#' @param y_grid numeric grid of outcome levels.
-#' @param x_max optional fixed-scope condition ceiling.
-#' @return numeric vector of required-X values, one per grid level.
+#' Applied to the raw quantile frontier, a requirement established at a lower
+#' outcome target is carried to every higher target.
+#' @param v numeric vector.
 #' @export
-qnca_frontier <- function(X, Y, pi, y_grid, x_max = NULL) {
-  X <- as.numeric(X); Y <- as.numeric(Y); y_grid <- as.numeric(y_grid)
-  qnca_validate_xy(X, Y)
-  qnca_validate_grid(y_grid)
-  qnca_tail_fraction(pi)
-  qnca_frontier_validated(X, Y, pi, y_grid, x_max = x_max)
+monotone_envelope <- function(v) {
+  cummax(as.numeric(v))
 }
 
-qnca_frontier_validated <- function(X, Y, pi, y_grid, x_max = NULL) {
-  fr <- qnca_tail_fraction(pi)
-  phi <- vapply(y_grid, function(y) {
-    hit <- Y >= y
-    if (!any(hit)) return(NA_real_)
-    x <- sort(X[hit])
-    x[qnca_rank_from_fraction(length(x), fr)]
-  }, numeric(1))
+#' Pool-adjacent-violators isotonic regression (non-decreasing, unit weights).
+#'
+#' Pools in the same order and with the same arithmetic as the Julia and Python
+#' implementations, so the three agree to the last bit.
+#' @param y numeric vector.
+#' @export
+qnca_isotonic_increasing <- function(y) {
+  y <- as.numeric(y)
+  vals <- numeric(0); wts <- numeric(0)
+  for (yi in y) {
+    vals <- c(vals, yi); wts <- c(wts, 1)
+    while (length(vals) > 1L && vals[length(vals) - 1L] > vals[length(vals)]) {
+      m <- length(vals)
+      v <- (vals[m - 1L] * wts[m - 1L] + vals[m] * wts[m]) / (wts[m - 1L] + wts[m])
+      w <- wts[m - 1L] + wts[m]
+      vals <- c(vals[seq_len(m - 2L)], v); wts <- c(wts[seq_len(m - 2L)], w)
+    }
+  }
+  rep(vals, times = wts)
+}
+
+qnca_monotone_mode <- function(monotone) {
+  if (length(monotone) != 1L || !(monotone %in% c("envelope", "isotonic"))) {
+    stop("monotone must be \"envelope\" or \"isotonic\"")
+  }
+  monotone
+}
+
+qnca_raw_frontier <- function(X, Y, fr, y_grid) {
+  m <- length(y_grid)
+  phi <- rep(NA_real_, m); k <- integer(m); h <- integer(m)
+  for (j in seq_len(m)) {
+    hit <- Y >= y_grid[j]
+    if (any(hit)) {
+      x <- sort(X[hit])
+      k[j] <- length(x)
+      h[j] <- qnca_rank_from_fraction(k[j], fr)
+      phi[j] <- x[h[j]]
+    }
+  }
+  list(phi = phi, k = k, rank = h)
+}
+
+qnca_fit_frontier <- function(phi, y_grid, x_max, mode) {
   fin <- which(is.finite(phi))
   if (length(fin) >= 2L) {
-    phi[fin] <- stats::isoreg(y_grid[fin], phi[fin])$yf
+    phi[fin] <- if (mode == "isotonic") {
+      qnca_isotonic_increasing(phi[fin])
+    } else {
+      cummax(phi[fin])
+    }
   }
   # Under a fixed scope Dul's CE-FDH counts the whole high-outcome band as empty.
   # Frontier-only calls without x_max keep the last finite value.
@@ -146,6 +182,31 @@ qnca_frontier_validated <- function(X, Y, pi, y_grid, x_max = NULL) {
     }
   }
   phi
+}
+
+#' Quantile necessity frontier phi_pi(y), made non-decreasing and carried
+#' forward to the scope ceiling so a fixed scope reproduces NCA's effect size.
+#'
+#' @param X,Y numeric vectors (condition, outcome).
+#' @param pi tolerance in (0, 1].
+#' @param y_grid numeric grid of outcome levels.
+#' @param x_max optional fixed-scope condition ceiling.
+#' @param monotone "envelope" (running maximum, default) or "isotonic"
+#'   (least-squares isotonic projection).
+#' @return numeric vector of required-X values, one per grid level.
+#' @export
+qnca_frontier <- function(X, Y, pi, y_grid, x_max = NULL, monotone = "envelope") {
+  X <- as.numeric(X); Y <- as.numeric(Y); y_grid <- as.numeric(y_grid)
+  qnca_validate_xy(X, Y)
+  qnca_validate_grid(y_grid)
+  qnca_tail_fraction(pi)
+  qnca_frontier_validated(X, Y, pi, y_grid, x_max = x_max,
+                          monotone = qnca_monotone_mode(monotone))
+}
+
+qnca_frontier_validated <- function(X, Y, pi, y_grid, x_max = NULL, monotone = "envelope") {
+  raw <- qnca_raw_frontier(X, Y, qnca_tail_fraction(pi), y_grid)
+  qnca_fit_frontier(raw$phi, y_grid, x_max, monotone)
 }
 
 #' Effect size d_pi: trapezoidal empty-zone area left of the frontier / scope.
@@ -184,20 +245,22 @@ qnca_validate_permutations <- function(permutations, n) {
 #' @param B permutation repetitions; set 0 (or NA) to skip the p-value.
 #' @param scope optional length-4 vector c(x_min, x_max, y_min, y_max).
 #' @param permutations optional one-based B x n permutation matrix.
-#' @return list with pi, d_pi, p_pi, scope and the bottleneck data frame.
+#' @param monotone "envelope" (default) or "isotonic".
+#' @return list with pi, d_pi, p_pi, scope, monotone and the bottleneck data frame.
 #' @export
 qnca <- function(X, Y, pi = 1, n_grid = 50L, B = 1999L, scope = NULL,
-                 permutations = NULL) {
+                 permutations = NULL, monotone = "envelope") {
   X <- as.numeric(X); Y <- as.numeric(Y)
   qnca_validate_xy(X, Y)
   if (length(n_grid) != 1L || !is.finite(n_grid) || n_grid < 2) stop("n_grid must be at least 2")
   if (length(B) != 1L || (!is.na(B) && B < 0)) stop("B must be non-negative or NA")
   qnca_tail_fraction(pi)
+  mode <- qnca_monotone_mode(monotone)
   bounds <- qnca_validated_scope(X, Y, scope)
   x_min <- bounds[1]; x_max <- bounds[2]; y_min <- bounds[3]; y_max <- bounds[4]
   scope_area <- (x_max - x_min) * (y_max - y_min)
   y_grid <- seq(y_min, y_max, length.out = n_grid)
-  phi_obs <- qnca_frontier_validated(X, Y, pi, y_grid, x_max = x_max)
+  phi_obs <- qnca_frontier_validated(X, Y, pi, y_grid, x_max = x_max, monotone = mode)
   d_obs <- qnca_d(phi_obs, y_grid, x_min, scope_area)
 
   p_pi <- NA_real_
@@ -205,7 +268,7 @@ qnca <- function(X, Y, pi = 1, n_grid = 50L, B = 1999L, scope = NULL,
     perm <- qnca_validate_permutations(permutations, length(Y))
     count <- 0L
     for (b in seq_len(nrow(perm))) {
-      phi_p <- qnca_frontier_validated(X, Y[perm[b, ]], pi, y_grid, x_max = x_max)
+      phi_p <- qnca_frontier_validated(X, Y[perm[b, ]], pi, y_grid, x_max = x_max, monotone = mode)
       d_p <- qnca_d(phi_p, y_grid, x_min, scope_area)
       if (is.finite(d_p) && d_p >= d_obs) count <- count + 1L
     }
@@ -213,14 +276,14 @@ qnca <- function(X, Y, pi = 1, n_grid = 50L, B = 1999L, scope = NULL,
   } else if (!is.na(B) && B > 0L) {
     count <- 0L
     for (b in seq_len(B)) {
-      phi_p <- qnca_frontier_validated(X, sample(Y), pi, y_grid, x_max = x_max)
+      phi_p <- qnca_frontier_validated(X, sample(Y), pi, y_grid, x_max = x_max, monotone = mode)
       d_p <- qnca_d(phi_p, y_grid, x_min, scope_area)
       if (is.finite(d_p) && d_p >= d_obs) count <- count + 1L
     }
     p_pi <- (1 + count) / (B + 1)
   }
 
-  list(pi = pi, d_pi = d_obs, p_pi = p_pi, scope = scope_area,
+  list(pi = pi, d_pi = d_obs, p_pi = p_pi, scope = scope_area, monotone = mode,
        bottleneck = data.frame(outcome_level = y_grid, X_required = phi_obs))
 }
 
@@ -263,8 +326,8 @@ qnca_scope_tuple <- function(X, Y, scope = NULL) {
   qnca_validated_scope(X, Y, scope)
 }
 
-qnca_d_for_pi <- function(X, Y, pi, scope, n_grid) {
-  qnca(X, Y, pi = pi, n_grid = n_grid, B = NA, scope = scope)$d_pi
+qnca_d_for_pi <- function(X, Y, pi, scope, n_grid, monotone = "envelope") {
+  qnca(X, Y, pi = pi, n_grid = n_grid, B = NA, scope = scope, monotone = monotone)$d_pi
 }
 
 qnca_empirical_quantile_values <- function(values, probs) {
@@ -312,16 +375,19 @@ qnca_rank_normal_correlation <- function(X, Y) {
 #' @param seed optional random seed.
 #' @param normal_draws optional normal array with dimensions M x n x 2.
 #' @param uniform_draws optional uniform array with dimensions M x n x 2.
+#' @param monotone "envelope" (default) or "isotonic".
 #' @return list with a band data frame, null effect matrix and rank correlation.
 #' @export
 spuriousness_band <- function(X, Y, pi_grid = c(1, 0.95, 0.90), n_grid = 50L,
                               M = 999L, scope = NULL, seed = NULL,
-                              normal_draws = NULL, uniform_draws = NULL) {
+                              normal_draws = NULL, uniform_draws = NULL,
+                              monotone = "envelope") {
   X <- as.numeric(X); Y <- as.numeric(Y); pi_grid <- as.numeric(pi_grid)
   qnca_validate_xy(X, Y)
   if (length(n_grid) != 1L || !is.finite(n_grid) || n_grid < 2) stop("n_grid must be at least 2")
   if (length(pi_grid) == 0L) stop("pi_grid must not be empty")
   for (pi in pi_grid) qnca_tail_fraction(pi)
+  mode <- qnca_monotone_mode(monotone)
   scope_tuple <- qnca_scope_tuple(X, Y, scope)
   n <- length(X)
   if (!is.null(normal_draws) && !is.null(uniform_draws)) {
@@ -349,7 +415,7 @@ spuriousness_band <- function(X, Y, pi_grid = c(1, 0.95, 0.90), n_grid = 50L,
   if (M <= 0L) stop("M must be positive")
 
   d_obs <- vapply(pi_grid, function(pi) {
-    qnca_d_for_pi(X, Y, pi, scope_tuple, n_grid)
+    qnca_d_for_pi(X, Y, pi, scope_tuple, n_grid, mode)
   }, numeric(1))
   d_null <- matrix(NA_real_, nrow = M, ncol = length(pi_grid))
   r <- qnca_rank_normal_correlation(X, Y)
@@ -366,7 +432,7 @@ spuriousness_band <- function(X, Y, pi_grid = c(1, 0.95, 0.90), n_grid = 50L,
       Yj <- qnca_empirical_quantile_values(Y, stats::pnorm(zy))
     }
     for (k in seq_along(pi_grid)) {
-      d_null[j, k] <- qnca_d_for_pi(Xj, Yj, pi_grid[k], scope_tuple, n_grid)
+      d_null[j, k] <- qnca_d_for_pi(Xj, Yj, pi_grid[k], scope_tuple, n_grid, mode)
     }
   }
 
@@ -399,11 +465,12 @@ spuriousness_band <- function(X, Y, pi_grid = c(1, 0.95, 0.90), n_grid = 50L,
 #' @param scope optional length-4 vector c(x_min, x_max, y_min, y_max).
 #' @param seed optional random seed.
 #' @param subsamples optional list of one-based reps x size matrices.
+#' @param monotone "envelope" (default) or "isotonic".
 #' @return list with per-size summaries, effects, drift slopes and divergence.
 #' @export
 consistency_probe <- function(X, Y, pi_pair = c(1, 0.90), sizes = NULL,
                               reps = 100L, n_grid = 50L, scope = NULL,
-                              seed = NULL, subsamples = NULL) {
+                              seed = NULL, subsamples = NULL, monotone = "envelope") {
   X <- as.numeric(X); Y <- as.numeric(Y); pi_pair <- as.numeric(pi_pair)
   if (length(pi_pair) != 2L) stop("pi_pair must contain exactly two tolerances")
   n <- length(X)
@@ -437,7 +504,8 @@ consistency_probe <- function(X, Y, pi_pair = c(1, 0.90), sizes = NULL,
     for (rr in seq_len(reps)) {
       idx <- rows[rr, ]
       for (p in seq_along(pi_pair)) {
-        effects[k, rr, p] <- qnca_d_for_pi(X[idx], Y[idx], pi_pair[p], scope_tuple, n_grid)
+        effects[k, rr, p] <- qnca_d_for_pi(X[idx], Y[idx], pi_pair[p], scope_tuple, n_grid,
+                                           qnca_monotone_mode(monotone))
       }
     }
   }
@@ -462,4 +530,168 @@ consistency_probe <- function(X, Y, pi_pair = c(1, 0.90), sizes = NULL,
   )
   list(summary = summary, effects = effects, beta_drift = beta,
        divergence = divergence, sizes = sizes, pi_values = pi_pair)
+}
+
+#' Target-by-target account of one tolerance-indexed frontier.
+#'
+#' For each outcome target on the grid: the conditioning-set size \code{k}, the
+#' selected type-1 rank, the raw order statistic, the fitted (monotone)
+#' requirement, whether the fitted value was inherited from a lower target, the
+#' number and share of attaining cases strictly below the fitted requirement, and
+#' the resistance \code{rank - 1}: the number of added cases the raw ordinate
+#' absorbs without falling below the smallest condition value of the original
+#' attaining cases.
+#'
+#' @inheritParams qnca
+#' @return data frame with one row per outcome target.
+#' @export
+qnca_resolution <- function(X, Y, pi = 1, n_grid = 50L, scope = NULL,
+                            monotone = "envelope") {
+  X <- as.numeric(X); Y <- as.numeric(Y)
+  qnca_validate_xy(X, Y)
+  if (length(n_grid) != 1L || !is.finite(n_grid) || n_grid < 2) stop("n_grid must be at least 2")
+  fr <- qnca_tail_fraction(pi)
+  mode <- qnca_monotone_mode(monotone)
+  bounds <- qnca_validated_scope(X, Y, scope)
+  y_grid <- seq(bounds[3], bounds[4], length.out = n_grid)
+  raw <- qnca_raw_frontier(X, Y, fr, y_grid)
+  fitted <- qnca_fit_frontier(raw$phi, y_grid, bounds[2], mode)
+  below <- integer(n_grid); share <- rep(NA_real_, n_grid); inherited <- logical(n_grid)
+  for (j in seq_len(n_grid)) {
+    if (raw$k[j] == 0L) next
+    tol <- 1e-10 * max(1, abs(fitted[j]))
+    below[j] <- sum(Y >= y_grid[j] & X < fitted[j] - tol)
+    share[j] <- below[j] / raw$k[j]
+    inherited[j] <- fitted[j] > raw$phi[j] + tol
+  }
+  data.frame(y = y_grid, k = raw$k, rank = raw$rank, raw = raw$phi,
+             fitted = fitted, inherited = inherited, below = below,
+             exception_share = share, resistance = pmax(raw$rank - 1L, 0L))
+}
+
+qnca_combinations <- function(items, r) {
+  n <- length(items)
+  if (r < 1L || r > n) return(list())
+  cm <- utils::combn(n, r)
+  lapply(seq_len(ncol(cm)), function(j) items[cm[, j]])
+}
+
+#' Deletion influence on d_pi across a tolerance grid.
+#'
+#' In the form of the NCA outlier screen. With \code{k = 1} every case is
+#' deleted in turn. With \code{k > 1} all combinations of \code{k} cases are
+#' deleted among the \code{max_candidates} cases lying farthest below the most
+#' tolerant frontier at a target they attain, which keeps cases that mask one
+#' another together. The scope stays fixed at the full-sample rectangle. Rows are
+#' sorted by the largest absolute change over the grid, and a row is flagged when
+#' a relative change reaches \code{min_dif} at some tolerance.
+#'
+#' @inheritParams qnca
+#' @param pi_grid tolerance values.
+#' @param k number of cases deleted jointly.
+#' @param max_candidates candidate cases for joint deletion.
+#' @param min_dif relative change that flags a row.
+#' @return list with the full-sample effects, the deleted cases, effect
+#'   matrices, flags and a summary data frame.
+#' @export
+qnca_outliers <- function(X, Y, pi_grid = c(1, 0.95, 0.90), k = 1L, n_grid = 50L,
+                          scope = NULL, monotone = "envelope", max_candidates = 12L,
+                          min_dif = 0.01) {
+  X <- as.numeric(X); Y <- as.numeric(Y)
+  qnca_validate_xy(X, Y)
+  n <- length(X)
+  if (length(n_grid) != 1L || !is.finite(n_grid) || n_grid < 2) stop("n_grid must be at least 2")
+  if (k < 1L || k >= n - 1L) stop("k must be at least 1 and below n - 1")
+  pi_grid <- as.numeric(pi_grid)
+  if (length(pi_grid) == 0L) stop("pi_grid must not be empty")
+  for (p in pi_grid) qnca_tail_fraction(p)
+  mode <- qnca_monotone_mode(monotone)
+  bounds <- qnca_validated_scope(X, Y, scope)
+  d_full <- vapply(pi_grid, function(p) qnca_d_for_pi(X, Y, p, bounds, n_grid, mode), numeric(1))
+
+  if (k == 1L) {
+    combos <- as.list(seq_len(n))
+  } else {
+    loose <- pi_grid[which.min(pi_grid)]
+    y_grid <- seq(bounds[3], bounds[4], length.out = n_grid)
+    phi <- qnca_frontier_validated(X, Y, loose, y_grid, x_max = bounds[2], monotone = mode)
+    gap <- phi[findInterval(Y, y_grid)] - X
+    ord <- order(-gap, seq_len(n))
+    cand <- ord[gap[ord] >= 0]
+    cand <- cand[seq_len(min(length(cand), max_candidates))]
+    combos <- qnca_combinations(cand, k)
+  }
+
+  d_without <- matrix(NA_real_, nrow = length(combos), ncol = length(pi_grid))
+  for (r in seq_along(combos)) {
+    keep <- setdiff(seq_len(n), combos[[r]])
+    for (p in seq_along(pi_grid)) {
+      d_without[r, p] <- qnca_d_for_pi(X[keep], Y[keep], pi_grid[p], bounds, n_grid, mode)
+    }
+  }
+  dif_abs <- sweep(d_without, 2L, d_full, FUN = "-")
+  dif_rel <- sweep(dif_abs, 2L, d_full, FUN = "/")
+  dif_rel[, d_full == 0] <- NA_real_
+  ord <- order(-apply(abs(dif_abs), 1L, max), seq_along(combos))
+  d_without <- d_without[ord, , drop = FALSE]
+  dif_abs <- dif_abs[ord, , drop = FALSE]
+  dif_rel <- dif_rel[ord, , drop = FALSE]
+  combos <- combos[ord]
+  flagged <- apply(dif_rel, 1L, function(v) any(is.finite(v) & abs(v) >= min_dif))
+  table <- data.frame(cases = vapply(combos, paste, character(1), collapse = ","),
+                      flagged = flagged, stringsAsFactors = FALSE)
+  for (p in seq_along(pi_grid)) {
+    table[[sprintf("d_without_%s", format(pi_grid[p]))]] <- d_without[, p]
+    table[[sprintf("dif_rel_%s", format(pi_grid[p]))]] <- dif_rel[, p]
+  }
+  list(pi = pi_grid, d = d_full, cases = combos, d_without = d_without,
+       dif_abs = dif_abs, dif_rel = dif_rel, flagged = flagged, k = k,
+       monotone = mode, table = table)
+}
+
+#' Empirical breakdown curve of d_pi under added cases.
+#'
+#' Adds \code{c} cases for each \code{c} in \code{counts} and recomputes d_pi on
+#' the fixed scope of the original sample. \code{points} is one \code{c(x, y)}
+#' position, repeated \code{c} times, or a two-column matrix of at least
+#' \code{max(counts)} positions, of which the first \code{c} are added.
+#'
+#' @inheritParams qnca
+#' @param points added position(s).
+#' @param counts numbers of added cases.
+#' @param pi_grid tolerance values.
+#' @return list with counts, tolerances, effect matrix and retention ratios.
+#' @export
+qnca_sensitivity <- function(X, Y, points, counts = 0:5, pi_grid = c(1, 0.95, 0.90),
+                             n_grid = 50L, scope = NULL, monotone = "envelope") {
+  X <- as.numeric(X); Y <- as.numeric(Y)
+  qnca_validate_xy(X, Y)
+  if (length(n_grid) != 1L || !is.finite(n_grid) || n_grid < 2) stop("n_grid must be at least 2")
+  pi_grid <- as.numeric(pi_grid)
+  if (length(pi_grid) == 0L) stop("pi_grid must not be empty")
+  for (p in pi_grid) qnca_tail_fraction(p)
+  mode <- qnca_monotone_mode(monotone)
+  bounds <- qnca_validated_scope(X, Y, scope)
+  counts <- as.integer(counts)
+  if (length(counts) == 0L || any(counts < 0L)) stop("counts must be non-negative")
+  pts <- if (is.null(dim(points))) matrix(as.numeric(points), ncol = 2L) else as.matrix(points)
+  if (ncol(pts) != 2L) stop("each point must be an (x, y) pair")
+  if (any(pts[, 1] < bounds[1] | pts[, 1] > bounds[2] | pts[, 2] < bounds[3] | pts[, 2] > bounds[4])) {
+    stop("added points must lie inside the scope")
+  }
+  if (nrow(pts) != 1L && nrow(pts) < max(counts)) {
+    stop("supply one point or at least max(counts) points")
+  }
+  d <- matrix(NA_real_, nrow = length(counts), ncol = length(pi_grid))
+  for (r in seq_along(counts)) {
+    cc <- counts[r]
+    added <- if (nrow(pts) == 1L) pts[rep(1L, cc), , drop = FALSE] else pts[seq_len(cc), , drop = FALSE]
+    Xc <- c(X, added[, 1]); Yc <- c(Y, added[, 2])
+    for (p in seq_along(pi_grid)) {
+      d[r, p] <- qnca_d_for_pi(Xc, Yc, pi_grid[p], bounds, n_grid, mode)
+    }
+  }
+  base <- match(0L, counts)
+  retention <- if (is.na(base)) matrix(NA_real_, nrow(d), ncol(d)) else sweep(d, 2L, d[base, ], FUN = "/")
+  list(counts = counts, pi = pi_grid, d = d, retention = retention, monotone = mode)
 }

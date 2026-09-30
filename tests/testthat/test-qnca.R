@@ -151,3 +151,76 @@ test_that("zero-valued cohorts remain valid observations", {
   expect_true(is.finite(res$d_pi))
   expect_true(res$d_pi >= 0 && res$d_pi <= 1)
 })
+
+test_that("envelope leaves the strict member unchanged", {
+  set.seed(401)
+  for (n in c(60, 300)) {
+    d <- generate_reverse_L(n)
+    a <- qnca(d$X, d$Y, pi = 1, n_grid = 120L, B = NA, scope = c(0, 100, 0, 100))
+    b <- qnca(d$X, d$Y, pi = 1, n_grid = 120L, B = NA, scope = c(0, 100, 0, 100),
+              monotone = "isotonic")
+    expect_equal(a$bottleneck$X_required, b$bottleneck$X_required)
+    expect_equal(a$d_pi, b$d_pi)
+  }
+  expect_equal(monotone_envelope(c(3, 1, 4, 2, 5)), c(3, 3, 4, 4, 5))
+  expect_error(qnca(c(1, 2), c(1, 2), B = NA, monotone = "median"), "monotone")
+})
+
+test_that("tolerance path is monotone in pi", {
+  set.seed(402)
+  grid <- c(1, 0.99, 0.975, 0.95, 0.925, 0.90, 0.85, 0.80, 0.50)
+  for (rep in 1:10) for (mode in c("envelope", "isotonic")) {
+    d <- generate_reverse_L(150)
+    eff <- vapply(grid, function(p) qnca(d$X, d$Y, pi = p, n_grid = 60L, B = NA,
+                                         scope = c(0, 100, 0, 100), monotone = mode)$d_pi,
+                  numeric(1))
+    expect_true(all(diff(eff) >= -1e-12))
+  }
+})
+
+test_that("resolution table agrees with the fitted frontier", {
+  set.seed(404)
+  d <- generate_reverse_L(250)
+  Xa <- c(d$X, 2); Ya <- c(d$Y, 95)
+  for (mode in c("envelope", "isotonic")) {
+    res <- qnca_resolution(Xa, Ya, pi = 0.95, n_grid = 80L, scope = c(0, 100, 0, 100),
+                           monotone = mode)
+    fit <- qnca(Xa, Ya, pi = 0.95, n_grid = 80L, B = NA, scope = c(0, 100, 0, 100),
+                monotone = mode)
+    expect_equal(res$fitted, fit$bottleneck$X_required)
+    ok <- res$k > 0
+    expect_equal(res$resistance[ok], res$rank[ok] - 1L)
+    if (mode == "envelope") {
+      keep <- ok & !res$inherited
+      expect_true(all(res$below[keep] <= res$rank[keep] - 1L))
+      expect_true(any(res$inherited))
+    }
+  }
+})
+
+test_that("deletion screen across the tolerance grid", {
+  set.seed(405)
+  d <- generate_reverse_L(600)
+  Xa <- c(d$X, 1); Ya <- c(d$Y, 50)
+  out <- qnca_outliers(Xa, Ya, pi_grid = c(1, 0.95), scope = c(0, 100, 0, 100), n_grid = 60L)
+  expect_equal(length(out$cases), 601L)
+  expect_equal(out$cases[[1]], 601L)
+  expect_true(out$flagged[1])
+  expect_gt(out$dif_abs[1, 1], 10 * abs(out$dif_abs[1, 2]))
+  joint <- qnca_outliers(Xa[1:200], Ya[1:200], pi_grid = c(1, 0.95), k = 2L,
+                         scope = c(0, 100, 0, 100), n_grid = 60L, max_candidates = 6L)
+  expect_equal(length(joint$cases), 15L)
+  expect_true(all(lengths(joint$cases) == 2L))
+})
+
+test_that("breakdown curve under added efficient cases", {
+  set.seed(406)
+  d <- generate_reverse_L(300)
+  res <- qnca_sensitivity(d$X, d$Y, points = c(3, 60), counts = 0:6,
+                          scope = c(0, 100, 0, 100), n_grid = 80L)
+  expect_true(all(res$retention[1, ] == 1))
+  expect_true(all(diff(res$d) <= 1e-12))
+  expect_lt(res$retention[2, 1], res$retention[2, 2])
+  expect_error(qnca_sensitivity(d$X, d$Y, points = c(150, 60), scope = c(0, 100, 0, 100)),
+               "inside the scope")
+})
