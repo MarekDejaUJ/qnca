@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>5 The monotone envelope | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="QNCA evaluates the frontier on an ordered grid of outcome targets y_1 &lt; ... &lt; y_m (Deja 2026b). For observed cases (X_i, Y_i), i = 1, ..., n, with condition X and outcome Y, the conditioning set...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="5 The monotone envelope | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/envelope.html">
+<meta property="og:description" content="QNCA evaluates the frontier on an ordered grid of outcome targets y_1 &lt; ... &lt; y_m (Deja 2026b). For observed cases (X_i, Y_i), i = 1, ..., n, with condition X and outcome Y, the conditioning set...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5 The monotone envelope | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="QNCA evaluates the frontier on an ordered grid of outcome targets y_1 &lt; ... &lt; y_m (Deja 2026b). For observed cases (X_i, Y_i), i = 1, ..., n, with condition X and outcome Y, the conditioning set...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="active" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="envelope" class="section level1" number="5">
+<h1>
+<span class="header-section-number">5</span> The monotone envelope<a class="anchor" aria-label="anchor" href="#envelope"><i class="fas fa-link"></i></a>
+</h1>
+<p>QNCA evaluates the frontier on an ordered grid of outcome targets <code>y_1 &lt; ... &lt; y_m</code> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. For observed cases <code>(X_i, Y_i)</code>, <code>i = 1, ..., n</code>, with condition <code>X</code> and outcome <code>Y</code>, the conditioning set at the target <code>y_j</code> is <code>I_j = {i : Y_i &gt;= y_j}</code>, with <code>k_j = |I_j|</code> successful cases. At the tolerance <code>pi</code> in (0, 1], the raw frontier <code>phi_pi(y_j)</code> is the type-1 quantile at probability <code>1 - pi</code> of the successful condition values, the order statistic of rank <code>h_j = max(1, ceil(k_j (1 - pi)))</code> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<p>A necessity boundary is non-decreasing in the target, and sampling discreteness can make adjacent raw values decrease <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. As the target rises, the conditioning set loses cases and the selected rank can fall, so the raw frontier at a higher target can land on a lower condition value than the raw frontier at the target before.</p>
+<div id="nesting-of-the-conditioning-sets" class="section level2" number="5.1">
+<h2>
+<span class="header-section-number">5.1</span> Nesting of the conditioning sets<a class="anchor" aria-label="anchor" href="#nesting-of-the-conditioning-sets"><i class="fas fa-link"></i></a>
+</h2>
+<p>The conditioning sets are nested. For <code>l &lt;= j</code>, every case attaining <code>y_j</code> also attains <code>y_l</code>, so <code>I_j</code> is a subset of <code>I_l</code>, and a condition level required for the lower target <code>y_l</code> is also required for the higher target <code>y_j</code> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The index <code>m* = max{j : k_j &gt; 0}</code> marks the highest target with a successful case. The monotone envelope applies the nesting: for <code>j &lt;= m*</code>, the fitted value at <code>y_j</code> is the running maximum <code>z_j = max{phi_pi(y_l) : 1 &lt;= l &lt;= j}</code>, the smallest non-decreasing vector that lies on or above the raw frontier <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<p>Under a fixed scope that extends above the largest observed outcome, the fitted frontier equals the scope bound <code>x_max</code> at every target above <code>y_m*</code>, and the fixed scope thereby counts the unobserved top band as empty under the CE-FDH convention. Between consecutive grid points the fitted frontier is the linear interpolant of the two endpoints, so the fitted frontier is non-decreasing and defined at every outcome level of the scope <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<p>The envelope carries each requirement upward to every higher target. Every fitted value is an observed order statistic, so the fitted frontier stays on the condition scale <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. Monotone frontier estimators rest on the same construction: the free disposal hull is the lowest monotone boundary lying on or above the data <span class="citation">(<a href="references.html#ref-DeprinsSimarTulkens1984">Deprins et al. 1984</a>; <a href="references.html#ref-DaouiaRuizGazen2006">Daouia and Ruiz-Gazen 2006</a>)</span>. The envelope enforces the order restriction and leaves in place every raw value at least as large as all raw values at lower targets. The estimand remains the raw quantile necessity frontier, and the envelope is the shape restriction that enforces the order of the raw frontier <span class="citation">(<a href="references.html#ref-GroeneboomJongbloed2014">Groeneboom and Jongbloed 2014</a>; <a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The envelope neither smooths the frontier nor removes measurement noise <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="raw-frontier-envelope-and-isotonic-fit-on-one-grid" class="section level2" number="5.2">
+<h2>
+<span class="header-section-number">5.2</span> Raw frontier, envelope and isotonic fit on one grid<a class="anchor" aria-label="anchor" href="#raw-frontier-envelope-and-isotonic-fit-on-one-grid"><i class="fas fa-link"></i></a>
+</h2>
+<p>The 200 cases of the synthetic dataset of the repository, with condition and outcome on a scale from 0 to 100, give the raw frontier at the tolerance <code>pi = 0.90</code> on a grid of 50 targets under the fixed scope <code>[0, 100]^2</code>. The function <code>qnca_resolution()</code> returns, for each target, the conditioning-set size <code>k</code>, the selected rank, the raw value, the fitted value, the flag <code>inherited</code>, and the count <code>below</code> and the share <code>exception_share</code> of successful cases with a condition value below the fitted value. The argument <code>monotone = "isotonic"</code> returns the same account for the isotonic fit.</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span><span class="op">)</span></span>
+<span><span class="va">fixed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu">qnca_resolution</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.90</span>, scope <span class="op">=</span> <span class="va">fixed</span><span class="op">)</span></span>
+<span><span class="va">iso</span> <span class="op">&lt;-</span> <span class="fu">qnca_resolution</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.90</span>, scope <span class="op">=</span> <span class="va">fixed</span>, monotone <span class="op">=</span> <span class="st">"isotonic"</span><span class="op">)</span></span>
+<span><span class="va">att</span> <span class="op">&lt;-</span> <span class="va">env</span><span class="op">$</span><span class="va">k</span> <span class="op">&gt;</span> <span class="fl">0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span>, attained <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">att</span><span class="op">)</span>, decreases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">raw</span><span class="op">[</span><span class="va">att</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   targets  attained decreases </span></span>
+<span><span class="co">#&gt;        50        46         3</span></span>
+<span><span class="va">raw_single</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="va">att</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="fu">qnca_frontier</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.90</span>, y_grid <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">raw_single</span>, <span class="va">env</span><span class="op">$</span><span class="va">raw</span><span class="op">[</span><span class="va">att</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu">monotone_envelope</span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">raw</span><span class="op">[</span><span class="va">att</span><span class="op">]</span><span class="op">)</span>, <span class="va">env</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="va">att</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="va">env</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="op">!</span><span class="va">att</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 100 100 100 100</span></span></code></pre></div>
+<p>Of the 50 targets, 46 have at least one successful case, and the raw frontier decreases at 3 steps between adjacent attained targets. A call of <code>qnca_frontier()</code> at one target at a time returns the raw value of the target, and <code>monotone_envelope()</code> applied to the raw frontier returns the fitted values; both calls of <code><a href="https://rdrr.io/r/base/identical.html">identical()</a></code> return <code>TRUE</code>. At the 4 targets above the largest observed outcome the fitted frontier equals the scope bound 100.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="va">att</span><span class="op">]</span>, x <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">raw</span><span class="op">[</span><span class="va">att</span><span class="op">]</span>, fit <span class="op">=</span> <span class="st">"raw frontier"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="va">att</span><span class="op">]</span>, x <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="va">att</span><span class="op">]</span>, fit <span class="op">=</span> <span class="st">"monotone envelope"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">iso</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="va">att</span><span class="op">]</span>, x <span class="op">=</span> <span class="va">iso</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="va">att</span><span class="op">]</span>, fit <span class="op">=</span> <span class="st">"isotonic fit"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">fr</span><span class="op">$</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">fr</span><span class="op">$</span><span class="va">fit</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"raw frontier"</span>, <span class="st">"monotone envelope"</span>, <span class="st">"isotonic fit"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">fr</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"grey82"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_path</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>linetype <span class="op">=</span> <span class="va">fit</span>, colour <span class="op">=</span> <span class="va">fit</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">fr</span><span class="op">[</span><span class="va">fr</span><span class="op">$</span><span class="va">fit</span> <span class="op">==</span> <span class="st">"raw frontier"</span>, <span class="op">]</span>, shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>             colour <span class="op">=</span> <span class="st">"grey35"</span>, size <span class="op">=</span> <span class="fl">1.8</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_linetype_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dotted"</span>, <span class="st">"solid"</span>, <span class="st">"dashed"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grey35"</span>, <span class="st">"grey5"</span>, <span class="st">"grey45"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_equal</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">35</span>, <span class="fl">85</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">75</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Required condition X"</span>, y <span class="op">=</span> <span class="st">"Outcome target Y"</span>, linetype <span class="op">=</span> <span class="cn">NULL</span>, colour <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:envelope-plot"></span>
+<img src="qnca-guide_files/figure-html/envelope-plot-1.png" alt="Raw frontier (dotted line with open circles), monotone envelope (solid line) and isotonic fit (dashed line) at the tolerance pi = 0.90 for the 200 cases of the synthetic dataset (grey points), on a grid of 50 outcome targets under the fixed scope [0, 100]^2. The window shows condition values from 35 to 85 and outcome targets from 25 to 75, the range of the three decreases of the raw frontier." width="85%"><p class="caption">
+Figure 5.1: Raw frontier (dotted line with open circles), monotone envelope (solid line) and isotonic fit (dashed line) at the tolerance pi = 0.90 for the 200 cases of the synthetic dataset (grey points), on a grid of 50 outcome targets under the fixed scope [0, 100]^2. The window shows condition values from 35 to 85 and outcome targets from 25 to 75, the range of the three decreases of the raw frontier.
+</p>
+</div>
+</div>
+<div id="inherited-targets" class="section level2" number="5.3">
+<h2>
+<span class="header-section-number">5.3</span> Inherited targets<a class="anchor" aria-label="anchor" href="#inherited-targets"><i class="fas fa-link"></i></a>
+</h2>
+<p>A target is inherited when the fitted value exceeds the raw value, so the requirement at the target comes from a lower target. The requirement at an inherited target repeats the evidence of a lower target, and a report marks a requirement inherited from a lower target as inherited <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">inh</span> <span class="op">&lt;-</span> <span class="va">env</span><span class="op">[</span><span class="va">env</span><span class="op">$</span><span class="va">inherited</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"y"</span>, <span class="st">"k"</span>, <span class="st">"rank"</span>, <span class="st">"raw"</span>, <span class="st">"fitted"</span>, <span class="st">"below"</span>, <span class="st">"exception_share"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">inh</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         y  k rank    raw fitted below exception_share</span></span>
+<span><span class="co">#&gt; 17 32.653 48    5 42.790 45.855     5           0.104</span></span>
+<span><span class="co">#&gt; 24 46.939 30    3 57.243 59.368     3           0.100</span></span>
+<span><span class="co">#&gt; 25 48.980 29    3 57.243 59.368     3           0.103</span></span>
+<span><span class="co">#&gt; 26 51.020 27    3 57.243 59.368     3           0.111</span></span>
+<span><span class="co">#&gt; 27 53.061 26    3 57.243 59.368     3           0.115</span></span>
+<span><span class="co">#&gt; 28 55.102 25    3 57.243 59.368     3           0.120</span></span>
+<span><span class="co">#&gt; 29 57.143 21    3 57.243 59.368     3           0.143</span></span>
+<span><span class="co">#&gt; 34 67.347 10    1 60.593 78.129     1           0.100</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">inh</span><span class="op">$</span><span class="va">exception_share</span> <span class="op">&gt;</span> <span class="fl">0.10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6</span></span></code></pre></div>
+<p>At <code>pi = 0.90</code> the envelope inherits the requirement at 8 targets. At the target 32.653 the raw value 42.790 rises to 45.855. At the six targets from 46.939 to 57.143 the raw value 57.243 rises to 59.368. At the target 67.347 the raw value 60.593, the minimum of the 10 successful cases, rises to 78.129.</p>
+<p>Inheritance has a cost. At an inherited target the share of successful cases below the fitted value can exceed <code>1 - pi</code> when the exceptions admitted at a lower target concentrate among the cases attaining the higher target <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. In the synthetic data the share below the fitted value exceeds the exception tolerance 0.10 at 6 of the 8 inherited targets and reaches 0.143 at the target 57.143, where 3 of the 21 successful cases lie below the requirement 59.368.</p>
+</div>
+<div id="the-isotonic-option" class="section level2" number="5.4">
+<h2>
+<span class="header-section-number">5.4</span> The isotonic option<a class="anchor" aria-label="anchor" href="#the-isotonic-option"><i class="fas fa-link"></i></a>
+</h2>
+<p>Least-squares isotonic projection, computed by the pool-adjacent-violators algorithm, is the standard alternative in order-restricted inference <span class="citation">(<a href="references.html#ref-AyerEtAl1955">Ayer et al. 1955</a>; <a href="references.html#ref-BestChakravarti1990">Best and Chakravarti 1990</a>)</span>, and the argument <code>monotone = "isotonic"</code> selects the isotonic fit. The projection replaces each block of decreasing values by the mean of the block <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>, so an isotonic fitted value can lie between two observed order statistics.</p>
+<p>Near the top of the outcome range the conditioning set is small, the selected rank returns the minimum, and one efficient case lowers the raw value at every high target the efficient case attains. Pooling averages the low value into the resolved targets below the efficient case, so the efficient case lowers requirements that the tolerance already protects, whereas the envelope keeps the resolved requirements <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. In a sample with one appended efficient case, the added case leaves the raw <code>pi = 0.95</code> value near <code>y = 50</code> at 50.53; pooling moves the requirement at <code>y = 50</code> to 22.80, and the envelope keeps the requirement at 50.53 <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">differ</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">fitted</span> <span class="op">-</span> <span class="va">iso</span><span class="op">$</span><span class="va">fitted</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1e-9</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">y</span>, k <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">k</span>, rank <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">rank</span>, raw <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">raw</span>,</span>
+<span>                 envelope <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">fitted</span>, isotonic <span class="op">=</span> <span class="va">iso</span><span class="op">$</span><span class="va">fitted</span>,</span>
+<span>                 difference <span class="op">=</span> <span class="va">env</span><span class="op">$</span><span class="va">fitted</span> <span class="op">-</span> <span class="va">iso</span><span class="op">$</span><span class="va">fitted</span><span class="op">)</span><span class="op">[</span><span class="va">differ</span>, <span class="op">]</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         y  k rank    raw envelope isotonic difference</span></span>
+<span><span class="co">#&gt; 16 30.612 52    6 45.855   45.855   44.323      1.532</span></span>
+<span><span class="co">#&gt; 17 32.653 48    5 42.790   45.855   44.323      1.532</span></span>
+<span><span class="co">#&gt; 21 40.816 35    4 59.368   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 22 42.857 34    4 59.368   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 23 44.898 32    4 59.368   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 24 46.939 30    3 57.243   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 25 48.980 29    3 57.243   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 26 51.020 27    3 57.243   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 27 53.061 26    3 57.243   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 28 55.102 25    3 57.243   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 29 57.143 21    3 57.243   59.368   57.951      1.417</span></span>
+<span><span class="co">#&gt; 32 63.265 13    2 78.129   78.129   72.284      5.846</span></span>
+<span><span class="co">#&gt; 33 65.306 11    2 78.129   78.129   72.284      5.846</span></span>
+<span><span class="co">#&gt; 34 67.347 10    1 60.593   78.129   72.284      5.846</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>envelope <span class="op">=</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.90</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">fixed</span><span class="op">)</span><span class="op">$</span><span class="va">d_pi</span>,</span>
+<span>        isotonic <span class="op">=</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.90</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">fixed</span>,</span>
+<span>                        monotone <span class="op">=</span> <span class="st">"isotonic"</span><span class="op">)</span><span class="op">$</span><span class="va">d_pi</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; envelope isotonic </span></span>
+<span><span class="co">#&gt;   0.5916   0.5848</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>envelope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="va">att</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">d</span><span class="op">$</span><span class="va">X</span><span class="op">)</span>, isotonic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">iso</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="va">att</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">d</span><span class="op">$</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; envelope isotonic </span></span>
+<span><span class="co">#&gt;       46       32</span></span></code></pre></div>
+<p>The synthetic data show the same mechanism at the top of the outcome range. At the target 67.347 the 10 successful cases keep the rank at 1, and the raw value 60.593 is the condition value of one efficient case. At the targets 63.265 and 65.306 the rank 2 resolves the tolerance, and the raw value is 78.129. Pooling averages the three raw values to 72.284, so the efficient case lowers the two resolved requirements by 5.846, and the envelope keeps the requirement at 78.129. The effect size <code>d_pi</code> at <code>pi = 0.90</code> is 0.5916 with the envelope and 0.5848 with the isotonic fit. All 46 fitted values of the envelope at attained targets are observed condition values, against 32 of the 46 isotonic fitted values.</p>
+</div>
+<div id="the-same-call-in-python-and-julia-4" class="section level2" number="5.5">
+<h2>
+<span class="header-section-number">5.5</span> The same call in Python and Julia<a class="anchor" aria-label="anchor" href="#the-same-call-in-python-and-julia-4"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Python package <code>qnca</code> and the Julia package <code>QuantileNecessity</code> return the same inherited targets, the same exception shares, the same largest gap between the envelope and the isotonic fit, and the same two effect sizes.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="envelope.html#cb37-1" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb37-2"><a href="envelope.html#cb37-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb37-3"><a href="envelope.html#cb37-3" tabindex="-1"></a><span class="im">from</span> qnca <span class="im">import</span> qnca, qnca_resolution</span>
+<span id="cb37-4"><a href="envelope.html#cb37-4" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="envelope.html#cb37-5" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb37-6"><a href="envelope.html#cb37-6" tabindex="-1"></a>X, Y <span class="op">=</span> np.loadtxt(urlopen(url), delimiter<span class="op">=</span><span class="st">","</span>, skiprows<span class="op">=</span><span class="dv">1</span>, unpack<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb37-7"><a href="envelope.html#cb37-7" tabindex="-1"></a>fixed <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb37-8"><a href="envelope.html#cb37-8" tabindex="-1"></a>env <span class="op">=</span> qnca_resolution(X, Y, pi<span class="op">=</span><span class="fl">0.90</span>, scope<span class="op">=</span>fixed)</span>
+<span id="cb37-9"><a href="envelope.html#cb37-9" tabindex="-1"></a>iso <span class="op">=</span> qnca_resolution(X, Y, pi<span class="op">=</span><span class="fl">0.90</span>, scope<span class="op">=</span>fixed, monotone<span class="op">=</span><span class="st">"isotonic"</span>)</span>
+<span id="cb37-10"><a href="envelope.html#cb37-10" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(env.y[env.inherited], <span class="dv">3</span>))</span>
+<span id="cb37-11"><a href="envelope.html#cb37-11" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(env.exception_share[env.inherited], <span class="dv">3</span>))</span>
+<span id="cb37-12"><a href="envelope.html#cb37-12" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(<span class="bu">float</span>(np.<span class="bu">max</span>(np.<span class="bu">abs</span>(env.fitted <span class="op">-</span> iso.fitted))), <span class="dv">3</span>))</span>
+<span id="cb37-13"><a href="envelope.html#cb37-13" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(qnca(X, Y, pi<span class="op">=</span><span class="fl">0.90</span>, B<span class="op">=</span><span class="va">None</span>, scope<span class="op">=</span>fixed).d_pi, <span class="dv">4</span>),</span>
+<span id="cb37-14"><a href="envelope.html#cb37-14" tabindex="-1"></a>      <span class="bu">round</span>(qnca(X, Y, pi<span class="op">=</span><span class="fl">0.90</span>, B<span class="op">=</span><span class="va">None</span>, scope<span class="op">=</span>fixed, monotone<span class="op">=</span><span class="st">"isotonic"</span>).d_pi, <span class="dv">4</span>))</span>
+<span id="cb37-15"><a href="envelope.html#cb37-15" tabindex="-1"></a><span class="co">#&gt; [32.653 46.939 48.98  51.02  53.061 55.102 57.143 67.347]</span></span>
+<span id="cb37-16"><a href="envelope.html#cb37-16" tabindex="-1"></a><span class="co">#&gt; [0.104 0.1   0.103 0.111 0.115 0.12  0.143 0.1  ]</span></span>
+<span id="cb37-17"><a href="envelope.html#cb37-17" tabindex="-1"></a><span class="co">#&gt; 5.846</span></span>
+<span id="cb37-18"><a href="envelope.html#cb37-18" tabindex="-1"></a><span class="co">#&gt; 0.5916 0.5848</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb38-1"><a href="envelope.html#cb38-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">QuantileNecessity</span>, <span class="bu">Downloads</span>, <span class="bu">DelimitedFiles</span></span>
+<span id="cb38-2"><a href="envelope.html#cb38-2" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="envelope.html#cb38-3" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb38-4"><a href="envelope.html#cb38-4" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">readdlm</span>(<span class="bu">Downloads</span>.<span class="fu">download</span>(url), <span class="ch">','</span>, <span class="dt">Float64</span>; skipstart <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb38-5"><a href="envelope.html#cb38-5" tabindex="-1"></a>X, Y <span class="op">=</span> data[<span class="op">:</span>, <span class="fl">1</span>], data[<span class="op">:</span>, <span class="fl">2</span>]</span>
+<span id="cb38-6"><a href="envelope.html#cb38-6" tabindex="-1"></a>fixed <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb38-7"><a href="envelope.html#cb38-7" tabindex="-1"></a>env <span class="op">=</span> <span class="fu">qnca_resolution</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> <span class="fl">0.90</span>, scope <span class="op">=</span> fixed)</span>
+<span id="cb38-8"><a href="envelope.html#cb38-8" tabindex="-1"></a>iso <span class="op">=</span> <span class="fu">qnca_resolution</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> <span class="fl">0.90</span>, scope <span class="op">=</span> fixed, monotone <span class="op">=</span> <span class="op">:</span>isotonic)</span>
+<span id="cb38-9"><a href="envelope.html#cb38-9" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">round</span>.(env.y[env.inherited]; digits <span class="op">=</span> <span class="fl">3</span>))</span>
+<span id="cb38-10"><a href="envelope.html#cb38-10" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">round</span>.(env.exception_share[env.inherited]; digits <span class="op">=</span> <span class="fl">3</span>))</span>
+<span id="cb38-11"><a href="envelope.html#cb38-11" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">round</span>(<span class="fu">maximum</span>(<span class="fu">abs</span>.(env.fitted <span class="op">.-</span> iso.fitted)); digits <span class="op">=</span> <span class="fl">3</span>))</span>
+<span id="cb38-12"><a href="envelope.html#cb38-12" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">round</span>.([<span class="fu">qnca</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> <span class="fl">0.90</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> fixed).d_pi,</span>
+<span id="cb38-13"><a href="envelope.html#cb38-13" tabindex="-1"></a>                <span class="fu">qnca</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> <span class="fl">0.90</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> fixed, monotone <span class="op">=</span> <span class="op">:</span>isotonic).d_pi];</span>
+<span id="cb38-14"><a href="envelope.html#cb38-14" tabindex="-1"></a>               digits <span class="op">=</span> <span class="fl">4</span>))</span>
+<span id="cb38-15"><a href="envelope.html#cb38-15" tabindex="-1"></a><span class="co">#&gt; [32.653, 46.939, 48.98, 51.02, 53.061, 55.102, 57.143, 67.347]</span></span>
+<span id="cb38-16"><a href="envelope.html#cb38-16" tabindex="-1"></a><span class="co">#&gt; [0.104, 0.1, 0.103, 0.111, 0.115, 0.12, 0.143, 0.1]</span></span>
+<span id="cb38-17"><a href="envelope.html#cb38-17" tabindex="-1"></a><span class="co">#&gt; 5.846</span></span>
+<span id="cb38-18"><a href="envelope.html#cb38-18" tabindex="-1"></a><span class="co">#&gt; [0.5916, 0.5848]</span></span></code></pre></div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></div>
+<div class="next"><a href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#envelope"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="nav-link" href="#nesting-of-the-conditioning-sets"><span class="header-section-number">5.1</span> Nesting of the conditioning sets</a></li>
+<li><a class="nav-link" href="#raw-frontier-envelope-and-isotonic-fit-on-one-grid"><span class="header-section-number">5.2</span> Raw frontier, envelope and isotonic fit on one grid</a></li>
+<li><a class="nav-link" href="#inherited-targets"><span class="header-section-number">5.3</span> Inherited targets</a></li>
+<li><a class="nav-link" href="#the-isotonic-option"><span class="header-section-number">5.4</span> The isotonic option</a></li>
+<li><a class="nav-link" href="#the-same-call-in-python-and-julia-4"><span class="header-section-number">5.5</span> The same call in Python and Julia</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/05-envelope.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/05-envelope.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

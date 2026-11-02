@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>10 The dependence-matched reference band and the consistency probe | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="The permutation test of Necessary Condition Analysis (NCA) shuffles the outcome Y against the condition X and asks whether an empty zone of the observed size could arise under independence (Dul et...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="10 The dependence-matched reference band and the consistency probe | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/reference-band.html">
+<meta property="og:description" content="The permutation test of Necessary Condition Analysis (NCA) shuffles the outcome Y against the condition X and asks whether an empty zone of the observed size could arise under independence (Dul et...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="10 The dependence-matched reference band and the consistency probe | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="The permutation test of Necessary Condition Analysis (NCA) shuffles the outcome Y against the condition X and asks whether an empty zone of the observed size could arise under independence (Dul et...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="active" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="reference-band" class="section level1" number="10">
+<h1>
+<span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe<a class="anchor" aria-label="anchor" href="#reference-band"><i class="fas fa-link"></i></a>
+</h1>
+<p>The permutation test of Necessary Condition Analysis (NCA) shuffles the outcome <code>Y</code> against the condition <code>X</code> and asks whether an empty zone of the observed size could arise under independence <span class="citation">(<a href="references.html#ref-DulVanDerLaanKuik2020">Dul et al. 2020</a>)</span>. Correlated and skewed variables can produce an empty zone of a similar size in the absence of an attainability floor <span class="citation">(<a href="references.html#ref-SorjonenWikstromAlexMelin2017">Sorjonen et al. 2017</a>; <a href="references.html#ref-SorjonenMelin2019">Sorjonen and Melin 2019</a>)</span>. The reply of Dul, van der Laan, Kuik and Karwowski holds that a small permutation p-value supports a pattern in the observed data and leaves the substantive theory to further evidence <span class="citation">(<a href="references.html#ref-DulVanDerLaanKuikKarwowski2019">Dul et al. 2019</a>)</span>. An empty zone that the dependence alone produces is spurious, and spuriousness differs from outlier-fragility, where one or two efficient cases hold the boundary down.</p>
+<p>The dependence-matched reference band asks whether the empty zone exceeds the empty zone that the observed marginals and a smooth monotone dependence would induce <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The band is a proposed diagnostic with operating characteristics still to be established. The band keeps the QNCA estimator and changes the reference distribution of the effect size <code>d_pi</code>.</p>
+<div id="the-gaussian-copula-benchmark" class="section level2" number="10.1">
+<h2>
+<span class="header-section-number">10.1</span> The Gaussian-copula benchmark<a class="anchor" aria-label="anchor" href="#the-gaussian-copula-benchmark"><i class="fas fa-link"></i></a>
+</h2>
+<p>The benchmark starts from the ranks <code>R_X</code> and <code>R_Y</code> of the condition and outcome values, with tied values receiving the average of the tied ranks. The normal scores <code>A_i = qnorm(R_Xi / (n + 1))</code> and <code>B_i = qnorm(R_Yi / (n + 1))</code> give the fitted normal-score rank correlation <code>rho = cor(A, B)</code>, the rank-based estimate of the dependence parameter of a Gaussian copula <span class="citation">(<a href="references.html#ref-GenestFavre2007">Genest and Favre 2007</a>)</span>.</p>
+<p>Each null replicate <code>s = 1, ..., M</code> draws two independent standard normal vectors <code>Z1</code> and <code>Z2</code> of length <code>n</code>, sets <code>ZX = Z1</code> and <code>ZY = rho * Z1 + sqrt(1 - rho^2) * Z2</code>, and maps <code>pnorm(ZX)</code> and <code>pnorm(ZY)</code> through the inverse empirical distribution functions of <code>X</code> and <code>Y</code> <span class="citation">(<a href="references.html#ref-LiHammond1975">Li and Hammond 1975</a>)</span>. A copula separates the marginal behaviour of two variables from the dependence between the two variables, so the replicates keep the empirical marginals and the fitted rank dependence of the observed data and impose no attainability floor <span class="citation">(<a href="references.html#ref-Nelsen2006">Nelsen 2006</a>)</span>. The complete QNCA estimator runs on each replicate with the observed grid and scope and gives the null effect sizes <code>d_null</code> at each tolerance <code>pi</code>.</p>
+<p>The band is pointwise over the tolerance grid. At each <code>pi</code>, the limits <code>L</code> and <code>U</code> are the 2.5th and 97.5th type-7 percentiles of the <code>M</code> null effect sizes. The excess <code>Delta = d_obs - U</code> places the observed effect size above the upper limit when positive and within the benchmark when zero or negative. The tail probability <code>p_null = (1 + #{s : d_null_s &gt;= d_obs}) / (M + 1)</code> is the rank of the observed effect among the null replicates and serves as a description beside the permutation p-value <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="a-sample-with-an-attainability-floor" class="section level2" number="10.2">
+<h2>
+<span class="header-section-number">10.2</span> A sample with an attainability floor<a class="anchor" aria-label="anchor" href="#a-sample-with-an-attainability-floor"><i class="fas fa-link"></i></a>
+</h2>
+<p>The synthetic dataset of 200 cases of the <code>qnca</code> repository has a condition and an outcome on a scale from 0 to 100, and the generator of the dataset places an attainability floor along the upper-left edge of the scatter. The function <code>spuriousness_band()</code> computes the band on the fixed scope <code>[0, 100] x [0, 100]</code> with <code>M = 199</code> null replicates.</p>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span><span class="op">)</span></span>
+<span><span class="va">band_floor</span> <span class="op">&lt;-</span> <span class="fu">spuriousness_band</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span><span class="op">)</span>, M <span class="op">=</span> <span class="fl">199</span>,</span>
+<span>                                scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">band_floor</span><span class="op">$</span><span class="va">rank_correlation</span></span>
+<span><span class="co">#&gt; [1] 0.3752196</span></span>
+<span><span class="va">band_floor</span><span class="op">$</span><span class="va">band</span></span>
+<span><span class="co">#&gt;     pi     d_obs     lower    median     upper     excess p_null</span></span>
+<span><span class="co">#&gt; 1 1.00 0.4941481 0.1599041 0.2850508 0.3903153 0.10383275  0.005</span></span>
+<span><span class="co">#&gt; 2 0.95 0.5406425 0.2195466 0.3434542 0.4672053 0.07343726  0.005</span></span>
+<span><span class="co">#&gt; 3 0.90 0.5916388 0.2667127 0.4192135 0.5278369 0.06380196  0.005</span></span></code></pre></div>
+<p>The fitted rank correlation is 0.375. The observed effect sizes 0.494, 0.541 and 0.592 at <code>pi = 1.00</code>, 0.95 and 0.90 lie above the upper limits 0.390, 0.467 and 0.528, so the excess is positive at every tolerance, from 0.104 at the strict member to 0.064 at <code>pi = 0.90</code>. Each tail probability equals 0.005, the smallest value that 199 replicates allow, because every null replicate stays below the observed effect size. The excess is largest at the strict member and declines as the frontier moves into the bulk of the successful cases, a diagnostic expectation for an explicit floor <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="a-sample-with-dependence-and-skew" class="section level2" number="10.3">
+<h2>
+<span class="header-section-number">10.3</span> A sample with dependence and skew<a class="anchor" aria-label="anchor" href="#a-sample-with-dependence-and-skew"><i class="fas fa-link"></i></a>
+</h2>
+<p>A Gaussian copula with correlation 0.7 generates a second sample of 200 cases. The condition is the square root of a uniform score, which skews the condition toward high values, and the outcome is a uniform score; both lie on the scale from 0 to 100. The generating model gives positive density to every point of the scope, so any empty zone in the sample comes from the dependence and the skew.</p>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">z1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span></span>
+<span><span class="va">z2</span> <span class="op">&lt;-</span> <span class="fl">0.7</span> <span class="op">*</span> <span class="va">z1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fl">0.7</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span></span>
+<span><span class="va">cop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>X <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">z1</span><span class="op">)</span><span class="op">)</span>, Y <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">z2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">cop</span><span class="op">$</span><span class="va">X</span>, <span class="va">cop</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="va">p</span>, B <span class="op">=</span> <span class="fl">499</span>, scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>pi <span class="op">=</span> <span class="va">p</span>, d_pi <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">d_pi</span>, p_pi <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">p_pi</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        pi      d_pi  p_pi</span></span>
+<span><span class="co">#&gt; [1,] 1.00 0.2561706 0.002</span></span>
+<span><span class="co">#&gt; [2,] 0.95 0.4696308 0.002</span></span>
+<span><span class="co">#&gt; [3,] 0.90 0.5512293 0.002</span></span>
+<span><span class="va">band_cop</span> <span class="op">&lt;-</span> <span class="fu">spuriousness_band</span><span class="op">(</span><span class="va">cop</span><span class="op">$</span><span class="va">X</span>, <span class="va">cop</span><span class="op">$</span><span class="va">Y</span>, M <span class="op">=</span> <span class="fl">199</span>, scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">band_cop</span><span class="op">$</span><span class="va">rank_correlation</span></span>
+<span><span class="co">#&gt; [1] 0.7134016</span></span>
+<span><span class="va">band_cop</span><span class="op">$</span><span class="va">band</span></span>
+<span><span class="co">#&gt;     pi     d_obs     lower    median     upper      excess p_null</span></span>
+<span><span class="co">#&gt; 1 1.00 0.2561706 0.2286191 0.3035425 0.3608254 -0.10465475  0.910</span></span>
+<span><span class="co">#&gt; 2 0.95 0.4696308 0.3967691 0.4525899 0.4978585 -0.02822771  0.290</span></span>
+<span><span class="co">#&gt; 3 0.90 0.5512293 0.4798662 0.5329643 0.5761771 -0.02494775  0.215</span></span></code></pre></div>
+<p>The effect sizes are 0.256, 0.470 and 0.551, and the permutation test with <code>B = 499</code> gives the p-value 0.002, the smallest value that 499 permutations allow, at all three tolerances. The permutation test rejects independence for a sample whose generating model attains every outcome level at every condition level. With the fitted rank correlation 0.713, the excess is -0.105, -0.028 and -0.025 and the tail probabilities are 0.910, 0.290 and 0.215, so the observed effect sizes lie within the band at every tolerance. The band separates an empty zone that the dependence and the skew reproduce from an empty zone that exceeds both.</p>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="st">"Floor, n = 200"</span>, <span class="va">band_floor</span><span class="op">$</span><span class="va">band</span><span class="op">)</span>,</span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="st">"Gaussian copula, n = 200"</span>, <span class="va">band_cop</span><span class="op">$</span><span class="va">band</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">bands</span>, <span class="fu">aes</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">pi</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_linerange</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">1.2</span>, colour <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">d_obs</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2.4</span>, shape <span class="op">=</span> <span class="fl">16</span>, colour <span class="op">=</span> <span class="st">"grey10"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">sample</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Tolerance pi"</span>, y <span class="op">=</span> <span class="st">"Effect size d_pi"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:reference-band-figure"></span>
+<img src="qnca-guide_files/figure-html/reference-band-figure-1.png" alt="Observed effect size d_pi (points) and dependence-matched reference band from the 2.5th to the 97.5th percentile of 199 null effect sizes (vertical lines) at the tolerances 1.00, 0.95 and 0.90, for the synthetic sample with an attainability floor and for the Gaussian-copula sample, both with 200 cases on the fixed scope [0, 100] x [0, 100]." width="85%"><p class="caption">
+Figure 10.1: Observed effect size d_pi (points) and dependence-matched reference band from the 2.5th to the 97.5th percentile of 199 null effect sizes (vertical lines) at the tolerances 1.00, 0.95 and 0.90, for the synthetic sample with an attainability floor and for the Gaussian-copula sample, both with 200 cases on the fixed scope [0, 100] x [0, 100].
+</p>
+</div>
+</div>
+<div id="two-stored-benchmarks" class="section level2" number="10.4">
+<h2>
+<span class="header-section-number">10.4</span> Two stored benchmarks<a class="anchor" aria-label="anchor" href="#two-stored-benchmarks"><i class="fas fa-link"></i></a>
+</h2>
+<p>The repository stores the discrimination check of the article: one floor dataset and one Gaussian-copula dataset with positive dependence, each of 500 cases with <code>M = 999</code> null replicates.</p>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stored</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/diagnostic_band_illustration.csv"</span><span class="op">)</span></span>
+<span><span class="va">stored</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"generator"</span>, <span class="st">"pi"</span>, <span class="st">"d_obs"</span>, <span class="st">"upper"</span>, <span class="st">"delta"</span>, <span class="st">"p_null"</span>, <span class="st">"rank_correlation"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   generator   pi    d_obs    upper     delta p_null rank_correlation</span></span>
+<span><span class="co">#&gt; 1     floor 1.00 0.453988 0.317060  0.136929  0.001         0.353124</span></span>
+<span><span class="co">#&gt; 2     floor 0.95 0.512728 0.408785  0.103943  0.001         0.353124</span></span>
+<span><span class="co">#&gt; 3     floor 0.90 0.558220 0.483289  0.074931  0.001         0.353124</span></span>
+<span><span class="co">#&gt; 4  no_floor 1.00 0.107749 0.171340 -0.063591  0.843         0.706710</span></span>
+<span><span class="co">#&gt; 5  no_floor 0.95 0.249124 0.316109 -0.066985  0.924         0.706710</span></span>
+<span><span class="co">#&gt; 6  no_floor 0.90 0.353323 0.404173 -0.050850  0.731         0.706710</span></span></code></pre></div>
+<p>The floor dataset sits above the band at every tolerance, with the excess 0.137, 0.104 and 0.075 at <code>pi = 1.00</code>, 0.95 and 0.90 and the tail probability 0.001 at each. The copula dataset sits within the band, with the excess -0.064, -0.067 and -0.051 and the tail probabilities 0.843, 0.924 and 0.731. A companion screen of 15 fresh datasets per sample size with <code>M = 199</code> places the floor design above the band at <code>pi = 0.95</code> in 9 of 15 replications at <code>n = 100</code> and in all 15 from <code>n = 200</code> onward <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The same screen keeps all 15 copula replications within the band at every screened sample size. The stored checks illustrate the separation of two constructed benchmarks; false-alarm and detection rates under other generators remain to be established.</p>
+<p>The Gaussian copula reproduces a smooth monotone dependence, and tail dependence, mixtures of populations and several sufficient pathways fall outside the benchmark <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. A larger <code>M</code> reduces the simulation error of the limits and leaves a misspecified copula misspecified. The tolerance path diagnoses outlier-fragility, whereas the band addresses spuriousness, and a report gives the permutation result, the tolerance path and the band side by side.</p>
+</div>
+<div id="the-consistency-probe" class="section level2" number="10.5">
+<h2>
+<span class="header-section-number">10.5</span> The consistency probe<a class="anchor" aria-label="anchor" href="#the-consistency-probe"><i class="fas fa-link"></i></a>
+</h2>
+<p>The function <code>consistency_probe()</code> tracks the effect size <code>d_pi</code> across increasing subsample sizes for the strict member <code>pi = 1</code> and a lower tolerance, by default <code>pi = 0.90</code>. For each subsample size, the probe draws <code>reps</code> subsamples without replacement, computes <code>d_pi</code> on the scope of the full sample, and reports the mean and the standard deviation of <code>d_pi</code>. The package documentation describes the probe as a descriptive diagnostic that hard support bounds and marginal skewness can confound, to be read beside the reference band.</p>
+<p>The element <code>beta_drift</code> holds, for each of the two tolerances, the least-squares slope of the mean <code>d_pi</code> on the reciprocal <code>1 / m</code> of the subsample size <code>m</code>; a positive slope means that the mean effect size falls as the subsample grows. The element <code>divergence</code> is the absolute slope of the first tolerance minus the absolute slope of the second, <code>|beta_1| - |beta_0.90|</code>, so a positive divergence records a stronger drift of the strict member.</p>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probe_floor</span> <span class="op">&lt;-</span> <span class="fu">consistency_probe</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi_pair <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.90</span><span class="op">)</span>, sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span><span class="op">)</span>,</span>
+<span>                                 reps <span class="op">=</span> <span class="fl">50</span>, scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">probe_floor</span><span class="op">$</span><span class="va">summary</span></span>
+<span><span class="co">#&gt;   size  pi    mean_d       sd_d</span></span>
+<span><span class="co">#&gt; 1   50 1.0 0.5785319 0.02310732</span></span>
+<span><span class="co">#&gt; 2  100 1.0 0.5351288 0.02100963</span></span>
+<span><span class="co">#&gt; 3  150 1.0 0.5086492 0.01152733</span></span>
+<span><span class="co">#&gt; 4  200 1.0 0.4941481 0.00000000</span></span>
+<span><span class="co">#&gt; 5   50 0.9 0.6200822 0.02499699</span></span>
+<span><span class="co">#&gt; 6  100 0.9 0.6010607 0.01888787</span></span>
+<span><span class="co">#&gt; 7  150 0.9 0.5903447 0.01089606</span></span>
+<span><span class="co">#&gt; 8  200 0.9 0.5916388 0.00000000</span></span>
+<span><span class="va">probe_floor</span><span class="op">$</span><span class="va">beta_drift</span></span>
+<span><span class="co">#&gt; [1] 5.444117 2.019764</span></span>
+<span><span class="va">probe_floor</span><span class="op">$</span><span class="va">divergence</span></span>
+<span><span class="co">#&gt; [1] 3.424353</span></span>
+<span><span class="va">probe_cop</span> <span class="op">&lt;-</span> <span class="fu">consistency_probe</span><span class="op">(</span><span class="va">cop</span><span class="op">$</span><span class="va">X</span>, <span class="va">cop</span><span class="op">$</span><span class="va">Y</span>, pi_pair <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.90</span><span class="op">)</span>, sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span><span class="op">)</span>,</span>
+<span>                               reps <span class="op">=</span> <span class="fl">50</span>, scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">probe_cop</span><span class="op">$</span><span class="va">beta_drift</span></span>
+<span><span class="co">#&gt; [1] 8.5729464 0.5558628</span></span>
+<span><span class="va">probe_cop</span><span class="op">$</span><span class="va">divergence</span></span>
+<span><span class="co">#&gt; [1] 8.017084</span></span></code></pre></div>
+<p>In the floor sample, the mean strict effect falls from 0.579 in subsamples of 50 cases to 0.494 in the full sample, because a larger subsample holds more efficient cases near the upper-left edge, and the mean effect at <code>pi = 0.90</code> falls from 0.620 to 0.592. The slopes are 5.444 at <code>pi = 1</code> and 2.020 at <code>pi = 0.90</code>, and the divergence is 3.424. In the copula sample, the slopes are 8.573 and 0.556 and the divergence is 8.017; the skewed condition of the copula sample is one of the confounds the documentation names. The behaviour of the probe across generators remains to be studied.</p>
+</div>
+<div id="the-same-call-in-python-and-julia-6" class="section level2" number="10.6">
+<h2>
+<span class="header-section-number">10.6</span> The same call in Python and Julia<a class="anchor" aria-label="anchor" href="#the-same-call-in-python-and-julia-6"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Python package <code>qnca</code> and the Julia package <code>QuantileNecessity</code> compute the band with observed effect sizes and a rank correlation equal to the R values to floating point. The band limits rest on the random draws of each language and agree within the simulation error of 199 replicates, and the excess stays positive at every tolerance in all three languages. With shared copula uniforms (argument <code>uniform_draws</code>) and shared probe subsamples (argument <code>subsamples</code>), the three implementations agree to floating point in the stored cross-language check of the diagnostics.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb79-1"><a href="reference-band.html#cb79-1" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb79-2"><a href="reference-band.html#cb79-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb79-3"><a href="reference-band.html#cb79-3" tabindex="-1"></a><span class="im">from</span> qnca <span class="im">import</span> spuriousness_band</span>
+<span id="cb79-4"><a href="reference-band.html#cb79-4" tabindex="-1"></a></span>
+<span id="cb79-5"><a href="reference-band.html#cb79-5" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb79-6"><a href="reference-band.html#cb79-6" tabindex="-1"></a>X, Y <span class="op">=</span> np.loadtxt(urlopen(url), delimiter<span class="op">=</span><span class="st">","</span>, skiprows<span class="op">=</span><span class="dv">1</span>, unpack<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb79-7"><a href="reference-band.html#cb79-7" tabindex="-1"></a>band <span class="op">=</span> spuriousness_band(X, Y, pi_grid<span class="op">=</span>(<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>), M<span class="op">=</span><span class="dv">199</span>,</span>
+<span id="cb79-8"><a href="reference-band.html#cb79-8" tabindex="-1"></a>                         scope<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">100</span>), seed<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb79-9"><a href="reference-band.html#cb79-9" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(band.rank_correlation, <span class="dv">6</span>))</span>
+<span id="cb79-10"><a href="reference-band.html#cb79-10" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(band.table, <span class="dv">4</span>))</span>
+<span id="cb79-11"><a href="reference-band.html#cb79-11" tabindex="-1"></a></span>
+<span id="cb79-12"><a href="reference-band.html#cb79-12" tabindex="-1"></a>check <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/diagnostic_cross_language_agreement.csv"</span></span>
+<span id="cb79-13"><a href="reference-band.html#cb79-13" tabindex="-1"></a>rows <span class="op">=</span> np.genfromtxt(urlopen(check), delimiter<span class="op">=</span><span class="st">","</span>, names<span class="op">=</span><span class="va">True</span>, dtype<span class="op">=</span><span class="va">None</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>)</span>
+<span id="cb79-14"><a href="reference-band.html#cb79-14" tabindex="-1"></a><span class="bu">print</span>(rows[[<span class="st">"generator"</span>, <span class="st">"band_max_abs_upper_diff"</span>, <span class="st">"probe_max_abs_beta_diff"</span>]])</span>
+<span id="cb79-15"><a href="reference-band.html#cb79-15" tabindex="-1"></a><span class="co">#&gt; 0.37522</span></span>
+<span id="cb79-16"><a href="reference-band.html#cb79-16" tabindex="-1"></a><span class="co">#&gt; [[1.     0.4941 0.1783 0.285  0.394  0.1002 0.005 ]</span></span>
+<span id="cb79-17"><a href="reference-band.html#cb79-17" tabindex="-1"></a><span class="co">#&gt;  [0.95   0.5406 0.2193 0.3336 0.4506 0.0901 0.005 ]</span></span>
+<span id="cb79-18"><a href="reference-band.html#cb79-18" tabindex="-1"></a><span class="co">#&gt;  [0.9    0.5916 0.2781 0.4083 0.5291 0.0625 0.005 ]]</span></span>
+<span id="cb79-19"><a href="reference-band.html#cb79-19" tabindex="-1"></a><span class="co">#&gt; [('floor', 1.50e-15, 3.60e-14) ('no_floor', 2.53e-15, 5.43e-14)]</span></span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb80-1"><a href="reference-band.html#cb80-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">QuantileNecessity</span>, <span class="bu">Downloads</span>, <span class="bu">DelimitedFiles</span></span>
+<span id="cb80-2"><a href="reference-band.html#cb80-2" tabindex="-1"></a></span>
+<span id="cb80-3"><a href="reference-band.html#cb80-3" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb80-4"><a href="reference-band.html#cb80-4" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">readdlm</span>(<span class="bu">Downloads</span>.<span class="fu">download</span>(url), <span class="ch">','</span>, <span class="dt">Float64</span>; skipstart <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb80-5"><a href="reference-band.html#cb80-5" tabindex="-1"></a>X, Y <span class="op">=</span> data[<span class="op">:</span>, <span class="fl">1</span>], data[<span class="op">:</span>, <span class="fl">2</span>]</span>
+<span id="cb80-6"><a href="reference-band.html#cb80-6" tabindex="-1"></a>res <span class="op">=</span> <span class="fu">spuriousness_band</span>(X, Y; pi_grid <span class="op">=</span> [<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>], M <span class="op">=</span> <span class="fl">199</span>,</span>
+<span id="cb80-7"><a href="reference-band.html#cb80-7" tabindex="-1"></a>                        scope <span class="op">=</span> (<span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span>), seed <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb80-8"><a href="reference-band.html#cb80-8" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">round</span>(res.rank_correlation; digits <span class="op">=</span> <span class="fl">6</span>))</span>
+<span id="cb80-9"><a href="reference-band.html#cb80-9" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">round</span>.(res.band.d_obs; digits <span class="op">=</span> <span class="fl">4</span>))</span>
+<span id="cb80-10"><a href="reference-band.html#cb80-10" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">round</span>.(res.band.upper; digits <span class="op">=</span> <span class="fl">4</span>))</span>
+<span id="cb80-11"><a href="reference-band.html#cb80-11" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">round</span>.(res.band.excess; digits <span class="op">=</span> <span class="fl">4</span>))</span>
+<span id="cb80-12"><a href="reference-band.html#cb80-12" tabindex="-1"></a><span class="co">#&gt; 0.37522</span></span>
+<span id="cb80-13"><a href="reference-band.html#cb80-13" tabindex="-1"></a><span class="co">#&gt; [0.4941, 0.5406, 0.5916]</span></span>
+<span id="cb80-14"><a href="reference-band.html#cb80-14" tabindex="-1"></a><span class="co">#&gt; [0.3884, 0.4541, 0.5224]</span></span>
+<span id="cb80-15"><a href="reference-band.html#cb80-15" tabindex="-1"></a><span class="co">#&gt; [0.1058, 0.0865, 0.0693]</span></span></code></pre></div>
+<p>A positive excess at every member of the tolerance grid supports a necessity interpretation beyond the dependence of the two variables, within the limits of a proposed diagnostic.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></div>
+<div class="next"><a href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#reference-band"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="nav-link" href="#the-gaussian-copula-benchmark"><span class="header-section-number">10.1</span> The Gaussian-copula benchmark</a></li>
+<li><a class="nav-link" href="#a-sample-with-an-attainability-floor"><span class="header-section-number">10.2</span> A sample with an attainability floor</a></li>
+<li><a class="nav-link" href="#a-sample-with-dependence-and-skew"><span class="header-section-number">10.3</span> A sample with dependence and skew</a></li>
+<li><a class="nav-link" href="#two-stored-benchmarks"><span class="header-section-number">10.4</span> Two stored benchmarks</a></li>
+<li><a class="nav-link" href="#the-consistency-probe"><span class="header-section-number">10.5</span> The consistency probe</a></li>
+<li><a class="nav-link" href="#the-same-call-in-python-and-julia-6"><span class="header-section-number">10.6</span> The same call in Python and Julia</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/10-reference-band.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/10-reference-band.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

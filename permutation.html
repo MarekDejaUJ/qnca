@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>7 The permutation test | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="The permutation test of Necessary Condition Analysis (NCA) asks whether an empty zone of the observed size could arise when the condition X and the outcome Y are independent (Dul et al. 2020; Good...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="7 The permutation test | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/permutation.html">
+<meta property="og:description" content="The permutation test of Necessary Condition Analysis (NCA) asks whether an empty zone of the observed size could arise when the condition X and the outcome Y are independent (Dul et al. 2020; Good...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7 The permutation test | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="The permutation test of Necessary Condition Analysis (NCA) asks whether an empty zone of the observed size could arise when the condition X and the outcome Y are independent (Dul et al. 2020; Good...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="active" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="permutation" class="section level1" number="7">
+<h1>
+<span class="header-section-number">7</span> The permutation test<a class="anchor" aria-label="anchor" href="#permutation"><i class="fas fa-link"></i></a>
+</h1>
+<p>The permutation test of Necessary Condition Analysis (NCA) asks whether an empty zone of the observed size could arise when the condition <code>X</code> and the outcome <code>Y</code> are independent <span class="citation">(<a href="references.html#ref-DulVanDerLaanKuik2020">Dul et al. 2020</a>; <a href="references.html#ref-Good2005">Good 2005</a>)</span>. Quantile Necessary Condition Analysis (QNCA) keeps the test and applies the test to the effect size at a stated tolerance <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The empty zone is the part of the scope rectangle that lies left of the necessity frontier, in the upper left of the scatter of <code>X</code> against <code>Y</code>.</p>
+<div id="the-statistic-of-the-test" class="section level2" number="7.1">
+<h2>
+<span class="header-section-number">7.1</span> The statistic of the test<a class="anchor" aria-label="anchor" href="#the-statistic-of-the-test"><i class="fas fa-link"></i></a>
+</h2>
+<p>For an outcome target <code>y</code>, QNCA takes the <code>k</code> cases with <code>Y &gt;= y</code> and reports the condition value of rank <span class="math inline">\(h = \max\{1, \lceil k(1 - \pi) \rceil\}\)</span> among the <code>k</code> cases. The tolerance <code>pi</code> in (0, 1] fixes the share <code>1 - pi</code> of successful cases that may sit below the requirement, and at <code>pi = 1</code> the requirement is the lowest condition value among the successful cases, the CE-FDH ceiling of NCA <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. The running maximum over the outcome grid makes the frontier non-decreasing, and under a fixed scope the frontier takes the upper condition bound <span class="math inline">\(x_{\max}\)</span> at the targets above the largest observed outcome. The effect size <code>d_pi</code> divides the area of the empty zone by the area of the scope rectangle <span class="math inline">\([x_{\min}, x_{\max}] \times [y_{\min}, y_{\max}]\)</span> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="shuffles-of-the-outcome" class="section level2" number="7.2">
+<h2>
+<span class="header-section-number">7.2</span> Shuffles of the outcome<a class="anchor" aria-label="anchor" href="#shuffles-of-the-outcome"><i class="fas fa-link"></i></a>
+</h2>
+<p>The test shuffles the outcome against the condition <code>B</code> times. A shuffle keeps the condition values and the outcome values of the sample and pairs the two sets at random, and the random pairing removes the dependence of the outcome on the condition. For each shuffle <code>b</code>, the package recomputes the whole estimator, namely the raw quantile frontier, the monotone envelope, the carry-forward of the fixed scope and the area, and obtains the effect size <span class="math inline">\(d_\pi^{(b)}\)</span> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The p-value counts the shuffles with an effect size at least as large as the observed effect size <span class="math inline">\(d_\pi^{\text{obs}}\)</span>:</p>
+<p><span class="math display">\[
+p_\pi = \frac{1 + \#\{b : d_\pi^{(b)} \ge d_\pi^{\text{obs}}\}}{B + 1}.
+\]</span></p>
+<p>The added one counts the observed labelling as one member of the randomisation distribution and keeps a p-value from sampled shuffles above zero <span class="citation">(<a href="references.html#ref-PhipsonSmyth2010">Phipson and Smyth 2010</a>)</span>. The recomputation of the frontier inside every shuffle keeps the statistic of the test equal to the reported statistic, because a frontier held fixed while shuffled outcomes are rescored would test a different statistic <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-test-on-the-synthetic-dataset" class="section level2" number="7.3">
+<h2>
+<span class="header-section-number">7.3</span> The test on the synthetic dataset<a class="anchor" aria-label="anchor" href="#the-test-on-the-synthetic-dataset"><i class="fas fa-link"></i></a>
+</h2>
+<p>The synthetic dataset of 200 cases of the <code>qnca</code> repository has a condition and an outcome on a scale from 0 to 100, and the analysis fixes the scope at [0, 100] x [0, 100]. The calls draw <code>B = 999</code> shuffles at <code>pi = 1</code> and at <code>pi = 0.95</code>, and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> fixes the shuffles of R.</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span><span class="op">)</span></span>
+<span><span class="va">scope</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2026</span><span class="op">)</span></span>
+<span><span class="va">strict</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">1</span>, B <span class="op">=</span> <span class="fl">999</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="va">tolerant</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, B <span class="op">=</span> <span class="fl">999</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>pi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span><span class="op">)</span>, d_pi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">strict</span><span class="op">$</span><span class="va">d_pi</span>, <span class="va">tolerant</span><span class="op">$</span><span class="va">d_pi</span><span class="op">)</span>,</span>
+<span>           p_pi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">strict</span><span class="op">$</span><span class="va">p_pi</span>, <span class="va">tolerant</span><span class="op">$</span><span class="va">p_pi</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     pi      d_pi  p_pi</span></span>
+<span><span class="co">#&gt; 1 1.00 0.4941481 0.001</span></span>
+<span><span class="co">#&gt; 2 0.95 0.5406425 0.001</span></span>
+<span><span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="fl">999</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.001</span></span></code></pre></div>
+<p>Both p-values equal 0.001, the floor <span class="math inline">\(1/(B + 1)\)</span> of 999 shuffles. A p-value at the floor states that every shuffled effect size stayed below the observed effect size, and a larger <code>B</code> lowers the floor. The test runs at each tolerance separately, so each tolerance receives a separate p-value, and the analyst fixes <code>pi</code> before inspecting any p-value <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-distribution-under-independence" class="section level2" number="7.4">
+<h2>
+<span class="header-section-number">7.4</span> The distribution under independence<a class="anchor" aria-label="anchor" href="#the-distribution-under-independence"><i class="fas fa-link"></i></a>
+</h2>
+<p>A matrix of shuffles shows the distribution behind the p-value. Each row of the matrix <code>perm</code> lists the case numbers 1 to 200 in a random order, and the row <code>b</code> pairs the condition of case <code>i</code> with the outcome of case <code>perm[b, i]</code>.</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">11</span><span class="op">)</span></span>
+<span><span class="va">perm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="fl">999</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">null_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">perm</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">rows</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span><span class="op">[</span><span class="va">rows</span><span class="op">]</span>, pi <span class="op">=</span> <span class="fl">1</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">d_pi</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">null_d</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt; 0.07647 0.12986 0.15616 0.16141 0.18903 0.31777</span></span></code></pre></div>
+<p>The shuffled datasets show an empty zone as well: at <code>pi = 1</code>, the shuffled effect sizes range from 0.076 to 0.318 with a median of 0.156. The observed effect size of 0.494 exceeds the largest shuffled value.</p>
+<p>A dataset with the dependence removed shows the other outcome of the test. The cases of the synthetic dataset are independent draws, so pairing the condition of case <code>i</code> with the outcome of case <code>i + 100</code>, counted cyclically, removes the dependence of the outcome on the condition and keeps both sets of values.</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Y_shift</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">$</span><span class="va">Y</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101</span><span class="op">:</span><span class="fl">200</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2026</span><span class="op">)</span></span>
+<span><span class="va">shift_fit</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">Y_shift</span>, pi <span class="op">=</span> <span class="fl">1</span>, B <span class="op">=</span> <span class="fl">999</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>d_pi <span class="op">=</span> <span class="va">shift_fit</span><span class="op">$</span><span class="va">d_pi</span>, p_pi <span class="op">=</span> <span class="va">shift_fit</span><span class="op">$</span><span class="va">p_pi</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      d_pi      p_pi </span></span>
+<span><span class="co">#&gt; 0.1893848 0.2200000</span></span></code></pre></div>
+<p>The shifted dataset has an effect size of 0.189 and a p-value of 0.22, so an empty zone of 0.189 arises often under independence. The shifted outcomes are a permutation of the observed outcomes, and the two datasets therefore share the distribution of shuffled effect sizes.</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>d_pi <span class="op">=</span> <span class="va">null_d</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">d_pi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">0.01</span>, fill <span class="op">=</span> <span class="st">"grey75"</span>, colour <span class="op">=</span> <span class="st">"grey40"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">strict</span><span class="op">$</span><span class="va">d_pi</span>, linetype <span class="op">=</span> <span class="st">"solid"</span>, colour <span class="op">=</span> <span class="st">"grey10"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">shift_fit</span><span class="op">$</span><span class="va">d_pi</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, colour <span class="op">=</span> <span class="st">"grey10"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Effect size of a shuffled dataset"</span>, y <span class="op">=</span> <span class="st">"Number of shuffles"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:permutation-figure"></span>
+<img src="qnca-guide_files/figure-html/permutation-figure-1.png" alt="Effect sizes d_pi at pi = 1.00 of 999 shuffles of the outcome against the condition in the synthetic dataset of 200 cases, fixed scope [0, 100] x [0, 100], grid of 50 outcome targets. The solid line marks the observed effect size, and the dashed line marks the effect size of the dataset with the outcomes shifted by 100 cases." width="85%"><p class="caption">
+Figure 7.1: Effect sizes d_pi at pi = 1.00 of 999 shuffles of the outcome against the condition in the synthetic dataset of 200 cases, fixed scope [0, 100] x [0, 100], grid of 50 outcome targets. The solid line marks the observed effect size, and the dashed line marks the effect size of the dataset with the outcomes shifted by 100 cases.
+</p>
+</div>
+</div>
+<div id="reproducible-p-values" class="section level2" number="7.5">
+<h2>
+<span class="header-section-number">7.5</span> Reproducible p-values<a class="anchor" aria-label="anchor" href="#reproducible-p-values"><i class="fas fa-link"></i></a>
+</h2>
+<p>A p-value from random shuffles depends on the shuffles drawn. In R, the argument <code>permutations</code> takes a matrix with one row per shuffle, each row a permutation of the case numbers 1 to <code>n</code>, and the same matrix gives the same p-value in every run.</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>first <span class="op">=</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">Y_shift</span>, pi <span class="op">=</span> <span class="fl">1</span>, scope <span class="op">=</span> <span class="va">scope</span>, permutations <span class="op">=</span> <span class="va">perm</span><span class="op">)</span><span class="op">$</span><span class="va">p_pi</span>,</span>
+<span>  second <span class="op">=</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">Y_shift</span>, pi <span class="op">=</span> <span class="fl">1</span>, scope <span class="op">=</span> <span class="va">scope</span>, permutations <span class="op">=</span> <span class="va">perm</span><span class="op">)</span><span class="op">$</span><span class="va">p_pi</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  first second </span></span>
+<span><span class="co">#&gt;  0.213  0.213</span></span></code></pre></div>
+<p>Both calls with the matrix <code>perm</code> return the p-value 0.213 for the shifted dataset. Python and Julia take the argument <code>seed</code> and draw the shuffles from the random generator of each language. A seeded p-value repeats within one language and differs between languages, because the generators of the three languages produce different shuffles. One shared permutation matrix gives identical p-values in the three implementations. The file <code>cross_language_agreement.csv</code> of the repository records the check with a shared matrix of 1999 shuffles for four datasets and three tolerances.</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">agree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/cross_language_agreement.csv"</span><span class="op">)</span></span>
+<span><span class="va">agree</span><span class="op">[</span><span class="va">agree</span><span class="op">$</span><span class="va">dataset</span> <span class="op">==</span> <span class="st">"n200"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pi"</span>, <span class="st">"B"</span>, <span class="st">"p_pi_R"</span>, <span class="st">"p_pi_python"</span>, <span class="st">"p_pi_julia"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;     pi    B p_pi_R p_pi_python p_pi_julia</span></span>
+<span><span class="co">#&gt; 4 1.00 1999  5e-04       5e-04      5e-04</span></span>
+<span><span class="co">#&gt; 5 0.95 1999  5e-04       5e-04      5e-04</span></span>
+<span><span class="co">#&gt; 6 0.90 1999  5e-04       5e-04      5e-04</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">agree</span><span class="op">)</span>, equal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/logical.html">as.logical</a></span><span class="op">(</span><span class="va">agree</span><span class="op">$</span><span class="va">p_values_equal</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  rows equal </span></span>
+<span><span class="co">#&gt;    12    12</span></span></code></pre></div>
+<p>The three implementations report the same p-value in each of the 12 rows of the file.</p>
+</div>
+<div id="reading-the-p-value" class="section level2" number="7.6">
+<h2>
+<span class="header-section-number">7.6</span> Reading the p-value<a class="anchor" aria-label="anchor" href="#reading-the-p-value"><i class="fas fa-link"></i></a>
+</h2>
+<p>A small <code>p_pi</code> together with a substantively meaningful <code>d_pi</code> supports a necessity interpretation against independence at the stated tolerance <span class="citation">(<a href="references.html#ref-DulVanDerLaanKuik2020">Dul et al. 2020</a>; <a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. At <code>pi = 1</code>, the test inherits the outlier-fragility of the CE-FDH ceiling, and resistance to exceptional successful cases arises at <code>pi &lt; 1</code> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The finite-sample statistic is discrete, because quantiles, extreme observations and the envelope enter the statistic, and the calibration screens of <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span> cover a narrow set of null designs.</p>
+<p>The independence null removes all association between the two variables. Correlated and skewed variables can produce an empty zone of similar size without an explicit attainability floor <span class="citation">(<a href="references.html#ref-SorjonenWikstromAlexMelin2017">Sorjonen et al. 2017</a>; <a href="references.html#ref-SorjonenMelin2019">Sorjonen and Melin 2019</a>)</span>. The reply of <span class="citation">Dul et al. (<a href="references.html#ref-DulVanDerLaanKuikKarwowski2019">2019</a>)</span> holds that the permutation test supports a pattern in the observed data and leaves the substantive theory open. Spuriousness, an empty zone produced by correlation, skewness or a sufficiency relation, is a failure mode different from outlier-fragility, and the function <code>spuriousness_band()</code> benchmarks <code>d_pi</code> against the dependence-matched reference band, which preserves the empirical marginals and a smooth monotone rank dependence <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The reference band is a proposed diagnostic with operating characteristics still to be established.</p>
+</div>
+<div id="the-same-test-in-python-and-julia" class="section level2" number="7.7">
+<h2>
+<span class="header-section-number">7.7</span> The same test in Python and Julia<a class="anchor" aria-label="anchor" href="#the-same-test-in-python-and-julia"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Python package <code>qnca</code> and the Julia package <code>QuantileNecessity</code> take the argument <code>seed</code>, and each chunk runs the test on the observed and on the shifted dataset.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="permutation.html#cb54-1" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb54-2"><a href="permutation.html#cb54-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb54-3"><a href="permutation.html#cb54-3" tabindex="-1"></a><span class="im">from</span> qnca <span class="im">import</span> qnca</span>
+<span id="cb54-4"><a href="permutation.html#cb54-4" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="permutation.html#cb54-5" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb54-6"><a href="permutation.html#cb54-6" tabindex="-1"></a>X, Y <span class="op">=</span> np.loadtxt(urlopen(url), delimiter<span class="op">=</span><span class="st">","</span>, skiprows<span class="op">=</span><span class="dv">1</span>, unpack<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb54-7"><a href="permutation.html#cb54-7" tabindex="-1"></a>scope <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb54-8"><a href="permutation.html#cb54-8" tabindex="-1"></a><span class="cf">for</span> pi <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>):</span>
+<span id="cb54-9"><a href="permutation.html#cb54-9" tabindex="-1"></a>    res <span class="op">=</span> qnca(X, Y, pi<span class="op">=</span>pi, B<span class="op">=</span><span class="dv">999</span>, scope<span class="op">=</span>scope, seed<span class="op">=</span><span class="dv">2026</span>)</span>
+<span id="cb54-10"><a href="permutation.html#cb54-10" tabindex="-1"></a>    <span class="bu">print</span>(pi, res.d_pi, res.p_pi)</span>
+<span id="cb54-11"><a href="permutation.html#cb54-11" tabindex="-1"></a>Y_shift <span class="op">=</span> np.concatenate((Y[<span class="dv">100</span>:], Y[:<span class="dv">100</span>]))</span>
+<span id="cb54-12"><a href="permutation.html#cb54-12" tabindex="-1"></a><span class="bu">print</span>([qnca(X, Y_shift, pi<span class="op">=</span><span class="fl">1.0</span>, B<span class="op">=</span><span class="dv">999</span>, scope<span class="op">=</span>scope, seed<span class="op">=</span><span class="dv">2026</span>).p_pi <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>)])</span>
+<span id="cb54-13"><a href="permutation.html#cb54-13" tabindex="-1"></a><span class="co">#&gt; 1.0 0.49414805999615674 0.001</span></span>
+<span id="cb54-14"><a href="permutation.html#cb54-14" tabindex="-1"></a><span class="co">#&gt; 0.95 0.540642522189369 0.001</span></span>
+<span id="cb54-15"><a href="permutation.html#cb54-15" tabindex="-1"></a><span class="co">#&gt; [0.212, 0.212]</span></span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb55-1"><a href="permutation.html#cb55-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">QuantileNecessity</span>, <span class="bu">Downloads</span>, <span class="bu">DelimitedFiles</span></span>
+<span id="cb55-2"><a href="permutation.html#cb55-2" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="permutation.html#cb55-3" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb55-4"><a href="permutation.html#cb55-4" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">readdlm</span>(<span class="bu">Downloads</span>.<span class="fu">download</span>(url), <span class="ch">','</span>, <span class="dt">Float64</span>; skipstart <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb55-5"><a href="permutation.html#cb55-5" tabindex="-1"></a>X, Y <span class="op">=</span> data[<span class="op">:</span>, <span class="fl">1</span>], data[<span class="op">:</span>, <span class="fl">2</span>]</span>
+<span id="cb55-6"><a href="permutation.html#cb55-6" tabindex="-1"></a>scope <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb55-7"><a href="permutation.html#cb55-7" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>)</span>
+<span id="cb55-8"><a href="permutation.html#cb55-8" tabindex="-1"></a>    res <span class="op">=</span> <span class="fu">qnca</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> p, B <span class="op">=</span> <span class="fl">999</span>, scope <span class="op">=</span> scope, seed <span class="op">=</span> <span class="fl">2026</span>)</span>
+<span id="cb55-9"><a href="permutation.html#cb55-9" tabindex="-1"></a>    <span class="fu">println</span>(p, <span class="st">" "</span>, res.d_pi, <span class="st">" "</span>, res.p_pi)</span>
+<span id="cb55-10"><a href="permutation.html#cb55-10" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb55-11"><a href="permutation.html#cb55-11" tabindex="-1"></a>Y_shift <span class="op">=</span> Y[<span class="fu">vcat</span>(<span class="fl">101</span><span class="op">:</span><span class="fl">200</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>)]</span>
+<span id="cb55-12"><a href="permutation.html#cb55-12" tabindex="-1"></a><span class="fu">println</span>([<span class="fu">qnca</span>(X, Y_shift; <span class="cn">pi</span> <span class="op">=</span> <span class="fl">1.0</span>, B <span class="op">=</span> <span class="fl">999</span>, scope <span class="op">=</span> scope, seed <span class="op">=</span> <span class="fl">2026</span>).p_pi for _ <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>])</span>
+<span id="cb55-13"><a href="permutation.html#cb55-13" tabindex="-1"></a><span class="co">#&gt; 1.0 0.49414805999615674 0.001</span></span>
+<span id="cb55-14"><a href="permutation.html#cb55-14" tabindex="-1"></a><span class="co">#&gt; 0.95 0.5406425221893691 0.001</span></span>
+<span id="cb55-15"><a href="permutation.html#cb55-15" tabindex="-1"></a><span class="co">#&gt; [0.231, 0.231]</span></span></code></pre></div>
+<p>The effect sizes of Python and Julia equal the R values, and the p-values of the observed dataset agree at the floor of 0.001 in the three languages, because every shuffled effect size stays below the observed effect size. The seeded p-value of the shifted dataset repeats within each language and takes the values 0.212 in Python, 0.231 in Julia and 0.22 in R, since each language draws other shuffles from the same seed.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></div>
+<div class="next"><a href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#permutation"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="nav-link" href="#the-statistic-of-the-test"><span class="header-section-number">7.1</span> The statistic of the test</a></li>
+<li><a class="nav-link" href="#shuffles-of-the-outcome"><span class="header-section-number">7.2</span> Shuffles of the outcome</a></li>
+<li><a class="nav-link" href="#the-test-on-the-synthetic-dataset"><span class="header-section-number">7.3</span> The test on the synthetic dataset</a></li>
+<li><a class="nav-link" href="#the-distribution-under-independence"><span class="header-section-number">7.4</span> The distribution under independence</a></li>
+<li><a class="nav-link" href="#reproducible-p-values"><span class="header-section-number">7.5</span> Reproducible p-values</a></li>
+<li><a class="nav-link" href="#reading-the-p-value"><span class="header-section-number">7.6</span> Reading the p-value</a></li>
+<li><a class="nav-link" href="#the-same-test-in-python-and-julia"><span class="header-section-number">7.7</span> The same test in Python and Julia</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/07-permutation.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/07-permutation.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

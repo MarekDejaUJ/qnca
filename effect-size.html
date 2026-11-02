@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>6 The empty zone and the effect size | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="A necessary condition leaves the upper left of the scatter of the condition X against the outcome Y empty: every case with a high outcome holds a high condition (Dul 2016). Necessary Condition...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="6 The empty zone and the effect size | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/effect-size.html">
+<meta property="og:description" content="A necessary condition leaves the upper left of the scatter of the condition X against the outcome Y empty: every case with a high outcome holds a high condition (Dul 2016). Necessary Condition...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6 The empty zone and the effect size | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="A necessary condition leaves the upper left of the scatter of the condition X against the outcome Y empty: every case with a high outcome holds a high condition (Dul 2016). Necessary Condition...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="active" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="effect-size" class="section level1" number="6">
+<h1>
+<span class="header-section-number">6</span> The empty zone and the effect size<a class="anchor" aria-label="anchor" href="#effect-size"><i class="fas fa-link"></i></a>
+</h1>
+<p>A necessary condition leaves the upper left of the scatter of the condition <code>X</code> against the outcome <code>Y</code> empty: every case with a high outcome holds a high condition <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. Necessary Condition Analysis (NCA) names the empty upper-left region the empty zone and measures the size of the empty zone by the effect size <code>d</code> <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>, <a href="references.html#ref-Dul2020">2020</a>)</span>. The effect size relates the area of the empty zone to the area of a scope rectangle <span class="math inline">\(S = [x_{\min}, x_{\max}] \times [y_{\min}, y_{\max}]\)</span>, which bounds the values of the condition and of the outcome.</p>
+<p>For an outcome target <code>y</code>, the CE-FDH ceiling of NCA is the running minimum <span class="math inline">\(r(y) = \min\{X_i : Y_i \ge y\}\)</span>, the lowest condition value among the cases that reach the target <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. The CE-FDH effect size integrates the width of the empty zone over the outcome range and divides the integral by the scope area <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>:</p>
+<p><span class="math display">\[
+d_{\text{CE-FDH}} = \frac{\int_{y_{\min}}^{y_{\max}} [r(y) - x_{\min}]_+ \, dy}{(x_{\max} - x_{\min})(y_{\max} - y_{\min})}, \qquad [a]_+ = \max(a, 0).
+\]</span></p>
+<p>The division by the scope area makes the effect size dimensionless, and the value of the effect size depends on the scope and on the calibration of the scope bounds <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. Under a data-range scope, the largest observed outcome fixes the top of the rectangle. Under a fixed scope that extends past the largest observed outcome, the unobserved band at the top of the scope counts as empty with the required level <span class="math inline">\(x_{\max}\)</span>, the area convention of CE-FDH <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div id="the-effect-size-at-a-stated-tolerance" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> The effect size at a stated tolerance<a class="anchor" aria-label="anchor" href="#the-effect-size-at-a-stated-tolerance"><i class="fas fa-link"></i></a>
+</h2>
+<p>Quantile Necessary Condition Analysis (QNCA) keeps the bottleneck, the empty-zone effect size and the permutation test of NCA and makes each output specific to a tolerance <code>pi</code> in (0, 1] <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The tolerance fixes the share <code>1 - pi</code> of successful cases that may sit below the reported requirement. On an ordered grid of outcome targets <span class="math inline">\(G = \{y_1 &lt; \dots &lt; y_m\}\)</span> with <span class="math inline">\(y_1 = y_{\min}\)</span> and <span class="math inline">\(y_m = y_{\max}\)</span>, the raw frontier at the target <span class="math inline">\(y_j\)</span> takes the <span class="math inline">\(k_j\)</span> cases with <span class="math inline">\(Y_i \ge y_j\)</span> and returns the condition value of rank <span class="math inline">\(h_j = \max\{1, \lceil k_j (1 - \pi) \rceil\}\)</span> among the <span class="math inline">\(k_j\)</span> cases. At <code>pi = 1</code>, the rank is 1 at every target, and the raw frontier equals the CE-FDH ceiling <span class="math inline">\(r(y_j)\)</span>.</p>
+<p>The fitted frontier <span class="math inline">\(\tilde\varphi_\pi\)</span> follows from the raw frontier in three steps <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The monotone envelope replaces the value at each target by the running maximum over the lower targets, so the requirement of a lower target carries to every higher target. Under a fixed scope, the fitted frontier takes the value <span class="math inline">\(x_{\max}\)</span> at the targets above the largest observed outcome. Between two consecutive grid points, the fitted frontier is the straight line between the two grid values.</p>
+<p>The effect size <code>d_pi</code> applies the ratio of NCA to the fitted frontier <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>:</p>
+<p><span class="math display">\[
+d_\pi = \frac{\int_{y_{\min}}^{y_{\max}} [\tilde\varphi_\pi(y) - x_{\min}]_+ \, dy}{(x_{\max} - x_{\min})(y_{\max} - y_{\min})}.
+\]</span></p>
+<p>The package computes the integral by the trapezoid rule on the outcome grid and clamps the ratio to the interval [0, 1]:</p>
+<p><span class="math display">\[
+d_\pi = \min\left\{1, \max\left\{0, \frac{\sum_{j=1}^{m-1} (y_{j+1} - y_j)\,(w_j + w_{j+1})/2}{(x_{\max} - x_{\min})(y_{\max} - y_{\min})}\right\}\right\}, \qquad w_j = [\tilde\varphi_\pi(y_j) - x_{\min}]_+ .
+\]</span></p>
+<p>The trapezoid sum equals the area left of the fitted frontier, because the fitted frontier is linear between consecutive grid points <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-effect-size-of-the-synthetic-dataset" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> The effect size of the synthetic dataset<a class="anchor" aria-label="anchor" href="#the-effect-size-of-the-synthetic-dataset"><i class="fas fa-link"></i></a>
+</h2>
+<p>The synthetic dataset of 200 cases of the <code>qnca</code> repository has a condition and an outcome on a scale from 0 to 100, and the analysis fixes the scope at [0, 100] x [0, 100]. The function <code>qnca()</code> with <code>B = 0</code> returns the effect size on the default grid of 50 outcome targets and skips the permutation test.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span><span class="op">)</span></span>
+<span><span class="va">scope</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">pis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span><span class="op">)</span></span>
+<span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">pis</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="va">p</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">effects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>pi <span class="op">=</span> <span class="va">pis</span>, d_pi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">fits</span>, <span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="va">f</span><span class="op">$</span><span class="va">d_pi</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">effects</span></span>
+<span><span class="co">#&gt;     pi      d_pi</span></span>
+<span><span class="co">#&gt; 1 1.00 0.4941481</span></span>
+<span><span class="co">#&gt; 2 0.95 0.5406425</span></span>
+<span><span class="co">#&gt; 3 0.90 0.5916388</span></span></code></pre></div>
+<p>The trapezoid sum over the bottleneck table of the fit at <code>pi = 0.95</code> reproduces the effect size of the package.</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="va">fits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">bottleneck</span></span>
+<span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">pmax</a></span><span class="op">(</span><span class="va">b</span><span class="op">$</span><span class="va">X_required</span> <span class="op">-</span> <span class="va">scope</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">area</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">b</span><span class="op">$</span><span class="va">outcome_level</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">w</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">w</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">area</span> <span class="op">/</span> <span class="op">(</span><span class="op">(</span><span class="va">scope</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">scope</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">scope</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">-</span> <span class="va">scope</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.5406425</span></span></code></pre></div>
+<p>The file <code>pi_grid_results.csv</code> of the repository stores the effect sizes of the same dataset for the same grid and scope, rounded to six decimals.</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stored</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/pi_grid_results.csv"</span><span class="op">)</span></span>
+<span><span class="va">stored</span> <span class="op">&lt;-</span> <span class="va">stored</span><span class="op">[</span><span class="va">stored</span><span class="op">$</span><span class="va">dataset</span> <span class="op">==</span> <span class="st">"n200"</span>, <span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>pi <span class="op">=</span> <span class="va">pis</span>, computed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">effects</span><span class="op">$</span><span class="va">d_pi</span>, <span class="fl">6</span><span class="op">)</span>, stored <span class="op">=</span> <span class="va">stored</span><span class="op">$</span><span class="va">d_pi</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     pi computed   stored</span></span>
+<span><span class="co">#&gt; 1 1.00 0.494148 0.494148</span></span>
+<span><span class="co">#&gt; 2 0.95 0.540643 0.540643</span></span>
+<span><span class="co">#&gt; 3 0.90 0.591639 0.591639</span></span></code></pre></div>
+<p>The computed and the stored effect sizes agree at the three tolerances. The effect size rises from 0.494 at <code>pi = 1</code> to 0.541 at <code>pi = 0.95</code> and 0.592 at <code>pi = 0.90</code>, because a lower tolerance selects an order statistic of equal or higher rank at every target, and a higher frontier encloses a larger empty zone <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"pi = %.2f"</span>, <span class="va">pis</span><span class="op">)</span></span>
+<span><span class="va">frontier</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">pis</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>tolerance <span class="op">=</span> <span class="va">labels</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">fits</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">bottleneck</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">zone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">pis</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="va">fits</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">bottleneck</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>tolerance <span class="op">=</span> <span class="va">labels</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
+<span>             X <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">scope</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">b</span><span class="op">$</span><span class="va">X_required</span>, <span class="va">scope</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>             Y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">scope</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">b</span><span class="op">$</span><span class="va">outcome_level</span>, <span class="va">scope</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">frontier</span><span class="op">$</span><span class="va">tolerance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">frontier</span><span class="op">$</span><span class="va">tolerance</span>, levels <span class="op">=</span> <span class="va">labels</span><span class="op">)</span></span>
+<span><span class="va">zone</span><span class="op">$</span><span class="va">tolerance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">zone</span><span class="op">$</span><span class="va">tolerance</span>, levels <span class="op">=</span> <span class="va">labels</span><span class="op">)</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_polygon</span><span class="op">(</span>data <span class="op">=</span> <span class="va">zone</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.6</span>, colour <span class="op">=</span> <span class="st">"grey35"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_path</span><span class="op">(</span>data <span class="op">=</span> <span class="va">frontier</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">X_required</span>, <span class="va">outcome_level</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"grey5"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">tolerance</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_equal</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Condition X"</span>, y <span class="op">=</span> <span class="st">"Outcome Y"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:effect-size-zone"></span>
+<img src="qnca-guide_files/figure-html/effect-size-zone-1.png" alt="The 200 cases of the synthetic dataset with the fitted frontiers at the tolerances pi = 1.00, 0.95 and 0.90, on a grid of 50 outcome targets and the fixed scope [0, 100] x [0, 100]. The grey region left of each frontier is the empty zone, whose area divided by the scope area is the effect size d_pi. At pi = 0.95 and 0.90, the empty zone holds the successful cases that the tolerance admits below the frontier." width="85%"><p class="caption">
+Figure 6.1: The 200 cases of the synthetic dataset with the fitted frontiers at the tolerances pi = 1.00, 0.95 and 0.90, on a grid of 50 outcome targets and the fixed scope [0, 100] x [0, 100]. The grey region left of each frontier is the empty zone, whose area divided by the scope area is the effect size d_pi. At pi = 0.95 and 0.90, the empty zone holds the successful cases that the tolerance admits below the frontier.
+</p>
+</div>
+</div>
+<div id="the-magnitude-of-the-effect-size" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> The magnitude of the effect size<a class="anchor" aria-label="anchor" href="#the-magnitude-of-the-effect-size"><i class="fas fa-link"></i></a>
+</h2>
+<p>The magnitude of <code>d_pi</code> is tolerance-relative. Lowering <code>pi</code> raises the frontier and the effect size by construction and changes the estimand, so the three effect sizes of the dataset form a sensitivity reading across exception tolerances <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. <span class="citation">Dul (<a href="references.html#ref-Dul2016">2016</a>)</span> reads a CE-FDH effect size below 0.1 as small, from 0.1 to below 0.3 as medium, from 0.3 to below 0.5 as large and from 0.5 upward as very large. The landmarks belong to the strict member at <code>pi = 1</code>, which equals the CE-FDH ceiling, and a reading of the landmarks at <code>pi &lt; 1</code> would need a separate calibration <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">effects</span><span class="op">$</span><span class="va">d_pi</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>, right <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    include.lowest <span class="op">=</span> <span class="cn">TRUE</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"small"</span>, <span class="st">"medium"</span>, <span class="st">"large"</span>, <span class="st">"very large"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] large</span></span>
+<span><span class="co">#&gt; Levels: small medium large very large</span></span></code></pre></div>
+<p>The strict effect size of 0.494 falls in the class large. The effect size of 0.592 at <code>pi = 0.90</code> lies past the landmark 0.5, and the move across the landmark comes from the tolerance alone, since a lower tolerance enlarges <code>d_pi</code> mechanically <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-scope-in-the-denominator" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> The scope in the denominator<a class="anchor" aria-label="anchor" href="#the-scope-in-the-denominator"><i class="fas fa-link"></i></a>
+</h2>
+<p>The effect size depends on the scope rectangle, because the scope area forms the denominator and the scope bounds limit the empty zone <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. A call of <code>qnca()</code> without the argument <code>scope</code> uses the data-range scope, whose top is the largest observed outcome.</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_range</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">1</span>, B <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"data range"</span><span class="op">)</span>,</span>
+<span>           area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">fits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">scope</span>, <span class="va">data_range</span><span class="op">$</span><span class="va">scope</span><span class="op">)</span>,</span>
+<span>           d_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">fits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">d_pi</span>, <span class="va">data_range</span><span class="op">$</span><span class="va">d_pi</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        scope      area       d_1</span></span>
+<span><span class="co">#&gt; 1      fixed 10000.000 0.4941481</span></span>
+<span><span class="co">#&gt; 2 data range  9277.772 0.4560861</span></span></code></pre></div>
+<p>Under the fixed scope with an area of 10000, the strict effect size is 0.494; under the data-range scope with an area of 9278, the strict effect size is 0.456. The scope bounds follow the data or external anchors, and the analyst fixes the bounds before the effect size is calculated <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-grid-error-at-the-strict-tolerance" class="section level2" number="6.5">
+<h2>
+<span class="header-section-number">6.5</span> The grid error at the strict tolerance<a class="anchor" aria-label="anchor" href="#the-grid-error-at-the-strict-tolerance"><i class="fas fa-link"></i></a>
+</h2>
+<p>The strict-limit reduction states that <code>d_pi</code> at <code>pi = 1</code> equals the CE-FDH effect size of NCA for the continuous step ceiling <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The function <code>nca_ce_fdh_d()</code> integrates the step ceiling exactly, whereas <code>qnca()</code> integrates the fitted frontier by trapezoids on a finite grid. The two values differ by a discretisation error, which falls as the grid is refined <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">exact</span> <span class="op">&lt;-</span> <span class="fu">nca_ce_fdh_d</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="va">grids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">400</span>, <span class="fl">800</span>, <span class="fl">1600</span><span class="op">)</span></span>
+<span><span class="va">grid_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">grids</span>, <span class="kw">function</span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">1</span>, n_grid <span class="op">=</span> <span class="va">m</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">d_pi</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>n_grid <span class="op">=</span> <span class="va">grids</span>, d_1 <span class="op">=</span> <span class="va">grid_d</span>, exact <span class="op">=</span> <span class="va">exact</span>, difference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">grid_d</span> <span class="op">-</span> <span class="va">exact</span>, <span class="fl">7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   n_grid       d_1     exact difference</span></span>
+<span><span class="co">#&gt; 1     50 0.4941481 0.4927391  0.0014090</span></span>
+<span><span class="co">#&gt; 2    100 0.4935439 0.4927391  0.0008048</span></span>
+<span><span class="co">#&gt; 3    200 0.4924957 0.4927391 -0.0002433</span></span>
+<span><span class="co">#&gt; 4    400 0.4927501 0.4927391  0.0000110</span></span>
+<span><span class="co">#&gt; 5    800 0.4929307 0.4927391  0.0001916</span></span>
+<span><span class="co">#&gt; 6   1600 0.4927718 0.4927391  0.0000327</span></span></code></pre></div>
+<p>The difference is 0.0014090 on the default grid of 50 targets and 0.0000327 on a grid of 1600 targets. The grid of 400 targets, the grid of the strict-limit validation of <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span>, gives a difference of 0.0000110. Between grid sizes, the difference changes sign and falls irregularly, because the trapezoid error depends on the position of each step of the ceiling relative to the grid points.</p>
+</div>
+<div id="the-same-call-in-python-and-julia-5" class="section level2" number="6.6">
+<h2>
+<span class="header-section-number">6.6</span> The same call in Python and Julia<a class="anchor" aria-label="anchor" href="#the-same-call-in-python-and-julia-5"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Python package <code>qnca</code> and the Julia package <code>QuantileNecessity</code> return the same effect sizes and the same exact CE-FDH value for the same data, grid and scope.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="effect-size.html#cb46-1" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb46-2"><a href="effect-size.html#cb46-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb46-3"><a href="effect-size.html#cb46-3" tabindex="-1"></a><span class="im">from</span> qnca <span class="im">import</span> qnca, nca_ce_fdh_d</span>
+<span id="cb46-4"><a href="effect-size.html#cb46-4" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="effect-size.html#cb46-5" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb46-6"><a href="effect-size.html#cb46-6" tabindex="-1"></a>X, Y <span class="op">=</span> np.loadtxt(urlopen(url), delimiter<span class="op">=</span><span class="st">","</span>, skiprows<span class="op">=</span><span class="dv">1</span>, unpack<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb46-7"><a href="effect-size.html#cb46-7" tabindex="-1"></a>scope <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb46-8"><a href="effect-size.html#cb46-8" tabindex="-1"></a><span class="cf">for</span> pi <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>):</span>
+<span id="cb46-9"><a href="effect-size.html#cb46-9" tabindex="-1"></a>    <span class="bu">print</span>(pi, qnca(X, Y, pi<span class="op">=</span>pi, B<span class="op">=</span><span class="va">None</span>, scope<span class="op">=</span>scope).d_pi)</span>
+<span id="cb46-10"><a href="effect-size.html#cb46-10" tabindex="-1"></a><span class="bu">print</span>(nca_ce_fdh_d(X, Y, scope<span class="op">=</span>scope))</span>
+<span id="cb46-11"><a href="effect-size.html#cb46-11" tabindex="-1"></a><span class="co">#&gt; 1.0 0.49414805999615674</span></span>
+<span id="cb46-12"><a href="effect-size.html#cb46-12" tabindex="-1"></a><span class="co">#&gt; 0.95 0.540642522189369</span></span>
+<span id="cb46-13"><a href="effect-size.html#cb46-13" tabindex="-1"></a><span class="co">#&gt; 0.9 0.5916388206216742</span></span>
+<span id="cb46-14"><a href="effect-size.html#cb46-14" tabindex="-1"></a><span class="co">#&gt; 0.4927390942912612</span></span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb47-1"><a href="effect-size.html#cb47-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">QuantileNecessity</span>, <span class="bu">Downloads</span>, <span class="bu">DelimitedFiles</span></span>
+<span id="cb47-2"><a href="effect-size.html#cb47-2" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="effect-size.html#cb47-3" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb47-4"><a href="effect-size.html#cb47-4" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">readdlm</span>(<span class="bu">Downloads</span>.<span class="fu">download</span>(url), <span class="ch">','</span>, <span class="dt">Float64</span>; skipstart <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb47-5"><a href="effect-size.html#cb47-5" tabindex="-1"></a>X, Y <span class="op">=</span> data[<span class="op">:</span>, <span class="fl">1</span>], data[<span class="op">:</span>, <span class="fl">2</span>]</span>
+<span id="cb47-6"><a href="effect-size.html#cb47-6" tabindex="-1"></a>scope <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb47-7"><a href="effect-size.html#cb47-7" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>)</span>
+<span id="cb47-8"><a href="effect-size.html#cb47-8" tabindex="-1"></a>    <span class="fu">println</span>(p, <span class="st">" "</span>, <span class="fu">qnca</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> p, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> scope).d_pi)</span>
+<span id="cb47-9"><a href="effect-size.html#cb47-9" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb47-10"><a href="effect-size.html#cb47-10" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">nca_ce_fdh_d</span>(X, Y; scope <span class="op">=</span> scope))</span>
+<span id="cb47-11"><a href="effect-size.html#cb47-11" tabindex="-1"></a><span class="co">#&gt; 1.0 0.49414805999615674</span></span>
+<span id="cb47-12"><a href="effect-size.html#cb47-12" tabindex="-1"></a><span class="co">#&gt; 0.95 0.5406425221893691</span></span>
+<span id="cb47-13"><a href="effect-size.html#cb47-13" tabindex="-1"></a><span class="co">#&gt; 0.9 0.5916388206216743</span></span>
+<span id="cb47-14"><a href="effect-size.html#cb47-14" tabindex="-1"></a><span class="co">#&gt; 0.4927390942912612</span></span></code></pre></div>
+<p>A value of <code>d_pi</code> carries meaning together with the tolerance, the scope rectangle and the outcome grid that produced the value, and a report of <code>d_pi</code> states all three settings beside the effect size.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></div>
+<div class="next"><a href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#effect-size"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="nav-link" href="#the-effect-size-at-a-stated-tolerance"><span class="header-section-number">6.1</span> The effect size at a stated tolerance</a></li>
+<li><a class="nav-link" href="#the-effect-size-of-the-synthetic-dataset"><span class="header-section-number">6.2</span> The effect size of the synthetic dataset</a></li>
+<li><a class="nav-link" href="#the-magnitude-of-the-effect-size"><span class="header-section-number">6.3</span> The magnitude of the effect size</a></li>
+<li><a class="nav-link" href="#the-scope-in-the-denominator"><span class="header-section-number">6.4</span> The scope in the denominator</a></li>
+<li><a class="nav-link" href="#the-grid-error-at-the-strict-tolerance"><span class="header-section-number">6.5</span> The grid error at the strict tolerance</a></li>
+<li><a class="nav-link" href="#the-same-call-in-python-and-julia-5"><span class="header-section-number">6.6</span> The same call in Python and Julia</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/06-effect-size.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/06-effect-size.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

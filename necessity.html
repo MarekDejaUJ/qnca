@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>1 Necessity as attainability of an outcome target | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="A necessity claim asserts that an outcome target is unattainable below some level of a condition. A condition X is necessary for an outcome target y when no case reaches Y &gt;= y below a required...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="1 Necessity as attainability of an outcome target | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/necessity.html">
+<meta property="og:description" content="A necessity claim asserts that an outcome target is unattainable below some level of a condition. A condition X is necessary for an outcome target y when no case reaches Y &gt;= y below a required...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1 Necessity as attainability of an outcome target | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="A necessity claim asserts that an outcome target is unattainable below some level of a condition. A condition X is necessary for an outcome target y when no case reaches Y &gt;= y below a required...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="active" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="necessity" class="section level1" number="1">
+<h1>
+<span class="header-section-number">1</span> Necessity as attainability of an outcome target<a class="anchor" aria-label="anchor" href="#necessity"><i class="fas fa-link"></i></a>
+</h1>
+<p>A necessity claim asserts that an outcome target is unattainable below some level of a condition. A condition <code>X</code> is necessary for an outcome target <code>y</code> when no case reaches <code>Y &gt;= y</code> below a required level of <code>X</code> <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>, <a href="references.html#ref-Dul2020">2020</a>)</span>. The claim is asymmetric, because a case may hold the required level of the condition and still miss the target when other constraints hold the outcome down <span class="citation">(<a href="references.html#ref-BraumoellerGoertz2000">Braumoeller and Goertz 2000</a>; <a href="references.html#ref-GoertzStarr2003">Goertz and Starr 2003</a>)</span>.</p>
+<p>The asymmetry gives a necessity claim a distinct signature in a scatter plot of the condition against the outcome. Cases with a low condition and a high outcome contradict the claim, and the upper-left corner of the scatter is therefore empty <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. Cases with a high condition and a low outcome agree with the claim, because a necessary condition permits failure above the requirement. Accounts of necessary conditions in set-theoretic methods describe the same asymmetry as a subset relation of the outcome to the condition <span class="citation">(<a href="references.html#ref-Ragin2008">Ragin 2008</a>; <a href="references.html#ref-SchneiderWagemann2012">Schneider and Wagemann 2012</a>)</span>.</p>
+<p>The guide uses the synthetic dataset of 200 cases of the <code>qnca</code> repository, whose condition and outcome lie on a scale from 0 to 100.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        X                Y         </span></span>
+<span><span class="co">#&gt;  Min.   : 0.543   Min.   : 0.000  </span></span>
+<span><span class="co">#&gt;  1st Qu.:27.625   1st Qu.: 4.449  </span></span>
+<span><span class="co">#&gt;  Median :54.229   Median :13.138  </span></span>
+<span><span class="co">#&gt;  Mean   :51.528   Mean   :21.123  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:76.288   3rd Qu.:32.128  </span></span>
+<span><span class="co">#&gt;  Max.   :99.910   Max.   :93.368</span></span></code></pre></div>
+<p>The scatter of the 200 cases shows the reverse-L pattern of a necessary condition: the cases fill the lower-right triangle, and the upper-left corner holds no case.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">d</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1.2</span>, colour <span class="op">=</span> <span class="st">"grey25"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_equal</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Condition X"</span>, y <span class="op">=</span> <span class="st">"Outcome Y"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:necessity-scatter"></span>
+<img src="qnca-guide_files/figure-html/necessity-scatter-1.png" alt="The 200 cases of the synthetic dataset. The upper-left corner, with a low condition and a high outcome, holds no case." width="85%"><p class="caption">
+Figure 1.1: The 200 cases of the synthetic dataset. The upper-left corner, with a low condition and a high outcome, holds no case.
+</p>
+</div>
+<div id="the-strict-requirement-of-a-target" class="section level2" number="1.1">
+<h2>
+<span class="header-section-number">1.1</span> The strict requirement of a target<a class="anchor" aria-label="anchor" href="#the-strict-requirement-of-a-target"><i class="fas fa-link"></i></a>
+</h2>
+<p>For a target <code>y</code>, the strict requirement is the lowest condition value among the cases that reach the target. The requirement for the target 50 follows from the cases with <code>Y &gt;= 50</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span><span class="op">[</span><span class="va">d</span><span class="op">$</span><span class="va">Y</span> <span class="op">&gt;=</span> <span class="fl">50</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 45.85481</span></span>
+<span><span class="fu">qnca_frontier</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">1</span>, y_grid <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 45.85481</span></span></code></pre></div>
+<p>Both lines give the same value, because the QNCA frontier at the tolerance <code>pi = 1</code> is the lowest condition value among the successful cases. The value is the CE-FDH ceiling of NCA at the target 50 <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. Every case with <code>Y &gt;= 50</code> holds at least the required level of <code>X</code>, and the strict requirement rests on the single case with the lowest condition value among the successful cases.</p>
+</div>
+<div id="a-requirement-with-a-stated-tolerance" class="section level2" number="1.2">
+<h2>
+<span class="header-section-number">1.2</span> A requirement with a stated tolerance<a class="anchor" aria-label="anchor" href="#a-requirement-with-a-stated-tolerance"><i class="fas fa-link"></i></a>
+</h2>
+<p>Quantile Necessary Condition Analysis (QNCA) reports a low quantile of the condition among the successful cases <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The tolerance <code>pi</code> fixes the share <code>1 - pi</code> of the successful cases that may sit below the reported requirement. The requirement for the target 50 at <code>pi = 0.95</code> admits five percent of the successful cases below the reported level.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">req</span> <span class="op">&lt;-</span> <span class="fu">qnca_frontier</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, y_grid <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="va">req</span></span>
+<span><span class="co">#&gt; [1] 53.27223</span></span>
+<span><span class="va">attain</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">$</span><span class="va">Y</span> <span class="op">&gt;=</span> <span class="fl">50</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>successful <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">attain</span><span class="op">)</span>, below <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span><span class="op">[</span><span class="va">attain</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">req</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; successful      below </span></span>
+<span><span class="co">#&gt;         27          1</span></span></code></pre></div>
+<p>The tolerant requirement lies above the strict requirement, and the cases below the tolerant requirement form a small share of the successful cases. At the target 50, the share of successful cases below the requirement stays within the tolerance <code>1 - pi</code>. The reading of the requirement changes with the tolerance: at <code>pi = 1</code> the requirement marks the lowest observed success, and at <code>pi = 0.95</code> the requirement marks a level that at least ninety-five percent of the successful cases reach.</p>
+</div>
+<div id="the-same-call-in-python-and-julia" class="section level2" number="1.3">
+<h2>
+<span class="header-section-number">1.3</span> The same call in Python and Julia<a class="anchor" aria-label="anchor" href="#the-same-call-in-python-and-julia"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Python package <code>qnca</code> and the Julia package <code>QuantileNecessity</code> compute the same requirements on the same data.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="necessity.html#cb8-1" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb8-2"><a href="necessity.html#cb8-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-3"><a href="necessity.html#cb8-3" tabindex="-1"></a><span class="im">from</span> qnca <span class="im">import</span> qnca_frontier</span>
+<span id="cb8-4"><a href="necessity.html#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="necessity.html#cb8-5" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb8-6"><a href="necessity.html#cb8-6" tabindex="-1"></a>X, Y <span class="op">=</span> np.loadtxt(urlopen(url), delimiter<span class="op">=</span><span class="st">","</span>, skiprows<span class="op">=</span><span class="dv">1</span>, unpack<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-7"><a href="necessity.html#cb8-7" tabindex="-1"></a><span class="bu">print</span>(qnca_frontier(X, Y, pi<span class="op">=</span><span class="fl">1.0</span>, y_grid<span class="op">=</span>np.array([<span class="fl">50.0</span>])))</span>
+<span id="cb8-8"><a href="necessity.html#cb8-8" tabindex="-1"></a><span class="bu">print</span>(qnca_frontier(X, Y, pi<span class="op">=</span><span class="fl">0.95</span>, y_grid<span class="op">=</span>np.array([<span class="fl">50.0</span>])))</span>
+<span id="cb8-9"><a href="necessity.html#cb8-9" tabindex="-1"></a><span class="co">#&gt; [45.85480818]</span></span>
+<span id="cb8-10"><a href="necessity.html#cb8-10" tabindex="-1"></a><span class="co">#&gt; [53.27222761]</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb9-1"><a href="necessity.html#cb9-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">QuantileNecessity</span>, <span class="bu">Downloads</span>, <span class="bu">DelimitedFiles</span></span>
+<span id="cb9-2"><a href="necessity.html#cb9-2" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="necessity.html#cb9-3" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"</span></span>
+<span id="cb9-4"><a href="necessity.html#cb9-4" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">readdlm</span>(<span class="bu">Downloads</span>.<span class="fu">download</span>(url), <span class="ch">','</span>, <span class="dt">Float64</span>; skipstart <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb9-5"><a href="necessity.html#cb9-5" tabindex="-1"></a>X, Y <span class="op">=</span> data[<span class="op">:</span>, <span class="fl">1</span>], data[<span class="op">:</span>, <span class="fl">2</span>]</span>
+<span id="cb9-6"><a href="necessity.html#cb9-6" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">qnca_frontier</span>(X, Y, <span class="fl">1.0</span>, [<span class="fl">50.0</span>]))</span>
+<span id="cb9-7"><a href="necessity.html#cb9-7" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">qnca_frontier</span>(X, Y, <span class="fl">0.95</span>, [<span class="fl">50.0</span>]))</span>
+<span id="cb9-8"><a href="necessity.html#cb9-8" tabindex="-1"></a><span class="co">#&gt; [45.85480817985511]</span></span>
+<span id="cb9-9"><a href="necessity.html#cb9-9" tabindex="-1"></a><span class="co">#&gt; [53.27222760657402]</span></span></code></pre></div>
+<p>A necessity claim stays a claim about attainability. A requirement above the observed level of a case predicts failure of the case at the target, and a requirement below the observed level of a case leaves the outcome of the case to the other conditions of the outcome <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="index.html">Preface</a></div>
+<div class="next"><a href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#necessity"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="nav-link" href="#the-strict-requirement-of-a-target"><span class="header-section-number">1.1</span> The strict requirement of a target</a></li>
+<li><a class="nav-link" href="#a-requirement-with-a-stated-tolerance"><span class="header-section-number">1.2</span> A requirement with a stated tolerance</a></li>
+<li><a class="nav-link" href="#the-same-call-in-python-and-julia"><span class="header-section-number">1.3</span> The same call in Python and Julia</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/01-necessity.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/01-necessity.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

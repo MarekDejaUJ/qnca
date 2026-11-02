@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>12 A technology acceptance reanalysis | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="The combined importance-performance map analysis (cIPMA) of Hauff, Richter, Sarstedt and Ringle reports the CE-FDH effect sizes of Necessary Condition Analysis (NCA) for the antecedents of...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="12 A technology acceptance reanalysis | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/application.html">
+<meta property="og:description" content="The combined importance-performance map analysis (cIPMA) of Hauff, Richter, Sarstedt and Ringle reports the CE-FDH effect sizes of Necessary Condition Analysis (NCA) for the antecedents of...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="12 A technology acceptance reanalysis | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="The combined importance-performance map analysis (cIPMA) of Hauff, Richter, Sarstedt and Ringle reports the CE-FDH effect sizes of Necessary Condition Analysis (NCA) for the antecedents of...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="active" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="application" class="section level1" number="12">
+<h1>
+<span class="header-section-number">12</span> A technology acceptance reanalysis<a class="anchor" aria-label="anchor" href="#application"><i class="fas fa-link"></i></a>
+</h1>
+<p>The combined importance-performance map analysis (cIPMA) of Hauff, Richter, Sarstedt and Ringle reports the CE-FDH effect sizes of Necessary Condition Analysis (NCA) for the antecedents of technology use in a survey of adopters of e-book readers <span class="citation">(<a href="references.html#ref-HauffRichterSarstedtRingle2024">Hauff et al. 2024</a>)</span>. QNCA adds three questions to the published CE-FDH analysis <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. How does each boundary move over a small tolerance grid fixed in advance? Does the strict bottleneck depend on a few efficient cases? Does the empty zone exceed a benchmark that keeps the observed marginals and rank dependence? For an applied decision, the bottleneck is a feasibility floor.</p>
+<div id="latent-scores-of-the-published-model" class="section level2" number="12.1">
+<h2>
+<span class="header-section-number">12.1</span> Latent scores of the published model<a class="anchor" aria-label="anchor" href="#latent-scores-of-the-published-model"><i class="fas fa-link"></i></a>
+</h2>
+<p>The survey of French adopters of e-book readers of <span class="citation">Richter et al. (<a href="references.html#ref-RichterHauffKolevSchubring2023">2023</a>)</span> is the file “Extended TAM.csv” on Mendeley Data <span class="citation">(<a href="references.html#ref-SchubringRichter2023">Schubring and Richter 2023</a>)</span>. The model has five composites with three items each on scales from 1 to 5: perceived usefulness (PU), compatibility (CO), ease of use (EOU), emotional value (EMV) and adoption intention (AD). Technology use (USE) is a single item on a scale from 1 to 7. PU, CO, EOU and EMV lead to AD, and all five constructs lead to USE. The package <code>seminr</code> estimates the model by partial least squares <span class="citation">(<a href="references.html#ref-RayDanksCaleroValdez2026">Ray et al. 2026</a>)</span>. Each latent score is the weighted mean of the items of the construct with the normalised unstandardised weights of the model. The function <code>get_rescaled_scores()</code> of the <code>cIPMA</code> package rescales each score from the item scale to the range from 0 to 100, as in the cIPMA workflow <span class="citation">(<a href="references.html#ref-HauffRichterSarstedtRingle2024">Hauff et al. 2024</a>)</span>.</p>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sem-in-r/seminr">seminr</a></span><span class="op">)</span></span>
+<span><span class="va">tam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://data.mendeley.com/public-files/datasets/pd5dp3phx2/files/47b2cc21-ccde-48a1-a2af-9bcdad4e0e2f/file_downloaded"</span>,</span>
+<span>                fileEncoding <span class="op">=</span> <span class="st">"UTF-8-BOM"</span>, check.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">tam</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 174</span></span>
+<span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/constructs.html">constructs</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/composite.html">composite</a></span><span class="op">(</span><span class="st">"PU"</span>, <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/multi_items.html">multi_items</a></span><span class="op">(</span><span class="st">"PU_0"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/composite.html">composite</a></span><span class="op">(</span><span class="st">"CO"</span>, <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/multi_items.html">multi_items</a></span><span class="op">(</span><span class="st">"CO_0"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/composite.html">composite</a></span><span class="op">(</span><span class="st">"EOU"</span>, <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/multi_items.html">multi_items</a></span><span class="op">(</span><span class="st">"EOU_0"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/composite.html">composite</a></span><span class="op">(</span><span class="st">"EMV"</span>, <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/multi_items.html">multi_items</a></span><span class="op">(</span><span class="st">"EMV_0"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/composite.html">composite</a></span><span class="op">(</span><span class="st">"AD"</span>, <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/multi_items.html">multi_items</a></span><span class="op">(</span><span class="st">"AD_0"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/composite.html">composite</a></span><span class="op">(</span><span class="st">"USE"</span>, <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/single_item.html">single_item</a></span><span class="op">(</span><span class="st">"USE_01"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">sm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/relationships.html">relationships</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/relationships.html">paths</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CO"</span>, <span class="st">"PU"</span>, <span class="st">"EOU"</span>, <span class="st">"EMV"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"AD"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/relationships.html">paths</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AD"</span>, <span class="st">"CO"</span>, <span class="st">"PU"</span>, <span class="st">"EOU"</span>, <span class="st">"EMV"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"USE"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">rescaled_scores</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">data</span>, <span class="va">scales</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">as.table</a></span><span class="op">(</span><span class="va">model</span><span class="op">$</span><span class="va">outer_weights</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"item"</span>, <span class="st">"construct"</span>, <span class="st">"weight"</span><span class="op">)</span></span>
+<span>  <span class="va">w</span> <span class="op">&lt;-</span> <span class="va">w</span><span class="op">[</span><span class="va">w</span><span class="op">$</span><span class="va">weight</span> <span class="op">!=</span> <span class="fl">0</span>, <span class="op">]</span></span>
+<span>  <span class="va">w</span><span class="op">$</span><span class="va">weight</span> <span class="op">&lt;-</span> <span class="va">w</span><span class="op">$</span><span class="va">weight</span> <span class="op">/</span> <span class="va">model</span><span class="op">$</span><span class="va">sdData</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">w</span><span class="op">$</span><span class="va">item</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">w</span><span class="op">$</span><span class="va">weight</span> <span class="op">&lt;-</span> <span class="va">w</span><span class="op">$</span><span class="va">weight</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/ave.html">ave</a></span><span class="op">(</span><span class="va">w</span><span class="op">$</span><span class="va">weight</span>, <span class="va">w</span><span class="op">$</span><span class="va">construct</span>, FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span></span>
+<span>  <span class="va">model</span><span class="op">$</span><span class="va">measurement_model</span> <span class="op">&lt;-</span> <span class="va">model</span><span class="op">$</span><span class="va">mmMatrix</span></span>
+<span>  <span class="va">model</span><span class="op">$</span><span class="va">construct_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">w</span>, <span class="va">w</span><span class="op">$</span><span class="va">construct</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">item</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">s</span><span class="op">$</span><span class="va">weight</span><span class="op">)</span></span>
+<span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu">cIPMA</span><span class="fu">::</span><span class="fu"><a href="https://marekdejauj.github.io/cIPMA/reference/get_rescaled_scores.html">get_rescaled_scores</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">scales</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">out</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">out</span>, <span class="kw">function</span><span class="op">(</span><span class="va">v</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">pmin</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">pmax</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">v</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">out</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">scales</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">tam</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">tam</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">scales</span><span class="op">$</span><span class="va">USE_01</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span><span class="op">)</span></span>
+<span><span class="va">pls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/seminr/man/estimate_pls.html">estimate_pls</a></span><span class="op">(</span><span class="va">tam</span>, <span class="va">mm</span>, <span class="va">sm</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu">rescaled_scores</span><span class="op">(</span><span class="va">pls</span>, <span class="va">tam</span>, <span class="va">scales</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">scores</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AD"</span>, <span class="st">"EMV"</span>, <span class="st">"EOU"</span>, <span class="st">"PU"</span>, <span class="st">"CO"</span>, <span class="st">"USE"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        AD              EMV              EOU               PU        </span></span>
+<span><span class="co">#&gt;  Min.   :  0.00   Min.   :  0.00   Min.   : 16.87   Min.   :  0.00  </span></span>
+<span><span class="co">#&gt;  1st Qu.: 58.23   1st Qu.: 58.07   1st Qu.: 66.53   1st Qu.: 50.13  </span></span>
+<span><span class="co">#&gt;  Median : 75.00   Median : 75.00   Median : 75.00   Median : 66.21  </span></span>
+<span><span class="co">#&gt;  Mean   : 72.04   Mean   : 70.17   Mean   : 75.64   Mean   : 64.25  </span></span>
+<span><span class="co">#&gt;  3rd Qu.: 91.17   3rd Qu.: 75.00   3rd Qu.: 91.90   3rd Qu.: 75.00  </span></span>
+<span><span class="co">#&gt;  Max.   :100.00   Max.   :100.00   Max.   :100.00   Max.   :100.00  </span></span>
+<span><span class="co">#&gt;        CO              USE        </span></span>
+<span><span class="co">#&gt;  Min.   :  0.00   Min.   :  0.00  </span></span>
+<span><span class="co">#&gt;  1st Qu.: 50.00   1st Qu.: 33.33  </span></span>
+<span><span class="co">#&gt;  Median : 66.30   Median : 50.00  </span></span>
+<span><span class="co">#&gt;  Mean   : 61.56   Mean   : 49.71  </span></span>
+<span><span class="co">#&gt;  3rd Qu.: 75.00   3rd Qu.: 66.67  </span></span>
+<span><span class="co">#&gt;  Max.   :100.00   Max.   :100.00</span></span></code></pre></div>
+<p>The function <code>nca_ce_fdh_d()</code> computes the CE-FDH effect size exactly on the empirical scope of each pair, the scope of the published illustration. The five effect sizes reproduce the published values of AD, EMV, EOU, PU and CO to printed rounding, with differences of at most 0.005 in absolute value.</p>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AD"</span>, <span class="st">"EMV"</span>, <span class="st">"EOU"</span>, <span class="st">"PU"</span>, <span class="st">"CO"</span><span class="op">)</span></span>
+<span><span class="va">published</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>AD <span class="op">=</span> <span class="fl">0.29</span>, EMV <span class="op">=</span> <span class="fl">0.33</span>, EOU <span class="op">=</span> <span class="fl">0.24</span>, PU <span class="op">=</span> <span class="fl">0.24</span>, CO <span class="op">=</span> <span class="fl">0.21</span><span class="op">)</span></span>
+<span><span class="va">ce_fdh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">pairs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">nca_ce_fdh_d</span><span class="op">(</span><span class="va">scores</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>, <span class="va">scores</span><span class="op">$</span><span class="va">USE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">published</span>, ce_fdh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">ce_fdh</span>, <span class="fl">3</span><span class="op">)</span>, difference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">ce_fdh</span> <span class="op">-</span> <span class="va">published</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     published ce_fdh difference</span></span>
+<span><span class="co">#&gt; AD       0.29  0.294      0.004</span></span>
+<span><span class="co">#&gt; EMV      0.33  0.331      0.001</span></span>
+<span><span class="co">#&gt; EOU      0.24  0.235     -0.005</span></span>
+<span><span class="co">#&gt; PU       0.24  0.243      0.003</span></span>
+<span><span class="co">#&gt; CO       0.21  0.211      0.001</span></span></code></pre></div>
+<p>The latent scores depend on the structural model, because the inner weights of partial least squares shape the outer weights. A chain specification with the paths EOU to PU and AD, PU, EMV and CO to AD, and AD to USE, the specification of the replication archive of <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span>, gives a second set of scores from the same items.</p>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sm_chain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/relationships.html">relationships</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/relationships.html">paths</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"EOU"</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PU"</span>, <span class="st">"AD"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/relationships.html">paths</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PU"</span>, <span class="st">"EMV"</span>, <span class="st">"CO"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"AD"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/seminr/man/relationships.html">paths</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"AD"</span>, to <span class="op">=</span> <span class="st">"USE"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">scores_chain</span> <span class="op">&lt;-</span> <span class="fu">rescaled_scores</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/seminr/man/estimate_pls.html">estimate_pls</a></span><span class="op">(</span><span class="va">tam</span>, <span class="va">mm</span>, <span class="va">sm_chain</span><span class="op">)</span><span class="op">)</span>, <span class="va">tam</span>, <span class="va">scales</span><span class="op">)</span></span>
+<span><span class="va">effects</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  min_EOU <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">EOU</span><span class="op">)</span>,</span>
+<span>  EOU_1.00 <span class="op">=</span> <span class="fu">nca_ce_fdh_d</span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">EOU</span>, <span class="va">s</span><span class="op">$</span><span class="va">USE</span><span class="op">)</span>,</span>
+<span>  EOU_0.95 <span class="op">=</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">EOU</span>, <span class="va">s</span><span class="op">$</span><span class="va">USE</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, n_grid <span class="op">=</span> <span class="fl">400</span>, B <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">d_pi</span>,</span>
+<span>  PU_1.00 <span class="op">=</span> <span class="fu">nca_ce_fdh_d</span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">PU</span>, <span class="va">s</span><span class="op">$</span><span class="va">USE</span><span class="op">)</span>,</span>
+<span>  PU_0.95 <span class="op">=</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">PU</span>, <span class="va">s</span><span class="op">$</span><span class="va">USE</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, n_grid <span class="op">=</span> <span class="fl">400</span>, B <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">d_pi</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span>published_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/effects.html">effects</a></span><span class="op">(</span><span class="va">scores</span><span class="op">)</span>, chain_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/effects.html">effects</a></span><span class="op">(</span><span class="va">scores_chain</span><span class="op">)</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 min_EOU EOU_1.00 EOU_0.95 PU_1.00 PU_0.95</span></span>
+<span><span class="co">#&gt; published_model  16.871    0.235    0.432   0.243   0.439</span></span>
+<span><span class="co">#&gt; chain_model      17.721    0.199    0.424   0.248   0.445</span></span></code></pre></div>
+<p>The chain specification raises the lowest EOU score from 16.871 to 17.721 and lowers the strict EOU effect from 0.235 to 0.199, whereas the EOU effect at <code>pi = 0.95</code> moves from 0.432 to 0.424. A change of 0.036 in the strict effect between two nearly identical sets of scores is the kind of sensitivity that the tolerance path measures within one set of scores <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The tolerance path, the deletion screen and the band follow the specification and the settings of the reanalysis in <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span>. The settings are the scores of the chain specification, the empirical scope of each pair, 400 outcome levels, one matrix of 1999 permutations per pair shared by the three tolerances, and 999 null replicates in the band.</p>
+</div>
+<div id="the-tolerance-path-and-the-permutation-test" class="section level2" number="12.2">
+<h2>
+<span class="header-section-number">12.2</span> The tolerance path and the permutation test<a class="anchor" aria-label="anchor" href="#the-tolerance-path-and-the-permutation-test"><i class="fas fa-link"></i></a>
+</h2>
+<p>The tolerance grid 1.00, 0.95 and 0.90 is fixed before the analysis and keeps the strict anchor.</p>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="va">scores_chain</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span><span class="va">pi_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span><span class="op">)</span></span>
+<span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">pairs</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">idx</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">X</span> <span class="op">&lt;-</span> <span class="va">s</span><span class="op">[[</span><span class="va">pairs</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span><span class="op">]</span><span class="op">]</span>; <span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">s</span><span class="op">$</span><span class="va">USE</span></span>
+<span>  <span class="va">scope</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">20260930L</span> <span class="op">+</span> <span class="va">idx</span><span class="op">)</span></span>
+<span>  <span class="va">perms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="fl">1999</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">pi_grid</span>, <span class="kw">function</span><span class="op">(</span><span class="va">pi</span><span class="op">)</span></span>
+<span>    <span class="fu">qnca</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, pi <span class="op">=</span> <span class="va">pi</span>, n_grid <span class="op">=</span> <span class="fl">400L</span>, B <span class="op">=</span> <span class="cn">NA</span>, scope <span class="op">=</span> <span class="va">scope</span>, permutations <span class="op">=</span> <span class="va">perms</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">get</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">field</span>, <span class="va">j</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">fits</span>, <span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="va">f</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="va">field</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>pair <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">pairs</span>, <span class="st">"-&gt; USE"</span><span class="op">)</span>,</span>
+<span>                   d_1.00 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="st">"d_pi"</span>, <span class="fl">1</span><span class="op">)</span>, d_0.95 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="st">"d_pi"</span>, <span class="fl">2</span><span class="op">)</span>, d_0.90 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="st">"d_pi"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>                   p_1.00 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="st">"p_pi"</span>, <span class="fl">1</span><span class="op">)</span>, p_0.95 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="st">"p_pi"</span>, <span class="fl">2</span><span class="op">)</span>, p_0.90 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="st">"p_pi"</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">path</span><span class="op">$</span><span class="va">gap_0.95</span> <span class="op">&lt;-</span> <span class="va">path</span><span class="op">$</span><span class="va">d_0.95</span> <span class="op">-</span> <span class="va">path</span><span class="op">$</span><span class="va">d_1.00</span></span>
+<span><span class="va">path</span><span class="op">$</span><span class="va">gap_0.90</span> <span class="op">&lt;-</span> <span class="va">path</span><span class="op">$</span><span class="va">d_0.90</span> <span class="op">-</span> <span class="va">path</span><span class="op">$</span><span class="va">d_1.00</span></span>
+<span><span class="va">path</span><span class="op">$</span><span class="va">relative_gap_0.95</span> <span class="op">&lt;-</span> <span class="va">path</span><span class="op">$</span><span class="va">gap_0.95</span> <span class="op">/</span> <span class="va">path</span><span class="op">$</span><span class="va">d_1.00</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">path</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        pair d_1.00 d_0.95 d_0.90 p_1.00 p_0.95 p_0.90 gap_0.95 gap_0.90</span></span>
+<span><span class="co">#&gt;   AD -&gt; USE  0.294  0.541  0.624 0.0010 0.0005  5e-04    0.247    0.330</span></span>
+<span><span class="co">#&gt;  EMV -&gt; USE  0.331  0.500  0.569 0.0005 0.0495  5e-04    0.169    0.238</span></span>
+<span><span class="co">#&gt;  EOU -&gt; USE  0.199  0.424  0.489 0.0555 0.0095  5e-03    0.225    0.290</span></span>
+<span><span class="co">#&gt;   PU -&gt; USE  0.248  0.445  0.527 0.0025 0.0005  5e-04    0.197    0.279</span></span>
+<span><span class="co">#&gt;   CO -&gt; USE  0.210  0.404  0.447 0.0010 0.0005  3e-03    0.194    0.237</span></span>
+<span><span class="co">#&gt;  relative_gap_0.95</span></span>
+<span><span class="co">#&gt;              0.842</span></span>
+<span><span class="co">#&gt;              0.509</span></span>
+<span><span class="co">#&gt;              1.128</span></span>
+<span><span class="co">#&gt;              0.796</span></span>
+<span><span class="co">#&gt;              0.924</span></span></code></pre></div>
+<p>The strict effect sizes 0.294, 0.331 and 0.210 reproduce the published CE-FDH values of AD, EMV and CO to printed rounding, and the chain-specification scores give 0.199 for EOU and 0.248 for PU against the published 0.24 and 0.24. At <code>pi = 0.95</code>, all five pairs give p-values below 0.05, from 0.0005 to 0.0495. The strict p-values run from 0.0005 to 0.0555. EOU misses 0.05 at <code>pi = 1.00</code> and falls below 0.05 at both tolerances fixed in advance. The effect sizes rise from <code>pi = 1.00</code> to 0.95 and 0.90 in every pair as larger exception tolerances move the bottleneck away from the most efficient respondents, and the three effect sizes form a sensitivity reading <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="dependence-on-a-few-efficient-respondents" class="section level2" number="12.3">
+<h2>
+<span class="header-section-number">12.3</span> Dependence on a few efficient respondents<a class="anchor" aria-label="anchor" href="#dependence-on-a-few-efficient-respondents"><i class="fas fa-link"></i></a>
+</h2>
+<p>The effect-size gap <code>d_0.95 - d_1.00</code> measures how far a five-percent exception tolerance moves the empty zone. The gap is 0.247 for AD, 0.225 for EOU, 0.197 for PU, 0.194 for CO and 0.169 for EMV, and the gaps at <code>pi = 0.90</code> run from 0.237 to 0.330. A five-percent exception tolerance therefore raises the empty zone by about four fifths or more for AD, EOU, PU and CO and by about half for EMV. Each strict boundary rests heavily on the few successful respondents with the lowest condition scores, and the strict member is the most outlier-fragile frontier of the grid. The application keeps the empirical scope of each pair, so the gap magnitudes compare within the table and transfer to other scopes only with a recalibration.</p>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">USE</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    0 16.7 33.3   50 66.7 83.3  100 </span></span>
+<span><span class="co">#&gt;   11   25   37   24   46   22    9</span></span>
+<span><span class="va">top</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">pairs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">X</span> <span class="op">&lt;-</span> <span class="va">s</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>; <span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">s</span><span class="op">$</span><span class="va">USE</span></span>
+<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">qnca_resolution</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, n_grid <span class="op">=</span> <span class="fl">400L</span>, scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>pair <span class="op">=</span> <span class="va">x</span>, <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"y"</span>, <span class="st">"k"</span>, <span class="st">"rank"</span>, <span class="st">"raw"</span>, <span class="st">"fitted"</span>, <span class="st">"inherited"</span>, <span class="st">"below"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">top</span>, digits <span class="op">=</span> <span class="fl">4</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  pair   y k rank   raw fitted inherited below</span></span>
+<span><span class="co">#&gt;    AD 100 9    1 75.00  75.00     FALSE     0</span></span>
+<span><span class="co">#&gt;   EMV 100 9    1 49.80  50.00      TRUE     1</span></span>
+<span><span class="co">#&gt;   EOU 100 9    1 65.50  65.50     FALSE     0</span></span>
+<span><span class="co">#&gt;    PU 100 9    1 66.33  66.33     FALSE     0</span></span>
+<span><span class="co">#&gt;    CO 100 9    1 33.41  50.00      TRUE     1</span></span></code></pre></div>
+<p>Tail size limits the same reading. Nine respondents attain the highest level of USE, and with fewer than 20 successful cases the rank <code>max(1, ceiling(k * (1 - pi)))</code> at <code>pi = 0.95</code> selects the minimum. For AD, EOU and PU the minimum of the nine sets the bottleneck at the top of the scope. For EMV and CO the minimum lies below the requirement reached at a lower level, the envelope holds the inherited requirement, and one of the nine respondents falls below the bottleneck. A report marks the top bottlenecks as limited by tail size and the bottlenecks of EMV and CO at the top as inherited.</p>
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">screen</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">pairs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">X</span> <span class="op">&lt;-</span> <span class="va">s</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>; <span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">s</span><span class="op">$</span><span class="va">USE</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">qnca_outliers</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, pi_grid <span class="op">=</span> <span class="va">pi_grid</span>, k <span class="op">=</span> <span class="va">k</span>, n_grid <span class="op">=</span> <span class="fl">400L</span>,</span>
+<span>                       scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>pair <span class="op">=</span> <span class="va">x</span>, deleted <span class="op">=</span> <span class="va">k</span>, d_1.00 <span class="op">=</span> <span class="va">o</span><span class="op">$</span><span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>               largest_rise_1.00 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">dif_abs</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>               share_of_d_1.00 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">dif_abs</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="va">o</span><span class="op">$</span><span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>               change_0.95 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">dif_abs</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               change_0.90 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">dif_abs</span><span class="op">[</span>, <span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">screen</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  pair deleted d_1.00 largest_rise_1.00 share_of_d_1.00 change_0.95 change_0.90</span></span>
+<span><span class="co">#&gt;    AD       1  0.294            0.0807           0.275     0.02870     0.01529</span></span>
+<span><span class="co">#&gt;    AD       2  0.294            0.1227           0.418     0.05566     0.01462</span></span>
+<span><span class="co">#&gt;   EMV       1  0.331            0.0820           0.247     0.04124     0.02790</span></span>
+<span><span class="co">#&gt;   EMV       2  0.331            0.1110           0.335     0.05513     0.04232</span></span>
+<span><span class="co">#&gt;   EOU       1  0.199            0.0485           0.243     0.00193     0.01589</span></span>
+<span><span class="co">#&gt;   EOU       2  0.199            0.1190           0.598     0.03116     0.01418</span></span>
+<span><span class="co">#&gt;    PU       1  0.248            0.0544           0.220     0.01294     0.01279</span></span>
+<span><span class="co">#&gt;    PU       2  0.248            0.0961           0.388     0.02605     0.00329</span></span>
+<span><span class="co">#&gt;    CO       1  0.210            0.0675           0.321     0.01275     0.01275</span></span>
+<span><span class="co">#&gt;    CO       2  0.210            0.0798           0.380     0.02442     0.03562</span></span></code></pre></div>
+<p>The deletion screen of <code>qnca_outliers()</code> gives the case-level view in the manner of the NCA outlier screen <span class="citation">(<a href="references.html#ref-NCAPackage2026">Dul 2026</a>)</span>. The largest rise of the strict effect from the deletion of one respondent is 0.05 to 0.08 across the five pairs, between 22 and 32 percent of the strict effect. The largest rise from the deletion of two respondents reaches 0.12, 60 percent of the strict EOU effect. The deletions change <code>d_0.95</code> by at most 0.041 for one respondent and 0.056 for two, and <code>d_0.90</code> by at most 0.028 and 0.042. The screen and the tolerance path agree that the strict boundaries rest on one or two respondents, and the path reports the dependence while keeping respondents whose answers may be valid.</p>
+</div>
+<div id="the-dependence-matched-reference-band" class="section level2" number="12.4">
+<h2>
+<span class="header-section-number">12.4</span> The dependence-matched reference band<a class="anchor" aria-label="anchor" href="#the-dependence-matched-reference-band"><i class="fas fa-link"></i></a>
+</h2>
+<p>The reference band compares each observed effect size with 999 datasets from a Gaussian copula that keeps the empirical marginals and the normal-score rank correlation of the pair and imposes no attainability floor. The band is a proposed diagnostic with operating characteristics still to be established.</p>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">band</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">pairs</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">idx</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">X</span> <span class="op">&lt;-</span> <span class="va">s</span><span class="op">[[</span><span class="va">pairs</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span><span class="op">]</span><span class="op">]</span>; <span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">s</span><span class="op">$</span><span class="va">USE</span></span>
+<span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">spuriousness_band</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, pi_grid <span class="op">=</span> <span class="va">pi_grid</span>, n_grid <span class="op">=</span> <span class="fl">400L</span>, M <span class="op">=</span> <span class="fl">999L</span>,</span>
+<span>                         scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">20261030L</span> <span class="op">+</span> <span class="va">idx</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>pair <span class="op">=</span> <span class="va">pairs</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>, rank_correlation <span class="op">=</span> <span class="va">b</span><span class="op">$</span><span class="va">rank_correlation</span>, <span class="va">b</span><span class="op">$</span><span class="va">band</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">band</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  pair rank_correlation   pi d_obs  lower median upper  excess p_null</span></span>
+<span><span class="co">#&gt;    AD            0.624 1.00 0.294 0.1935  0.361 0.488 -0.1946  0.784</span></span>
+<span><span class="co">#&gt;    AD            0.624 0.95 0.541 0.4989  0.569 0.625 -0.0840  0.820</span></span>
+<span><span class="co">#&gt;    AD            0.624 0.90 0.624 0.5693  0.624 0.679 -0.0549  0.540</span></span>
+<span><span class="co">#&gt;   EMV            0.527 1.00 0.331 0.1384  0.305 0.457 -0.1261  0.441</span></span>
+<span><span class="co">#&gt;   EMV            0.527 0.95 0.500 0.4713  0.542 0.597 -0.0968  0.895</span></span>
+<span><span class="co">#&gt;   EMV            0.527 0.90 0.569 0.5412  0.596 0.638 -0.0693  0.857</span></span>
+<span><span class="co">#&gt;   EOU            0.330 1.00 0.199 0.0940  0.232 0.354 -0.1547  0.675</span></span>
+<span><span class="co">#&gt;   EOU            0.330 0.95 0.424 0.3305  0.424 0.498 -0.0742  0.504</span></span>
+<span><span class="co">#&gt;   EOU            0.330 0.90 0.489 0.3923  0.493 0.577 -0.0873  0.537</span></span>
+<span><span class="co">#&gt;    PU            0.419 1.00 0.248 0.1090  0.235 0.360 -0.1125  0.436</span></span>
+<span><span class="co">#&gt;    PU            0.419 0.95 0.445 0.3568  0.439 0.510 -0.0649  0.441</span></span>
+<span><span class="co">#&gt;    PU            0.419 0.90 0.527 0.4482  0.506 0.559 -0.0325  0.280</span></span>
+<span><span class="co">#&gt;    CO            0.484 1.00 0.210 0.0812  0.194 0.319 -0.1089  0.382</span></span>
+<span><span class="co">#&gt;    CO            0.484 0.95 0.404 0.3162  0.415 0.483 -0.0791  0.572</span></span>
+<span><span class="co">#&gt;    CO            0.484 0.90 0.447 0.4177  0.486 0.540 -0.0934  0.864</span></span></code></pre></div>
+<p>Every excess <code>Delta = d_obs - U</code> is negative. At <code>pi = 0.95</code> the excess runs from -0.097 for EMV to -0.065 for PU, and the tail probabilities run from 0.441 to 0.895. All five pairs stay within the band at <code>pi = 1.00</code> and 0.90 as at 0.95, with rank correlations between 0.330 and 0.624. The result withholds warrant beyond the benchmark and leaves the five hypotheses open <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-values-of-the-article" class="section level2" number="12.5">
+<h2>
+<span class="header-section-number">12.5</span> The values of the article<a class="anchor" aria-label="anchor" href="#the-values-of-the-article"><i class="fas fa-link"></i></a>
+</h2>
+<p>Table <a href="application.html#tab:application-summary">12.1</a> collects the values in the layout of the technology acceptance table of <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span>.</p>
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">b95</span> <span class="op">&lt;-</span> <span class="va">band</span><span class="op">[</span><span class="va">band</span><span class="op">$</span><span class="va">pi</span> <span class="op">==</span> <span class="fl">0.95</span>, <span class="op">]</span></span>
+<span><span class="va">summary_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  pair <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">pair</span>, rank_corr <span class="op">=</span> <span class="va">b95</span><span class="op">$</span><span class="va">rank_correlation</span>,</span>
+<span>  d_1.00 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">d_1.00</span>, d_0.95 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">d_0.95</span>, d_0.90 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">d_0.90</span>,</span>
+<span>  p_0.95 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">p_0.95</span>, U_0.95 <span class="op">=</span> <span class="va">b95</span><span class="op">$</span><span class="va">upper</span>, Delta_0.95 <span class="op">=</span> <span class="va">b95</span><span class="op">$</span><span class="va">excess</span>,</span>
+<span>  p_null_0.95 <span class="op">=</span> <span class="va">b95</span><span class="op">$</span><span class="va">p_null</span>,</span>
+<span>  verdict <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">b95</span><span class="op">$</span><span class="va">excess</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="st">"above band"</span>, <span class="st">"within band"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">summary_table</span>, digits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>             caption <span class="op">=</span> <span class="st">"Technology acceptance reanalysis on the chain-specification scores with the empirical scope of each pair: rank correlation, effect sizes at the tolerances 1.00, 0.95 and 0.90, permutation p-value at 0.95 from 1999 permutations, and upper band limit, excess and tail probability at 0.95 from 999 null replicates."</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-table"><table class="table table-sm">
+<caption>
+<span id="tab:application-summary">Table 12.1: </span>Technology acceptance reanalysis on the chain-specification scores with the empirical scope of each pair: rank correlation, effect sizes at the tolerances 1.00, 0.95 and 0.90, permutation p-value at 0.95 from 1999 permutations, and upper band limit, excess and tail probability at 0.95 from 999 null replicates.</caption>
+<colgroup>
+<col width="12%">
+<col width="10%">
+<col width="7%">
+<col width="7%">
+<col width="7%">
+<col width="7%">
+<col width="7%">
+<col width="12%">
+<col width="13%">
+<col width="13%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">pair</th>
+<th align="right">rank_corr</th>
+<th align="right">d_1.00</th>
+<th align="right">d_0.95</th>
+<th align="right">d_0.90</th>
+<th align="right">p_0.95</th>
+<th align="right">U_0.95</th>
+<th align="right">Delta_0.95</th>
+<th align="right">p_null_0.95</th>
+<th align="left">verdict</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">AD -&gt; USE</td>
+<td align="right">0.624</td>
+<td align="right">0.294</td>
+<td align="right">0.541</td>
+<td align="right">0.624</td>
+<td align="right">0.0005</td>
+<td align="right">0.625</td>
+<td align="right">-0.084</td>
+<td align="right">0.820</td>
+<td align="left">within band</td>
+</tr>
+<tr class="even">
+<td align="left">EMV -&gt; USE</td>
+<td align="right">0.527</td>
+<td align="right">0.331</td>
+<td align="right">0.500</td>
+<td align="right">0.569</td>
+<td align="right">0.0495</td>
+<td align="right">0.597</td>
+<td align="right">-0.097</td>
+<td align="right">0.895</td>
+<td align="left">within band</td>
+</tr>
+<tr class="odd">
+<td align="left">EOU -&gt; USE</td>
+<td align="right">0.330</td>
+<td align="right">0.199</td>
+<td align="right">0.424</td>
+<td align="right">0.489</td>
+<td align="right">0.0095</td>
+<td align="right">0.498</td>
+<td align="right">-0.074</td>
+<td align="right">0.504</td>
+<td align="left">within band</td>
+</tr>
+<tr class="even">
+<td align="left">PU -&gt; USE</td>
+<td align="right">0.419</td>
+<td align="right">0.248</td>
+<td align="right">0.445</td>
+<td align="right">0.527</td>
+<td align="right">0.0005</td>
+<td align="right">0.510</td>
+<td align="right">-0.065</td>
+<td align="right">0.441</td>
+<td align="left">within band</td>
+</tr>
+<tr class="odd">
+<td align="left">CO -&gt; USE</td>
+<td align="right">0.484</td>
+<td align="right">0.210</td>
+<td align="right">0.404</td>
+<td align="right">0.447</td>
+<td align="right">0.0005</td>
+<td align="right">0.483</td>
+<td align="right">-0.079</td>
+<td align="right">0.572</td>
+<td align="left">within band</td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stored</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/replication/results/application_table.csv"</span><span class="op">)</span></span>
+<span><span class="va">stored_band</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/replication/results/application_band.csv"</span><span class="op">)</span></span>
+<span><span class="va">printed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>rank_corr <span class="op">=</span> <span class="va">b95</span><span class="op">$</span><span class="va">rank_correlation</span>,</span>
+<span>                      d_100 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">d_1.00</span>, d_095 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">d_0.95</span>, d_090 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">d_0.90</span>,</span>
+<span>                      p_100 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">p_1.00</span>, p_095 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">p_0.95</span>, p_090 <span class="op">=</span> <span class="va">path</span><span class="op">$</span><span class="va">p_0.90</span>,</span>
+<span>                      U_095 <span class="op">=</span> <span class="va">b95</span><span class="op">$</span><span class="va">upper</span>, delta_095 <span class="op">=</span> <span class="va">b95</span><span class="op">$</span><span class="va">excess</span>, p_null_095 <span class="op">=</span> <span class="va">b95</span><span class="op">$</span><span class="va">p_null</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">printed</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">v</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">printed</span><span class="op">[[</span><span class="va">v</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">stored</span><span class="op">[[</span><span class="va">v</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    rank_corr        d_100        d_095        d_090        p_100        p_095 </span></span>
+<span><span class="co">#&gt; 3.885781e-16 1.193490e-15 3.441691e-15 1.887379e-15 0.000000e+00 0.000000e+00 </span></span>
+<span><span class="co">#&gt;        p_090        U_095    delta_095   p_null_095 </span></span>
+<span><span class="co">#&gt; 0.000000e+00 2.553513e-15 3.039236e-15 0.000000e+00</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_obs"</span>, <span class="st">"lower"</span>, <span class="st">"median"</span>, <span class="st">"upper"</span>, <span class="st">"excess"</span>, <span class="st">"p_null"</span><span class="op">)</span>,</span>
+<span>       <span class="kw">function</span><span class="op">(</span><span class="va">v</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">band</span><span class="op">[[</span><span class="va">v</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">stored_band</span><span class="op">[[</span><span class="va">v</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        d_obs        lower       median        upper       excess       p_null </span></span>
+<span><span class="co">#&gt; 3.441691e-15 2.886580e-15 1.332268e-15 2.553513e-15 3.039236e-15 2.000000e-03</span></span>
+<span><span class="va">tail_check</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>pair <span class="op">=</span> <span class="va">band</span><span class="op">$</span><span class="va">pair</span>, pi <span class="op">=</span> <span class="va">band</span><span class="op">$</span><span class="va">pi</span>,</span>
+<span>                         printed <span class="op">=</span> <span class="va">band</span><span class="op">$</span><span class="va">p_null</span>, stored <span class="op">=</span> <span class="va">stored_band</span><span class="op">$</span><span class="va">p_null</span><span class="op">)</span></span>
+<span><span class="va">tail_check</span><span class="op">[</span><span class="va">tail_check</span><span class="op">$</span><span class="va">printed</span> <span class="op">!=</span> <span class="va">tail_check</span><span class="op">$</span><span class="va">stored</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;   pair  pi printed stored</span></span>
+<span><span class="co">#&gt; 3   AD 0.9   0.540  0.539</span></span>
+<span><span class="co">#&gt; 6  EMV 0.9   0.857  0.859</span></span></code></pre></div>
+<p>Every value of Table <a href="application.html#tab:application-summary">12.1</a> equals the corresponding value of the technology acceptance table of <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span> at the printed precision. Against the stored results of the replication archive, the rank correlations, effect sizes, band limits and excess values differ by at most 3.4e-15, and the permutation p-values are equal. The tail probabilities at <code>pi = 0.90</code> of AD and EMV differ from the stored values by one and two of the 999 null replicates, 0.540 against 0.539 and 0.857 against 0.859; at <code>pi = 0.95</code>, the tolerance of the article’s table, all five tail probabilities agree.</p>
+</div>
+<div id="what-qnca-adds-to-the-published-analysis" class="section level2" number="12.6">
+<h2>
+<span class="header-section-number">12.6</span> What QNCA adds to the published analysis<a class="anchor" aria-label="anchor" href="#what-qnca-adds-to-the-published-analysis"><i class="fas fa-link"></i></a>
+</h2>
+<p>A report needs both diagnostics beside the ordinary permutation result. The tolerance path shows that each strict boundary rests on a thin set of efficient respondents and that the published effect sizes move strongly with the exception tolerance. The band shows that every member of the grid stays within what the observed marginals and rank dependence reproduce in the absence of an attainability floor. The evidence leaves AD, EMV, EOU, PU and CO without support as necessary bottlenecks for USE beyond the reproduced dependence and skewness, and the strict bottlenecks that an applied report would quote are the bottlenecks most exposed to a single efficient respondent. A managerial threshold therefore rests on the permutation result, the tolerance path and the band together <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<p>The latent scores come from the partial least squares model estimated with <code>seminr</code> in R, so every number of the reanalysis is computed in R.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></div>
+<div class="next"><a href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#application"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="nav-link" href="#latent-scores-of-the-published-model"><span class="header-section-number">12.1</span> Latent scores of the published model</a></li>
+<li><a class="nav-link" href="#the-tolerance-path-and-the-permutation-test"><span class="header-section-number">12.2</span> The tolerance path and the permutation test</a></li>
+<li><a class="nav-link" href="#dependence-on-a-few-efficient-respondents"><span class="header-section-number">12.3</span> Dependence on a few efficient respondents</a></li>
+<li><a class="nav-link" href="#the-dependence-matched-reference-band"><span class="header-section-number">12.4</span> The dependence-matched reference band</a></li>
+<li><a class="nav-link" href="#the-values-of-the-article"><span class="header-section-number">12.5</span> The values of the article</a></li>
+<li><a class="nav-link" href="#what-qnca-adds-to-the-published-analysis"><span class="header-section-number">12.6</span> What QNCA adds to the published analysis</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/12-application.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/12-application.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

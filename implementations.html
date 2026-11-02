@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>14 The three implementations | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="The R package qnca, the Python package qnca and the Julia package QuantileNecessity implement one estimator. At each outcome target y on a grid, each implementation selects a low type-1 quantile...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="14 The three implementations | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/implementations.html">
+<meta property="og:description" content="The R package qnca, the Python package qnca and the Julia package QuantileNecessity implement one estimator. At each outcome target y on a grid, each implementation selects a low type-1 quantile...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="14 The three implementations | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="The R package qnca, the Python package qnca and the Julia package QuantileNecessity implement one estimator. At each outcome target y on a grid, each implementation selects a low type-1 quantile...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="active" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="implementations" class="section level1" number="14">
+<h1>
+<span class="header-section-number">14</span> The three implementations<a class="anchor" aria-label="anchor" href="#implementations"><i class="fas fa-link"></i></a>
+</h1>
+<p>The R package <code>qnca</code>, the Python package <code>qnca</code> and the Julia package <code>QuantileNecessity</code> implement one estimator. At each outcome target <code>y</code> on a grid, each implementation selects a low type-1 quantile of the condition among the cases with <code>Y &gt;= y</code> at the tolerance <code>pi</code>. The monotone envelope makes the frontier non-decreasing, the frontier takes the upper bound of the condition in an unobserved top band of a fixed scope, and the trapezoid rule integrates the empty zone into the effect size <code>d_pi</code>. The implementations in R <span class="citation">(<a href="references.html#ref-RCoreTeam2025">R Core Team 2025</a>)</span>, in Python with NumPy <span class="citation">(<a href="references.html#ref-HarrisEtAl2020">Harris et al. 2020</a>)</span> and in Julia <span class="citation">(<a href="references.html#ref-BezansonEtAl2017">Bezanson et al. 2017</a>)</span> carry out the same steps, so the three give the same effect sizes to floating point and the same bottlenecks on the same data <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<p>The type-1 quantile is the inverse empirical distribution function, and the type-1 quantile at probability zero is the sample minimum. The tolerance <code>pi = 1</code> therefore reproduces the CE-FDH running minimum of Necessary Condition Analysis (NCA) before numerical integration, and every fitted value of the frontier at an attained target is an observed condition value. An interpolating quantile would replace the observed order statistics with interpolated values and weaken the strict-limit property <span class="citation">(<a href="references.html#ref-HyndmanFan1996">Hyndman and Fan 1996</a>)</span>.</p>
+<div id="installation" class="section level2" number="14.1">
+<h2>
+<span class="header-section-number">14.1</span> Installation<a class="anchor" aria-label="anchor" href="#installation"><i class="fas fa-link"></i></a>
+</h2>
+<p>The releases install from the registries of the three languages.</p>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"qnca"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb103-1"><a href="implementations.html#cb103-1" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install qnca</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb104-1"><a href="implementations.html#cb104-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
+<span id="cb104-2"><a href="implementations.html#cb104-2" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"QuantileNecessity"</span>)</span></code></pre></div>
+</div>
+<div id="functions-across-the-three-languages" class="section level2" number="14.2">
+<h2>
+<span class="header-section-number">14.2</span> Functions across the three languages<a class="anchor" aria-label="anchor" href="#functions-across-the-three-languages"><i class="fas fa-link"></i></a>
+</h2>
+<p>Table <a href="implementations.html#tab:implementations-functions">14.1</a> maps the functions of the three packages. The R and Python functions take named arguments, and the Julia functions take keyword arguments after a semicolon. The monotone fit is the string <code>"envelope"</code> or <code>"isotonic"</code> in R and Python and the symbol <code>:envelope</code> or <code>:isotonic</code> in Julia. Permutation matrices and subsample matrices hold one-based indices in all three languages. A fit returns a list with a data frame in R, a data class in Python and a named tuple in Julia.</p>
+<div class="inline-table"><table class="table table-sm">
+<caption>
+<span id="tab:implementations-functions">Table 14.1: </span> Functions of the R package <code>qnca</code>, the Python package <code>qnca</code> and the Julia package <code>QuantileNecessity</code>.</caption>
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th>Task</th>
+<th>R</th>
+<th>Python</th>
+<th>Julia</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Fit at one tolerance: <code>d_pi</code>, <code>p_pi</code>, bottleneck</td>
+<td><code>qnca()</code></td>
+<td><code>qnca()</code></td>
+<td><code>qnca()</code></td>
+</tr>
+<tr class="even">
+<td>Frontier on a grid of targets</td>
+<td><code>qnca_frontier()</code></td>
+<td><code>qnca_frontier()</code></td>
+<td><code>qnca_frontier()</code></td>
+</tr>
+<tr class="odd">
+<td>Effect size of a fitted frontier</td>
+<td><code>qnca_d()</code></td>
+<td><code>qnca_d()</code></td>
+<td><code>qnca_d()</code></td>
+</tr>
+<tr class="even">
+<td>Exact CE-FDH effect size</td>
+<td><code>nca_ce_fdh_d()</code></td>
+<td><code>nca_ce_fdh_d()</code></td>
+<td><code>nca_ce_fdh_d()</code></td>
+</tr>
+<tr class="odd">
+<td>Selected type-1 rank</td>
+<td><code>qnca_rank()</code></td>
+<td><code>qnca_rank()</code></td>
+<td><code>qnca_rank()</code></td>
+</tr>
+<tr class="even">
+<td>Type-1 quantile at a tolerance</td>
+<td><code>qnca_quantile_type1_pi()</code></td>
+<td><code>quantile_type1_pi()</code></td>
+<td><code>quantile_type1_pi()</code></td>
+</tr>
+<tr class="odd">
+<td>Monotone envelope</td>
+<td><code>monotone_envelope()</code></td>
+<td><code>monotone_envelope()</code></td>
+<td><code>monotone_envelope()</code></td>
+</tr>
+<tr class="even">
+<td>Least squares isotonic fit</td>
+<td><code>qnca_isotonic_increasing()</code></td>
+<td><code>isotonic_increasing()</code></td>
+<td><code>isotonic_increasing()</code></td>
+</tr>
+<tr class="odd">
+<td>Permutation p-value</td>
+<td>inside <code>qnca()</code>
+</td>
+<td>
+<code>permutation_test()</code>, inside <code>qnca()</code>
+</td>
+<td>inside <code>qnca()</code>
+</td>
+</tr>
+<tr class="even">
+<td>Dependence-matched reference band</td>
+<td><code>spuriousness_band()</code></td>
+<td><code>spuriousness_band()</code></td>
+<td><code>spuriousness_band()</code></td>
+</tr>
+<tr class="odd">
+<td>Consistency probe</td>
+<td><code>consistency_probe()</code></td>
+<td><code>consistency_probe()</code></td>
+<td><code>consistency_probe()</code></td>
+</tr>
+<tr class="even">
+<td>Target-by-target resolution</td>
+<td><code>qnca_resolution()</code></td>
+<td><code>qnca_resolution()</code></td>
+<td><code>qnca_resolution()</code></td>
+</tr>
+<tr class="odd">
+<td>Deletion screen</td>
+<td><code>qnca_outliers()</code></td>
+<td><code>qnca_outliers()</code></td>
+<td><code>qnca_outliers()</code></td>
+</tr>
+<tr class="even">
+<td>Addition screen</td>
+<td><code>qnca_sensitivity()</code></td>
+<td><code>qnca_sensitivity()</code></td>
+<td><code>qnca_sensitivity()</code></td>
+</tr>
+<tr class="odd">
+<td>Synthetic reverse-L data</td>
+<td><code>generate_reverse_L()</code></td>
+<td><code>generate_reverse_l()</code></td>
+<td><code>generate_reverse_L()</code></td>
+</tr>
+<tr class="even">
+<td>Comparison with the NCA package</td>
+<td><code>compare_qnca_nca()</code></td>
+<td>
+<code>compare_native()</code>, <code>run_r_nca()</code>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>The random numbers come from different generators. The R function <code>qnca()</code> draws permutations from the random number stream of the session, which <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> fixes. The Python function <code>qnca()</code> takes a <code>seed</code> for <code>numpy.random.default_rng()</code>. The Julia function <code>qnca()</code> takes a <code>seed</code> for a Mersenne Twister stream and uses the seed 42 by default.</p>
+</div>
+<div id="the-selected-rank-from-the-exact-decimal-of-the-tolerance-1" class="section level2" number="14.3">
+<h2>
+<span class="header-section-number">14.3</span> The selected rank from the exact decimal of the tolerance<a class="anchor" aria-label="anchor" href="#the-selected-rank-from-the-exact-decimal-of-the-tolerance-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>At a target with <code>k</code> attaining cases, the frontier selects the order statistic of rank <code>h = max(1, ceiling(k * (1 - pi)))</code>. In binary floating point, <code>1 - 0.95</code> is slightly larger than 0.05, so <code>100 * (1 - 0.95)</code> lies slightly above 5 and a direct ceiling returns 6.</p>
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%.20f"</span>, <span class="fl">1</span> <span class="op">-</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "0.05000000000000004441"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>direct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fl">0.95</span><span class="op">)</span><span class="op">)</span>, qnca_rank <span class="op">=</span> <span class="fu">qnca_rank</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0.95</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    direct qnca_rank </span></span>
+<span><span class="co">#&gt;         6         5</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>direct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="fl">1000</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fl">0.99</span><span class="op">)</span><span class="op">)</span>, qnca_rank <span class="op">=</span> <span class="fu">qnca_rank</span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">0.99</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    direct qnca_rank </span></span>
+<span><span class="co">#&gt;        11        10</span></span></code></pre></div>
+<p>The three implementations read the tolerance from the shortest decimal that represents the floating-point value and form the rank in exact arithmetic. R splits the integer arithmetic below <code>2^53</code>, Python uses <code>fractions.Fraction</code> of the decimal text, and Julia parses a rational number from the decimal text. The tolerance 0.95 with 100 attaining cases therefore selects rank 5 in all three languages, and 0.99 with 1000 attaining cases selects rank 10.</p>
+</div>
+<div id="agreement-to-floating-point" class="section level2" number="14.4">
+<h2>
+<span class="header-section-number">14.4</span> Agreement to floating point<a class="anchor" aria-label="anchor" href="#agreement-to-floating-point"><i class="fas fa-link"></i></a>
+</h2>
+<p>The repository stores the strict-limit check against the NCA package and the cross-language check of the four synthetic datasets with 100, 200, 500 and 1000 cases on the fixed scope <code>[0, 100] x [0, 100]</code>.</p>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dul</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/dul_nca_results.csv"</span><span class="op">)</span></span>
+<span><span class="va">dul</span> <span class="op">&lt;-</span> <span class="va">dul</span><span class="op">[</span><span class="va">dul</span><span class="op">$</span><span class="va">method</span> <span class="op">==</span> <span class="st">"ce_fdh"</span>, <span class="op">]</span></span>
+<span><span class="va">dul</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dataset"</span>, <span class="st">"qnca_d_pi1"</span>, <span class="st">"native_ce_fdh_d"</span>, <span class="st">"dul_d"</span>, <span class="st">"abs_diff_qnca_vs_dul"</span>, <span class="st">"abs_diff_native_vs_dul"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   dataset qnca_d_pi1 native_ce_fdh_d     dul_d abs_diff_qnca_vs_dul</span></span>
+<span><span class="co">#&gt; 1    n100  0.4955534       0.4953535 0.4953535         1.998970e-04</span></span>
+<span><span class="co">#&gt; 3    n200  0.4927501       0.4927391 0.4927391         1.103739e-05</span></span>
+<span><span class="co">#&gt; 5    n500  0.4504838       0.4508132 0.4508132         3.293640e-04</span></span>
+<span><span class="co">#&gt; 7   n1000  0.4511980       0.4511102 0.4511102         8.778927e-05</span></span>
+<span><span class="co">#&gt;   abs_diff_native_vs_dul</span></span>
+<span><span class="co">#&gt; 1           0.000000e+00</span></span>
+<span><span class="co">#&gt; 3           1.665335e-16</span></span>
+<span><span class="co">#&gt; 5           2.775558e-16</span></span>
+<span><span class="co">#&gt; 7           1.165734e-15</span></span>
+<span><span class="va">agree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/cross_language_agreement.csv"</span><span class="op">)</span></span>
+<span><span class="va">agree</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dataset"</span>, <span class="st">"pi"</span>, <span class="st">"d_pi_R"</span>, <span class="st">"max_abs_d_diff"</span>, <span class="st">"p_values_equal"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;    dataset   pi    d_pi_R max_abs_d_diff p_values_equal</span></span>
+<span><span class="co">#&gt; 1     n100 1.00 0.4962311       1.39e-13           true</span></span>
+<span><span class="co">#&gt; 2     n100 0.95 0.5218275       2.07e-13           true</span></span>
+<span><span class="co">#&gt; 3     n100 0.90 0.5466507       3.82e-13           true</span></span>
+<span><span class="co">#&gt; 4     n200 1.00 0.4941481       1.57e-13           true</span></span>
+<span><span class="co">#&gt; 5     n200 0.95 0.5406425       3.69e-13           true</span></span>
+<span><span class="co">#&gt; 6     n200 0.90 0.5916388       3.26e-13           true</span></span>
+<span><span class="co">#&gt; 7     n500 1.00 0.4519739       1.38e-13           true</span></span>
+<span><span class="co">#&gt; 8     n500 0.95 0.5097306       2.50e-14           true</span></span>
+<span><span class="co">#&gt; 9     n500 0.90 0.5583811       3.45e-13           true</span></span>
+<span><span class="co">#&gt; 10   n1000 1.00 0.4511626       4.39e-13           true</span></span>
+<span><span class="co">#&gt; 11   n1000 0.95 0.5151661       1.78e-13           true</span></span>
+<span><span class="co">#&gt; 12   n1000 0.90 0.5586986       9.97e-14           true</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">agree</span><span class="op">$</span><span class="va">max_abs_d_diff</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4.39e-13</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="va">agree</span><span class="op">$</span><span class="va">p_values_equal</span> <span class="op">==</span> <span class="st">"true"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>The native CE-FDH effect size of <code>nca_ce_fdh_d()</code> matches the CE-FDH effect size of the NCA package <span class="citation">(<a href="references.html#ref-NCAPackage2026">Dul 2026</a>)</span> with a largest absolute difference of 1.17e-15 across the four datasets. The grid-based <code>d_1</code> with 400 outcome levels differs from the exact value by at most 3.29e-04, the discretisation of the trapezoid rule. Across the four datasets and the tolerances 1.00, 0.95 and 0.90, the largest difference in <code>d_pi</code> between the three implementations is 4.39e-13, and the permutation p-values are equal in every row.</p>
+</div>
+<div id="a-shared-permutation-matrix" class="section level2" number="14.5">
+<h2>
+<span class="header-section-number">14.5</span> A shared permutation matrix<a class="anchor" aria-label="anchor" href="#a-shared-permutation-matrix"><i class="fas fa-link"></i></a>
+</h2>
+<p>A permutation p-value depends on the permutations, and the three languages draw different permutations from the generator of each language. The argument <code>permutations</code> of <code>qnca()</code> accepts a matrix with <code>B</code> rows, each row a one-based permutation of the <code>n</code> cases, and three implementations that score the same matrix return the same p-value. The multiplicative congruential generator with multiplier 16807 and modulus <code>2^31 - 1</code> <span class="citation">(<a href="references.html#ref-ParkMiller1988">Park and Miller 1988</a>)</span> runs in exact integer arithmetic in all three languages, so each language can build the same matrix by ordering consecutive blocks of <code>n</code> values.</p>
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n100.csv"</span><span class="op">)</span></span>
+<span><span class="va">lcg</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">count</span>, <span class="va">seed</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span></span>
+<span>  <span class="va">s</span> <span class="op">&lt;-</span> <span class="va">seed</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">k</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">s</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">16807</span> <span class="op">*</span> <span class="va">s</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">2147483647</span></span>
+<span>    <span class="va">x</span><span class="op">[</span><span class="va">k</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">s</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fl">199</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span><span class="va">perm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu">lcg</span><span class="op">(</span><span class="va">B</span> <span class="op">*</span> <span class="va">n</span>, <span class="fl">1</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="va">B</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">order</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">perm</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  [1]  1 18 83 14  7 34 78 15 60 20</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">p</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="va">p</span>, n_grid <span class="op">=</span> <span class="fl">50</span>, scope <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, permutations <span class="op">=</span> <span class="va">perm</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%.2f %.12f %.12f\n"</span>, <span class="va">p</span>, <span class="va">fit</span><span class="op">$</span><span class="va">d_pi</span>, <span class="va">fit</span><span class="op">$</span><span class="va">p_pi</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; 1.00 0.496231091316 0.005000000000</span></span>
+<span><span class="co">#&gt; 0.95 0.521827525269 0.005000000000</span></span>
+<span><span class="co">#&gt; 0.90 0.546650677260 0.005000000000</span></span></code></pre></div>
+<p>On the dataset of 100 cases, R gives the effect sizes 0.496231091316, 0.521827525269 and 0.546650677260 at <code>pi = 1.00</code>, 0.95 and 0.90, the values of the stored cross-language check, and the p-value 0.005 at each tolerance, the smallest value that 199 permutations allow.</p>
+<p>The Julia function <code>qnca()</code> draws all <code>B</code> permutations from one seeded stream before the permutations are scored, and the scoring runs in a threaded loop. The p-value for a given seed is therefore the same for every number of threads with which Julia starts. The reference band of the Julia package draws the array of normal variates from one seeded stream in the same way before the threaded loop over the null replicates. The R and Python implementations score the permutations in sequence.</p>
+</div>
+<div id="the-same-computation-in-python-and-julia" class="section level2" number="14.6">
+<h2>
+<span class="header-section-number">14.6</span> The same computation in Python and Julia<a class="anchor" aria-label="anchor" href="#the-same-computation-in-python-and-julia"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Python and Julia chunks build the same permutation matrix, print the same first row and give the same effect sizes and p-values to 12 decimals, together with the direct and the exact rank of <code>pi = 0.95</code> with 100 attaining cases.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb108-1"><a href="implementations.html#cb108-1" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb108-2"><a href="implementations.html#cb108-2" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb108-3"><a href="implementations.html#cb108-3" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb108-4"><a href="implementations.html#cb108-4" tabindex="-1"></a><span class="im">from</span> qnca <span class="im">import</span> qnca, qnca_rank</span>
+<span id="cb108-5"><a href="implementations.html#cb108-5" tabindex="-1"></a></span>
+<span id="cb108-6"><a href="implementations.html#cb108-6" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n100.csv"</span></span>
+<span id="cb108-7"><a href="implementations.html#cb108-7" tabindex="-1"></a>X, Y <span class="op">=</span> np.loadtxt(urlopen(url), delimiter<span class="op">=</span><span class="st">","</span>, skiprows<span class="op">=</span><span class="dv">1</span>, unpack<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb108-8"><a href="implementations.html#cb108-8" tabindex="-1"></a></span>
+<span id="cb108-9"><a href="implementations.html#cb108-9" tabindex="-1"></a><span class="kw">def</span> lcg(count, seed):</span>
+<span id="cb108-10"><a href="implementations.html#cb108-10" tabindex="-1"></a>    x <span class="op">=</span> np.empty(count)</span>
+<span id="cb108-11"><a href="implementations.html#cb108-11" tabindex="-1"></a>    s <span class="op">=</span> seed</span>
+<span id="cb108-12"><a href="implementations.html#cb108-12" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(count):</span>
+<span id="cb108-13"><a href="implementations.html#cb108-13" tabindex="-1"></a>        s <span class="op">=</span> (<span class="dv">16807</span> <span class="op">*</span> s) <span class="op">%</span> <span class="dv">2147483647</span></span>
+<span id="cb108-14"><a href="implementations.html#cb108-14" tabindex="-1"></a>        x[k] <span class="op">=</span> s</span>
+<span id="cb108-15"><a href="implementations.html#cb108-15" tabindex="-1"></a>    <span class="cf">return</span> x</span>
+<span id="cb108-16"><a href="implementations.html#cb108-16" tabindex="-1"></a></span>
+<span id="cb108-17"><a href="implementations.html#cb108-17" tabindex="-1"></a>B, n <span class="op">=</span> <span class="dv">199</span>, X.size</span>
+<span id="cb108-18"><a href="implementations.html#cb108-18" tabindex="-1"></a>perm <span class="op">=</span> np.argsort(lcg(B <span class="op">*</span> n, <span class="dv">1</span>).reshape(B, n), axis<span class="op">=</span><span class="dv">1</span>, kind<span class="op">=</span><span class="st">"stable"</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb108-19"><a href="implementations.html#cb108-19" tabindex="-1"></a><span class="bu">print</span>(perm[<span class="dv">0</span>, :<span class="dv">10</span>])</span>
+<span id="cb108-20"><a href="implementations.html#cb108-20" tabindex="-1"></a><span class="cf">for</span> pi <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>):</span>
+<span id="cb108-21"><a href="implementations.html#cb108-21" tabindex="-1"></a>    fit <span class="op">=</span> qnca(X, Y, pi<span class="op">=</span>pi, n_grid<span class="op">=</span><span class="dv">50</span>, scope<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">100</span>), permutations<span class="op">=</span>perm)</span>
+<span id="cb108-22"><a href="implementations.html#cb108-22" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>pi<span class="sc">:.2f}</span><span class="ss"> </span><span class="sc">{</span>fit<span class="sc">.</span>d_pi<span class="sc">:.12f}</span><span class="ss"> </span><span class="sc">{</span>fit<span class="sc">.</span>p_pi<span class="sc">:.12f}</span><span class="ss">"</span>)</span>
+<span id="cb108-23"><a href="implementations.html#cb108-23" tabindex="-1"></a><span class="bu">print</span>(math.ceil(<span class="dv">100</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> <span class="fl">0.95</span>)), qnca_rank(<span class="dv">100</span>, <span class="fl">0.95</span>))</span>
+<span id="cb108-24"><a href="implementations.html#cb108-24" tabindex="-1"></a><span class="co">#&gt; [ 1 18 83 14  7 34 78 15 60 20]</span></span>
+<span id="cb108-25"><a href="implementations.html#cb108-25" tabindex="-1"></a><span class="co">#&gt; 1.00 0.496231091316 0.005000000000</span></span>
+<span id="cb108-26"><a href="implementations.html#cb108-26" tabindex="-1"></a><span class="co">#&gt; 0.95 0.521827525269 0.005000000000</span></span>
+<span id="cb108-27"><a href="implementations.html#cb108-27" tabindex="-1"></a><span class="co">#&gt; 0.90 0.546650677260 0.005000000000</span></span>
+<span id="cb108-28"><a href="implementations.html#cb108-28" tabindex="-1"></a><span class="co">#&gt; 6 5</span></span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb109-1"><a href="implementations.html#cb109-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">QuantileNecessity</span>, <span class="bu">Downloads</span>, <span class="bu">DelimitedFiles</span>, <span class="bu">Printf</span></span>
+<span id="cb109-2"><a href="implementations.html#cb109-2" tabindex="-1"></a></span>
+<span id="cb109-3"><a href="implementations.html#cb109-3" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n100.csv"</span></span>
+<span id="cb109-4"><a href="implementations.html#cb109-4" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">readdlm</span>(<span class="bu">Downloads</span>.<span class="fu">download</span>(url), <span class="ch">','</span>, <span class="dt">Float64</span>; skipstart <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb109-5"><a href="implementations.html#cb109-5" tabindex="-1"></a>X, Y <span class="op">=</span> data[<span class="op">:</span>, <span class="fl">1</span>], data[<span class="op">:</span>, <span class="fl">2</span>]</span>
+<span id="cb109-6"><a href="implementations.html#cb109-6" tabindex="-1"></a></span>
+<span id="cb109-7"><a href="implementations.html#cb109-7" tabindex="-1"></a><span class="kw">function</span> <span class="fu">lcg</span>(count, seed)</span>
+<span id="cb109-8"><a href="implementations.html#cb109-8" tabindex="-1"></a>    x <span class="op">=</span> <span class="fu">zeros</span>(count)</span>
+<span id="cb109-9"><a href="implementations.html#cb109-9" tabindex="-1"></a>    s <span class="op">=</span> seed</span>
+<span id="cb109-10"><a href="implementations.html#cb109-10" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>count</span>
+<span id="cb109-11"><a href="implementations.html#cb109-11" tabindex="-1"></a>        s <span class="op">=</span> <span class="fu">mod</span>(<span class="fl">16807</span> <span class="op">*</span> s, <span class="fl">2147483647</span>)</span>
+<span id="cb109-12"><a href="implementations.html#cb109-12" tabindex="-1"></a>        x[k] <span class="op">=</span> s</span>
+<span id="cb109-13"><a href="implementations.html#cb109-13" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb109-14"><a href="implementations.html#cb109-14" tabindex="-1"></a>    <span class="cf">return</span> x</span>
+<span id="cb109-15"><a href="implementations.html#cb109-15" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb109-16"><a href="implementations.html#cb109-16" tabindex="-1"></a></span>
+<span id="cb109-17"><a href="implementations.html#cb109-17" tabindex="-1"></a>B, n <span class="op">=</span> <span class="fl">199</span>, <span class="fu">length</span>(X)</span>
+<span id="cb109-18"><a href="implementations.html#cb109-18" tabindex="-1"></a>u <span class="op">=</span> <span class="fu">permutedims</span>(<span class="fu">reshape</span>(<span class="fu">lcg</span>(B <span class="op">*</span> n, <span class="fl">1</span>), n, B))</span>
+<span id="cb109-19"><a href="implementations.html#cb109-19" tabindex="-1"></a>perm <span class="op">=</span> <span class="fu">reduce</span>(vcat, [<span class="fu">sortperm</span>(u[b, <span class="op">:</span>])<span class="ch">' for b in 1:B])</span></span>
+<span id="cb109-20"><a href="implementations.html#cb109-20" tabindex="-1"></a><span class="fu">println</span>(perm[<span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>])</span>
+<span id="cb109-21"><a href="implementations.html#cb109-21" tabindex="-1"></a>for <span class="cn">pi</span> <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>)</span>
+<span id="cb109-22"><a href="implementations.html#cb109-22" tabindex="-1"></a>    fit <span class="op">=</span> <span class="fu">qnca</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> <span class="cn">pi</span>, n_grid <span class="op">=</span> <span class="fl">50</span>, scope <span class="op">=</span> (<span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span>), permutations <span class="op">=</span> perm)</span>
+<span id="cb109-23"><a href="implementations.html#cb109-23" tabindex="-1"></a>    <span class="pp">@printf</span>(<span class="st">"%.2f %.12f %.12f</span><span class="sc">\n</span><span class="st">"</span>, <span class="cn">pi</span>, fit.d_pi, fit.p_pi)</span>
+<span id="cb109-24"><a href="implementations.html#cb109-24" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb109-25"><a href="implementations.html#cb109-25" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">ceil</span>(<span class="dt">Int</span>, <span class="fl">100</span> <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> <span class="fl">0.95</span>)), <span class="st">" "</span>, <span class="fu">qnca_rank</span>(<span class="fl">100</span>, <span class="fl">0.95</span>))</span>
+<span id="cb109-26"><a href="implementations.html#cb109-26" tabindex="-1"></a><span class="co">#&gt; [1, 18, 83, 14, 7, 34, 78, 15, 60, 20]</span></span>
+<span id="cb109-27"><a href="implementations.html#cb109-27" tabindex="-1"></a><span class="co">#&gt; 1.00 0.496231091316 0.005000000000</span></span>
+<span id="cb109-28"><a href="implementations.html#cb109-28" tabindex="-1"></a><span class="co">#&gt; 0.95 0.521827525269 0.005000000000</span></span>
+<span id="cb109-29"><a href="implementations.html#cb109-29" tabindex="-1"></a><span class="co">#&gt; 0.90 0.546650677260 0.005000000000</span></span>
+<span id="cb109-30"><a href="implementations.html#cb109-30" tabindex="-1"></a><span class="co">#&gt; 6 5</span></span></code></pre></div>
+<p>Equal effect sizes need the same data, scope, grid and tolerance, and equal p-values need in addition the same permutation matrix; with both, an analysis moves between R, Python and Julia with every reported number unchanged.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></div>
+<div class="next"><a href="references.html">References</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#implementations"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="nav-link" href="#installation"><span class="header-section-number">14.1</span> Installation</a></li>
+<li><a class="nav-link" href="#functions-across-the-three-languages"><span class="header-section-number">14.2</span> Functions across the three languages</a></li>
+<li><a class="nav-link" href="#the-selected-rank-from-the-exact-decimal-of-the-tolerance-1"><span class="header-section-number">14.3</span> The selected rank from the exact decimal of the tolerance</a></li>
+<li><a class="nav-link" href="#agreement-to-floating-point"><span class="header-section-number">14.4</span> Agreement to floating point</a></li>
+<li><a class="nav-link" href="#a-shared-permutation-matrix"><span class="header-section-number">14.5</span> A shared permutation matrix</a></li>
+<li><a class="nav-link" href="#the-same-computation-in-python-and-julia"><span class="header-section-number">14.6</span> The same computation in Python and Julia</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/14-implementations.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/14-implementations.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

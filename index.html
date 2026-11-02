@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Preface | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="A guide to Quantile Necessary Condition Analysis (QNCA) with the qnca packages for R and Python and the QuantileNecessity package for Julia.">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="Preface | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/">
+<meta property="og:description" content="A guide to Quantile Necessary Condition Analysis (QNCA) with the qnca packages for R and Python and the QuantileNecessity package for Julia.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Preface | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="A guide to Quantile Necessary Condition Analysis (QNCA) with the qnca packages for R and Python and the QuantileNecessity package for Julia.">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="active" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><!--bookdown:title:end--><!--bookdown:title:start--><div id="preface" class="section level1 unnumbered">
+<h1>Preface<a class="anchor" aria-label="anchor" href="#preface"><i class="fas fa-link"></i></a>
+</h1>
+<p>Quantile Necessary Condition Analysis (QNCA) asks how much of a condition the successful cases hold when a stated share of the successful cases may sit below the reported requirement. For each target level of an outcome, QNCA takes the cases that reach the target and reports a low quantile of the condition among the cases. The tolerance <code>pi</code> in (0, 1] fixes the share <code>1 - pi</code> of successful cases that may fall below the requirement. At <code>pi = 1</code> the requirement is the lowest condition value among the successful cases, which is the CE-FDH ceiling of Necessary Condition Analysis (NCA) <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. At <code>pi = 0.95</code> the requirement admits five percent of the successful cases below the reported level <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<p>The guide explains the method and the software through one question per chapter. Each chapter defines the quantities the chapter uses and reads without the other chapters. Each chapter computes the example of the chapter in R and repeats the central call in Python and Julia, and every number in the text is the output of the code shown beside the number. The books of Jan Dul describe the procedure of NCA from theory to reporting <span class="citation">(<a href="references.html#ref-Dul2020">Dul 2020</a>, <a href="references.html#ref-DulAdvancesNCA">2025</a>)</span>; the guide cites the books for the procedure of NCA and builds the route of QNCA from the tolerance.</p>
+<div class="inline-table"><table class="table table-sm">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Chapter</th>
+<th>Question</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>What does a necessity claim assert about an outcome target?</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Which cases and which scope does an analysis use?</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>How does the CE-FDH ceiling set the strict requirement?</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>How does the tolerance select the reported requirement?</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>How does the frontier become non-decreasing?</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>How large is the empty zone?</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Could an empty zone of the observed size arise under independence?</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>What level of the condition does each target require?</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Which requirements rest on a few efficient cases?</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Does the empty zone exceed the dependence of the two variables?</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>How does QNCA relate to other frontier methods?</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>What does QNCA add to a published NCA application?</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>How does a report present QNCA, and how does cIPMA use QNCA?</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>How do the R, Python and Julia implementations correspond?</td>
+</tr>
+</tbody>
+</table></div>
+<div id="software" class="section level2 unnumbered">
+<h2>Software<a class="anchor" aria-label="anchor" href="#software"><i class="fas fa-link"></i></a>
+</h2>
+<p>The R and Python packages are named <code>qnca</code>, and the Julia package is named <code>QuantileNecessity</code>. The three implementations give the same effect sizes and the same bottlenecks on the same data.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"qnca"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="index.html#cb2-1" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install qnca</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="index.html#cb3-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
+<span id="cb3-2"><a href="index.html#cb3-2" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"QuantileNecessity"</span>)</span></code></pre></div>
+<p>The development versions install from the repository <a href="https://github.com/MarekDejaUJ/qnca" class="uri">https://github.com/MarekDejaUJ/qnca</a>, which also holds the datasets of the guide in the <code>data</code> folder. The examples read the datasets from the repository over the internet, so every example runs as printed.</p>
+</div>
+<div id="citation" class="section level2 unnumbered">
+<h2>Citation<a class="anchor" aria-label="anchor" href="#citation"><i class="fas fa-link"></i></a>
+</h2>
+<p>The article that introduces the method is <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span>. The software of release 0.4.0 is archived at Zenodo <span class="citation">(<a href="references.html#ref-Deja2026qnca">Deja 2026a</a>)</span>.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="empty"></div>
+<div class="next"><a href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#preface">Preface</a></li>
+<li><a class="nav-link" href="#software">Software</a></li>
+<li><a class="nav-link" href="#citation">Citation</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/index.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/index.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

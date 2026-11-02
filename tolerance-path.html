@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>9 Paths across tolerances and outlier-fragility | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="The CE-FDH ceiling of Necessary Condition Analysis (NCA) sets the bottleneck at each outcome target to the lowest condition value among the cases that reach the target, so one case holds each...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="9 Paths across tolerances and outlier-fragility | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/tolerance-path.html">
+<meta property="og:description" content="The CE-FDH ceiling of Necessary Condition Analysis (NCA) sets the bottleneck at each outcome target to the lowest condition value among the cases that reach the target, so one case holds each...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="9 Paths across tolerances and outlier-fragility | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="The CE-FDH ceiling of Necessary Condition Analysis (NCA) sets the bottleneck at each outcome target to the lowest condition value among the cases that reach the target, so one case holds each...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="active" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="tolerance-path" class="section level1" number="9">
+<h1>
+<span class="header-section-number">9</span> Paths across tolerances and outlier-fragility<a class="anchor" aria-label="anchor" href="#tolerance-path"><i class="fas fa-link"></i></a>
+</h1>
+<p>The CE-FDH ceiling of Necessary Condition Analysis (NCA) sets the bottleneck at each outcome target to the lowest condition value among the cases that reach the target, so one case holds each strict bottleneck <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. One valid but unusual efficient case, with a high outcome and a low condition, can lower several bottlenecks and shrink the empty-zone effect size <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The ceiling is the strictest boundary that every observed case respects, so one case suffices to move the ceiling <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<p>Quantile Necessary Condition Analysis (QNCA) indexes the frontier by a tolerance <code>pi</code> in (0, 1], which fixes the share <code>1 - pi</code> of successful cases that may sit below the requirement <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. At a target <span class="math inline">\(y_j\)</span> of the outcome grid, <span class="math inline">\(k_j\)</span> cases reach <span class="math inline">\(Y \ge y_j\)</span>, and the raw frontier returns the condition value of rank <span class="math inline">\(h_j = \max\{1, \lceil k_j (1 - \pi) \rceil\}\)</span> among the <span class="math inline">\(k_j\)</span> cases. The monotone envelope takes the running maximum over the lower targets, and the fixed scope sets the requirement to the upper condition bound above the largest observed outcome. The effect size <code>d_pi</code> divides the area left of the fitted frontier by the area of the scope rectangle.</p>
+<div id="resistance-to-added-cases" class="section level2" number="9.1">
+<h2>
+<span class="header-section-number">9.1</span> Resistance to added cases<a class="anchor" aria-label="anchor" href="#resistance-to-added-cases"><i class="fas fa-link"></i></a>
+</h2>
+<p>The resistance proposition of <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span> bounds the effect of <span class="math inline">\(c\)</span> cases added at arbitrary positions in the scope. At a target with <span class="math inline">\(h_j &gt; c\)</span>, the raw requirement of the augmented sample lies at or above the <span class="math inline">\((h_j - c)\)</span>th smallest condition value of the original successful cases, and at or below the <span class="math inline">\((h_j + c)\)</span>th smallest value whenever <span class="math inline">\(h_j + c \le k_j\)</span>. The envelope carries the lower bound to every higher target. The condition <span class="math inline">\(h_j &gt; c\)</span> reads <span class="math inline">\(k_j &gt; c/(1 - \pi)\)</span>, so at <code>pi = 0.95</code> one added case is absorbed wherever more than 20 original cases reach the target. At <code>pi = 1</code>, the rank is 1 at every target, and one added case can lower every bottleneck the added case attains to the condition value of the added case.</p>
+</div>
+<div id="the-tolerance-path" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">9.2</span> The tolerance path<a class="anchor" aria-label="anchor" href="#the-tolerance-path"><i class="fas fa-link"></i></a>
+</h2>
+<p>At a grid target <span class="math inline">\(y_j\)</span>, the pointwise gap is <span class="math inline">\(g_\pi(y_j) = \tilde\varphi_\pi(y_j) - \tilde\varphi_1(y_j)\)</span>, and the effect-size gap is <span class="math inline">\(g_d(\pi) = d_\pi - d_1\)</span> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. Both gaps are zero at <code>pi = 1</code> and non-negative at <code>pi &lt; 1</code>, because a lower tolerance selects an order statistic of equal or higher rank at every target. A positive pointwise gap identifies a target whose CE-FDH bottleneck rests on the most efficient successful cases.</p>
+<p>A flat path over tolerances fixed in advance suggests limited dependence on the cases with the lowest condition values, and a steep path flags outlier-fragility at the affected targets <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The pointwise path is the primary display, because decisions concern particular targets and the area gap can be small when a large local change covers a narrow range of targets. The diagnostic sets no pass-or-fail cut-off; the path shows which outcome targets depend on exceptional observed successes <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="a-clean-and-a-planted-sample" class="section level2" number="9.3">
+<h2>
+<span class="header-section-number">9.3</span> A clean and a planted sample<a class="anchor" aria-label="anchor" href="#a-clean-and-a-planted-sample"><i class="fas fa-link"></i></a>
+</h2>
+<p>The synthetic dataset of 500 cases of the <code>qnca</code> repository has a condition and an outcome on a scale from 0 to 100, and the analysis fixes the scope at [0, 100] x [0, 100]. The planted sample adds one efficient case at (X, Y) = (2, 95). The path runs over the tolerances 1.00, 0.99, …, 0.90, rounded to two decimals because the package reads a tolerance as a decimal with at most nine places.</p>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n500.csv"</span><span class="op">)</span></span>
+<span><span class="va">scope</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">planted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>X <span class="op">=</span> <span class="fl">2</span>, Y <span class="op">=</span> <span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.90</span>, by <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">d_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">pis</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="va">p</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">d_pi</span><span class="op">)</span></span>
+<span><span class="va">d_planted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">pis</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">qnca</span><span class="op">(</span><span class="va">planted</span><span class="op">$</span><span class="va">X</span>, <span class="va">planted</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="va">p</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">d_pi</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>pi <span class="op">=</span> <span class="va">pis</span>, <span class="va">d_clean</span>, gap_clean <span class="op">=</span> <span class="va">d_clean</span> <span class="op">-</span> <span class="va">d_clean</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>                   <span class="va">d_planted</span>, gap_planted <span class="op">=</span> <span class="va">d_planted</span> <span class="op">-</span> <span class="va">d_planted</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">path</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      pi d_clean gap_clean d_planted gap_planted</span></span>
+<span><span class="co">#&gt; 1  1.00   0.452     0.000     0.066       0.000</span></span>
+<span><span class="co">#&gt; 2  0.99   0.464     0.012     0.201       0.135</span></span>
+<span><span class="co">#&gt; 3  0.98   0.479     0.027     0.324       0.258</span></span>
+<span><span class="co">#&gt; 4  0.97   0.489     0.037     0.393       0.327</span></span>
+<span><span class="co">#&gt; 5  0.96   0.502     0.050     0.429       0.363</span></span>
+<span><span class="co">#&gt; 6  0.95   0.510     0.058     0.439       0.373</span></span>
+<span><span class="co">#&gt; 7  0.94   0.520     0.068     0.472       0.406</span></span>
+<span><span class="co">#&gt; 8  0.93   0.532     0.080     0.479       0.413</span></span>
+<span><span class="co">#&gt; 9  0.92   0.542     0.090     0.498       0.432</span></span>
+<span><span class="co">#&gt; 10 0.91   0.547     0.095     0.521       0.455</span></span>
+<span><span class="co">#&gt; 11 0.90   0.558     0.106     0.533       0.467</span></span></code></pre></div>
+<p>On the clean sample, <code>d_pi</code> rises from 0.452 at <code>pi = 1</code> to 0.558 at <code>pi = 0.90</code>, and the gap at <code>pi = 0.95</code> is 0.058. The planted case lowers the strict effect size to 0.066 and the effect size at <code>pi = 0.95</code> to 0.439, and the gap at <code>pi = 0.95</code> widens to 0.373. The planted path is steep at the first steps, with the effect size rising from 0.066 at <code>pi = 1</code> to 0.324 at <code>pi = 0.98</code>.</p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">frontiers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>tolerance <span class="op">=</span> <span class="st">"pi = 1.00"</span>,</span>
+<span>             <span class="fu">qnca</span><span class="op">(</span><span class="va">planted</span><span class="op">$</span><span class="va">X</span>, <span class="va">planted</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">1</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">bottleneck</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>tolerance <span class="op">=</span> <span class="st">"pi = 0.95"</span>,</span>
+<span>             <span class="fu">qnca</span><span class="op">(</span><span class="va">planted</span><span class="op">$</span><span class="va">X</span>, <span class="va">planted</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">bottleneck</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">frontiers</span><span class="op">$</span><span class="va">tolerance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">frontiers</span><span class="op">$</span><span class="va">tolerance</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pi = 1.00"</span>, <span class="st">"pi = 0.95"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, colour <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_path</span><span class="op">(</span>data <span class="op">=</span> <span class="va">frontiers</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">X_required</span>, <span class="va">outcome_level</span>, linetype <span class="op">=</span> <span class="va">tolerance</span><span class="op">)</span>,</span>
+<span>            colour <span class="op">=</span> <span class="st">"grey10"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">annotate</span><span class="op">(</span><span class="st">"point"</span>, x <span class="op">=</span> <span class="fl">2</span>, y <span class="op">=</span> <span class="fl">95</span>, shape <span class="op">=</span> <span class="fl">17</span>, size <span class="op">=</span> <span class="fl">2.5</span>, colour <span class="op">=</span> <span class="st">"grey10"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_equal</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Condition X"</span>, y <span class="op">=</span> <span class="st">"Outcome Y"</span>, linetype <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:tolerance-path-frontiers"></span>
+<img src="qnca-guide_files/figure-html/tolerance-path-frontiers-1.png" alt="The 500 cases of the synthetic dataset (grey dots) with one planted efficient case at (2, 95) (triangle), fixed scope [0, 100] x [0, 100], grid of 50 outcome targets. The fitted frontier at pi = 1.00 falls to the condition value of the planted case, or lower, at every target the planted case attains; the fitted frontier at pi = 0.95 holds the requirement of the target 67.35, the last target reached by more than 20 cases, up to the outcome 95 of the planted case." width="85%"><p class="caption">
+Figure 9.1: The 500 cases of the synthetic dataset (grey dots) with one planted efficient case at (2, 95) (triangle), fixed scope [0, 100] x [0, 100], grid of 50 outcome targets. The fitted frontier at pi = 1.00 falls to the condition value of the planted case, or lower, at every target the planted case attains; the fitted frontier at pi = 0.95 holds the requirement of the target 67.35, the last target reached by more than 20 cases, up to the outcome 95 of the planted case.
+</p>
+</div>
+</div>
+<div id="the-pointwise-path" class="section level2" number="9.4">
+<h2>
+<span class="header-section-number">9.4</span> The pointwise path<a class="anchor" aria-label="anchor" href="#the-pointwise-path"><i class="fas fa-link"></i></a>
+</h2>
+<p>The summary counts the targets with a positive pointwise gap at the tolerances 0.95 and 0.90 and reports the largest gap and the target of the largest gap.</p>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gap_rows</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">label</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">strict</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">X</span>, <span class="va">data</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">1</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">bottleneck</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">0.90</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">X</span>, <span class="va">data</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="va">p</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">bottleneck</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">label</span>, tolerance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"pi = %.2f"</span>, <span class="va">p</span><span class="op">)</span>,</span>
+<span>               target <span class="op">=</span> <span class="va">b</span><span class="op">$</span><span class="va">outcome_level</span>, gap <span class="op">=</span> <span class="va">b</span><span class="op">$</span><span class="va">X_required</span> <span class="op">-</span> <span class="va">strict</span><span class="op">$</span><span class="va">X_required</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">pointwise</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="fu">gap_rows</span><span class="op">(</span><span class="va">d</span>, <span class="st">"clean sample"</span><span class="op">)</span>, <span class="fu">gap_rows</span><span class="op">(</span><span class="va">planted</span>, <span class="st">"planted sample"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pointwise</span><span class="op">$</span><span class="va">tolerance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">pointwise</span><span class="op">$</span><span class="va">tolerance</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pi = 0.95"</span>, <span class="st">"pi = 0.90"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">summary_gap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">pointwise</span>, <span class="op">~</span> <span class="va">tolerance</span> <span class="op">+</span> <span class="va">sample</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">g</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, tolerance <span class="op">=</span> <span class="va">g</span><span class="op">$</span><span class="va">tolerance</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>             positive_targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">g</span><span class="op">$</span><span class="va">gap</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>, max_gap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">g</span><span class="op">$</span><span class="va">gap</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>             at_target <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">g</span><span class="op">$</span><span class="va">target</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">g</span><span class="op">$</span><span class="va">gap</span><span class="op">)</span><span class="op">]</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">summary_gap</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span><span class="va">summary_gap</span></span>
+<span><span class="co">#&gt;           sample tolerance positive_targets max_gap at_target</span></span>
+<span><span class="co">#&gt; 1   clean sample pi = 0.95               34    19.0      18.4</span></span>
+<span><span class="co">#&gt; 2   clean sample pi = 0.90               41    23.6      18.4</span></span>
+<span><span class="co">#&gt; 3 planted sample pi = 0.95               47    59.9      61.2</span></span>
+<span><span class="co">#&gt; 4 planted sample pi = 0.90               47    78.9      73.5</span></span></code></pre></div>
+<p>At <code>pi = 0.95</code>, the clean sample has a positive gap at 34 of the 50 targets, with a largest gap of 19.0 at the target 18.4. The planted sample has a positive gap at 47 targets, with a largest gap of 59.9 at the target 61.2, because the strict frontier falls to the planted case.</p>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">pointwise</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">target</span>, <span class="va">gap</span>, linetype <span class="op">=</span> <span class="va">tolerance</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"grey10"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">sample</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Outcome target"</span>, y <span class="op">=</span> <span class="st">"Pointwise gap"</span>, linetype <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:tolerance-path-pointwise-figure"></span>
+<img src="qnca-guide_files/figure-html/tolerance-path-pointwise-figure-1.png" alt="Pointwise gap between the fitted frontier at pi = 0.95 or 0.90 and the fitted frontier at pi = 1.00 at each of the 50 outcome targets, for the synthetic dataset of 500 cases (clean sample) and for the same data with one planted case at (2, 95) (planted sample), fixed scope [0, 100] x [0, 100]." width="85%"><p class="caption">
+Figure 9.2: Pointwise gap between the fitted frontier at pi = 0.95 or 0.90 and the fitted frontier at pi = 1.00 at each of the 50 outcome targets, for the synthetic dataset of 500 cases (clean sample) and for the same data with one planted case at (2, 95) (planted sample), fixed scope [0, 100] x [0, 100].
+</p>
+</div>
+</div>
+<div id="the-resistance-bound-on-the-planted-sample" class="section level2" number="9.5">
+<h2>
+<span class="header-section-number">9.5</span> The resistance bound on the planted sample<a class="anchor" aria-label="anchor" href="#the-resistance-bound-on-the-planted-sample"><i class="fas fa-link"></i></a>
+</h2>
+<p>The check applies the proposition with <span class="math inline">\(c = 1\)</span> at the targets where the clean sample selects a rank above 1 at <code>pi = 0.95</code>.</p>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">clean_res</span> <span class="op">&lt;-</span> <span class="fu">qnca_resolution</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="va">planted_res</span> <span class="op">&lt;-</span> <span class="fu">qnca_resolution</span><span class="op">(</span><span class="va">planted</span><span class="op">$</span><span class="va">X</span>, <span class="va">planted</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="va">resolved</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">clean_res</span><span class="op">$</span><span class="va">rank</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">bounds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">resolved</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span><span class="op">[</span><span class="va">d</span><span class="op">$</span><span class="va">Y</span> <span class="op">&gt;=</span> <span class="va">clean_res</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">h</span> <span class="op">&lt;-</span> <span class="va">clean_res</span><span class="op">$</span><span class="va">rank</span><span class="op">[</span><span class="va">j</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="va">h</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span>, upper <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="va">h</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">raw_planted</span> <span class="op">&lt;-</span> <span class="va">planted_res</span><span class="op">$</span><span class="va">raw</span><span class="op">[</span><span class="va">resolved</span><span class="op">]</span></span>
+<span><span class="va">last</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">clean_res</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="va">resolved</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">upper_band</span> <span class="op">&lt;-</span> <span class="va">planted_res</span><span class="op">$</span><span class="va">y</span> <span class="op">&gt;</span> <span class="va">last</span> <span class="op">&amp;</span> <span class="va">planted_res</span><span class="op">$</span><span class="va">y</span> <span class="op">&lt;</span> <span class="fl">95</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>resolved_targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">resolved</span><span class="op">)</span>, last_resolved <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">last</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>           within_bounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="va">raw_planted</span> <span class="op">&gt;=</span> <span class="va">bounds</span><span class="op">[</span>, <span class="st">"lower"</span><span class="op">]</span> <span class="op">&amp;</span> <span class="va">raw_planted</span> <span class="op">&lt;=</span> <span class="va">bounds</span><span class="op">[</span>, <span class="st">"upper"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>           raw_above_last <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">planted_res</span><span class="op">$</span><span class="va">raw</span><span class="op">[</span><span class="va">upper_band</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>           fitted_above_last <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">planted_res</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="va">upper_band</span><span class="op">]</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   resolved_targets last_resolved within_bounds raw_above_last fitted_above_last</span></span>
+<span><span class="co">#&gt; 1               34         67.35          TRUE              2             61.87</span></span></code></pre></div>
+<p>At <code>pi = 0.95</code>, 34 targets of the clean sample are reached by more than 20 cases, the last at the target 67.35. At each of the 34 targets, the raw requirement of the planted sample lies between the original order statistics of rank <span class="math inline">\(h_j - 1\)</span> and <span class="math inline">\(h_j + 1\)</span>, as the proposition states for one added case. Between the target 67.35 and the outcome 95 of the planted case, the raw requirement falls to the condition value 2 of the planted case, and the envelope holds the requirement of 61.87 reached at the target 67.35.</p>
+</div>
+<div id="deletion-and-addition-screens" class="section level2" number="9.6">
+<h2>
+<span class="header-section-number">9.6</span> Deletion and addition screens<a class="anchor" aria-label="anchor" href="#deletion-and-addition-screens"><i class="fas fa-link"></i></a>
+</h2>
+<p>The deletion screen <code>qnca_outliers()</code> with <code>k = 1</code> deletes each case in turn, recomputes <code>d_pi</code> at the tolerances 1.00, 0.95 and 0.90 on the fixed scope and flags a case whose deletion changes an effect size by at least one percent, in the manner of the NCA outlier screen <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cases"</span>, <span class="st">"flagged"</span>, <span class="st">"dif_rel_1"</span>, <span class="st">"dif_rel_0.95"</span>, <span class="st">"dif_rel_0.9"</span><span class="op">)</span></span>
+<span><span class="va">screen</span> <span class="op">&lt;-</span> <span class="fu">qnca_outliers</span><span class="op">(</span><span class="va">planted</span><span class="op">$</span><span class="va">X</span>, <span class="va">planted</span><span class="op">$</span><span class="va">Y</span>, k <span class="op">=</span> <span class="fl">1</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">screen</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="va">columns</span><span class="op">]</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   cases flagged dif_rel_1 dif_rel_0.95  dif_rel_0.9</span></span>
+<span><span class="co">#&gt; 1   501    TRUE  5.842138  0.161466614  0.047133903</span></span>
+<span><span class="co">#&gt; 2   451    TRUE  0.000000  0.058531148  0.005571610</span></span>
+<span><span class="co">#&gt; 3     1   FALSE  0.000000 -0.001375784 -0.008616346</span></span>
+<span><span class="va">clean_screen</span> <span class="op">&lt;-</span> <span class="fu">qnca_outliers</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, k <span class="op">=</span> <span class="fl">1</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">clean_screen</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="va">columns</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   cases flagged   dif_rel_1 dif_rel_0.95  dif_rel_0.9</span></span>
+<span><span class="co">#&gt; 1   195    TRUE 0.011041718  0.001903504  0.003738626</span></span>
+<span><span class="co">#&gt; 2   451   FALSE 0.005851533  0.008940018 -0.000354705</span></span></code></pre></div>
+<p>On the planted sample, the planted case 501 heads the screen with relative changes of 5.84 at <code>pi = 1</code>, 0.161 at <code>pi = 0.95</code> and 0.047 at <code>pi = 0.90</code>. On the clean sample, the screen flags case 195, a draw of the generator, with a relative change of 0.011 at <code>pi = 1</code>.</p>
+<p>Deletion and the tolerance path answer different questions: deletion asks whether a case belongs in the data, whereas the tolerance path keeps the case and reports how the estimator responds across tolerances fixed in advance <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. NCA guidance asks whether a ceiling case reflects error, another population or valid heterogeneity, and ties removal to evidence of error or of another population <span class="citation">(<a href="references.html#ref-DulHauffBouncken2023">Dul et al. 2023</a>)</span>.</p>
+<p>The addition screen <code>qnca_sensitivity()</code> adds 0 to 5 copies of the planted case to the clean sample and reports the retained share of the clean effect size, the empirical breakdown curve of <code>d_pi</code>.</p>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">added</span> <span class="op">&lt;-</span> <span class="fu">qnca_sensitivity</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">95</span><span class="op">)</span>, counts <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">5</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="va">retention</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>added <span class="op">=</span> <span class="va">added</span><span class="op">$</span><span class="va">counts</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">added</span><span class="op">$</span><span class="va">retention</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">retention</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"pi_%.2f"</span>, <span class="va">added</span><span class="op">$</span><span class="va">pi</span><span class="op">)</span></span>
+<span><span class="va">retention</span></span>
+<span><span class="co">#&gt;   added pi_1.00 pi_0.95 pi_0.90</span></span>
+<span><span class="co">#&gt; 1     0   1.000   1.000   1.000</span></span>
+<span><span class="co">#&gt; 2     1   0.146   0.861   0.955</span></span>
+<span><span class="co">#&gt; 3     2   0.146   0.760   0.858</span></span>
+<span><span class="co">#&gt; 4     3   0.146   0.669   0.833</span></span>
+<span><span class="co">#&gt; 5     4   0.146   0.597   0.743</span></span>
+<span><span class="co">#&gt; 6     5   0.146   0.441   0.703</span></span></code></pre></div>
+<p>One added case leaves the strict member 0.146 of the clean effect size, and further copies keep the strict share at 0.146, because the first copy already sets the ceiling at every target the copies attain. The member at <code>pi = 0.95</code> retains 0.861 with one added case and 0.441 with five, and the member at <code>pi = 0.90</code> retains 0.955 and 0.703. The copies sit at the outcome 95, in the sparse top of the outcome range, where the resistance of the tolerant members weakens <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">curve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>added <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">added</span><span class="op">$</span><span class="va">counts</span>, times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">added</span><span class="op">$</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                    tolerance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"pi = %.2f"</span>, <span class="va">added</span><span class="op">$</span><span class="va">pi</span><span class="op">)</span>, each <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">added</span><span class="op">$</span><span class="va">counts</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                    retention <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">added</span><span class="op">$</span><span class="va">retention</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">curve</span><span class="op">$</span><span class="va">tolerance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">curve</span><span class="op">$</span><span class="va">tolerance</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"pi = %.2f"</span>, <span class="va">added</span><span class="op">$</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">curve</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">added</span>, <span class="va">retention</span>, linetype <span class="op">=</span> <span class="va">tolerance</span>, shape <span class="op">=</span> <span class="va">tolerance</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"grey20"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"grey20"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Added cases at (2, 95)"</span>, y <span class="op">=</span> <span class="st">"Share of the clean effect size"</span>,</span>
+<span>       linetype <span class="op">=</span> <span class="cn">NULL</span>, shape <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:tolerance-path-breakdown"></span>
+<img src="qnca-guide_files/figure-html/tolerance-path-breakdown-1.png" alt="Breakdown curves for the synthetic dataset of 500 cases: the share of the clean effect size d_pi retained after adding 0 to 5 cases at (2, 95), at the tolerances pi = 1.00, 0.95 and 0.90, fixed scope [0, 100] x [0, 100], grid of 50 outcome targets." width="85%"><p class="caption">
+Figure 9.3: Breakdown curves for the synthetic dataset of 500 cases: the share of the clean effect size d_pi retained after adding 0 to 5 cases at (2, 95), at the tolerances pi = 1.00, 0.95 and 0.90, fixed scope [0, 100] x [0, 100], grid of 50 outcome targets.
+</p>
+</div>
+<p>The file <code>outlier_diagnostic.csv</code> of the repository stores the planted-boundary example of <span class="citation">Deja (<a href="references.html#ref-Deja2026QNCA">2026b</a>)</span>, a sample of 300 cases with the same planted case.</p>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/outlier_diagnostic.csv"</span>,</span>
+<span>         check.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                     case d_pi_1.00 d_pi_0.95      gap</span></span>
+<span><span class="co">#&gt; 1                  clean  0.457386  0.515699 0.058312</span></span>
+<span><span class="co">#&gt; 2 with_efficient_outlier  0.064953  0.451162 0.386209</span></span></code></pre></div>
+<p>In the stored example, the strict effect size falls from 0.457 to 0.065, the effect size at <code>pi = 0.95</code> moves from 0.516 to 0.451, and the gap widens from 0.058 to 0.386.</p>
+</div>
+<div id="outlier-fragility-and-spuriousness" class="section level2" number="9.7">
+<h2>
+<span class="header-section-number">9.7</span> Outlier-fragility and spuriousness<a class="anchor" aria-label="anchor" href="#outlier-fragility-and-spuriousness"><i class="fas fa-link"></i></a>
+</h2>
+<p>Outlier-fragility and spuriousness are different failure modes. Outlier-fragility means that one or a few efficient cases hold the estimated boundary, and the tolerance path diagnoses outlier-fragility. Spuriousness means that correlation, skewness or a sufficiency relation produces the empty zone, and a spurious empty zone moves all members of the path together, so a flat path is compatible with spuriousness <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The permutation test and the dependence-matched reference band of the function <code>spuriousness_band()</code> address spuriousness, and the band is a proposed diagnostic with operating characteristics still to be established <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-same-path-in-python-and-julia" class="section level2" number="9.8">
+<h2>
+<span class="header-section-number">9.8</span> The same path in Python and Julia<a class="anchor" aria-label="anchor" href="#the-same-path-in-python-and-julia"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Python and Julia packages return the same effect sizes and the same breakdown curve.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb72-1"><a href="tolerance-path.html#cb72-1" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb72-2"><a href="tolerance-path.html#cb72-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb72-3"><a href="tolerance-path.html#cb72-3" tabindex="-1"></a><span class="im">from</span> qnca <span class="im">import</span> qnca, qnca_sensitivity</span>
+<span id="cb72-4"><a href="tolerance-path.html#cb72-4" tabindex="-1"></a></span>
+<span id="cb72-5"><a href="tolerance-path.html#cb72-5" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n500.csv"</span></span>
+<span id="cb72-6"><a href="tolerance-path.html#cb72-6" tabindex="-1"></a>X, Y <span class="op">=</span> np.loadtxt(urlopen(url), delimiter<span class="op">=</span><span class="st">","</span>, skiprows<span class="op">=</span><span class="dv">1</span>, unpack<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb72-7"><a href="tolerance-path.html#cb72-7" tabindex="-1"></a>scope <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb72-8"><a href="tolerance-path.html#cb72-8" tabindex="-1"></a>Xp, Yp <span class="op">=</span> np.append(X, <span class="fl">2.0</span>), np.append(Y, <span class="fl">95.0</span>)</span>
+<span id="cb72-9"><a href="tolerance-path.html#cb72-9" tabindex="-1"></a><span class="cf">for</span> pi <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>):</span>
+<span id="cb72-10"><a href="tolerance-path.html#cb72-10" tabindex="-1"></a>    clean <span class="op">=</span> qnca(X, Y, pi<span class="op">=</span>pi, B<span class="op">=</span><span class="va">None</span>, scope<span class="op">=</span>scope).d_pi</span>
+<span id="cb72-11"><a href="tolerance-path.html#cb72-11" tabindex="-1"></a>    with_case <span class="op">=</span> qnca(Xp, Yp, pi<span class="op">=</span>pi, B<span class="op">=</span><span class="va">None</span>, scope<span class="op">=</span>scope).d_pi</span>
+<span id="cb72-12"><a href="tolerance-path.html#cb72-12" tabindex="-1"></a>    <span class="bu">print</span>(pi, clean, with_case)</span>
+<span id="cb72-13"><a href="tolerance-path.html#cb72-13" tabindex="-1"></a>added <span class="op">=</span> qnca_sensitivity(X, Y, points<span class="op">=</span>(<span class="fl">2.0</span>, <span class="fl">95.0</span>), counts<span class="op">=</span><span class="bu">range</span>(<span class="dv">6</span>), scope<span class="op">=</span>scope)</span>
+<span id="cb72-14"><a href="tolerance-path.html#cb72-14" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(added.retention, <span class="dv">3</span>))</span>
+<span id="cb72-15"><a href="tolerance-path.html#cb72-15" tabindex="-1"></a><span class="co">#&gt; 1.0 0.4519739060081383 0.06605740917812972</span></span>
+<span id="cb72-16"><a href="tolerance-path.html#cb72-16" tabindex="-1"></a><span class="co">#&gt; 0.95 0.509730627746975 0.43886808414885725</span></span>
+<span id="cb72-17"><a href="tolerance-path.html#cb72-17" tabindex="-1"></a><span class="co">#&gt; 0.9 0.5583811027836546 0.533247086375451</span></span>
+<span id="cb72-18"><a href="tolerance-path.html#cb72-18" tabindex="-1"></a><span class="co">#&gt; [[1.    1.    1.   ]</span></span>
+<span id="cb72-19"><a href="tolerance-path.html#cb72-19" tabindex="-1"></a><span class="co">#&gt;  [0.146 0.861 0.955]</span></span>
+<span id="cb72-20"><a href="tolerance-path.html#cb72-20" tabindex="-1"></a><span class="co">#&gt;  [0.146 0.76  0.858]</span></span>
+<span id="cb72-21"><a href="tolerance-path.html#cb72-21" tabindex="-1"></a><span class="co">#&gt;  [0.146 0.669 0.833]</span></span>
+<span id="cb72-22"><a href="tolerance-path.html#cb72-22" tabindex="-1"></a><span class="co">#&gt;  [0.146 0.597 0.743]</span></span>
+<span id="cb72-23"><a href="tolerance-path.html#cb72-23" tabindex="-1"></a><span class="co">#&gt;  [0.146 0.441 0.703]]</span></span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb73-1"><a href="tolerance-path.html#cb73-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">QuantileNecessity</span>, <span class="bu">Downloads</span>, <span class="bu">DelimitedFiles</span></span>
+<span id="cb73-2"><a href="tolerance-path.html#cb73-2" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="tolerance-path.html#cb73-3" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n500.csv"</span></span>
+<span id="cb73-4"><a href="tolerance-path.html#cb73-4" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">readdlm</span>(<span class="bu">Downloads</span>.<span class="fu">download</span>(url), <span class="ch">','</span>, <span class="dt">Float64</span>; skipstart <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb73-5"><a href="tolerance-path.html#cb73-5" tabindex="-1"></a>X, Y <span class="op">=</span> data[<span class="op">:</span>, <span class="fl">1</span>], data[<span class="op">:</span>, <span class="fl">2</span>]</span>
+<span id="cb73-6"><a href="tolerance-path.html#cb73-6" tabindex="-1"></a>scope <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb73-7"><a href="tolerance-path.html#cb73-7" tabindex="-1"></a>Xp, Yp <span class="op">=</span> <span class="fu">vcat</span>(X, <span class="fl">2.0</span>), <span class="fu">vcat</span>(Y, <span class="fl">95.0</span>)</span>
+<span id="cb73-8"><a href="tolerance-path.html#cb73-8" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>)</span>
+<span id="cb73-9"><a href="tolerance-path.html#cb73-9" tabindex="-1"></a>    clean <span class="op">=</span> <span class="fu">qnca</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> p, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> scope).d_pi</span>
+<span id="cb73-10"><a href="tolerance-path.html#cb73-10" tabindex="-1"></a>    with_case <span class="op">=</span> <span class="fu">qnca</span>(Xp, Yp; <span class="cn">pi</span> <span class="op">=</span> p, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> scope).d_pi</span>
+<span id="cb73-11"><a href="tolerance-path.html#cb73-11" tabindex="-1"></a>    <span class="fu">println</span>(p, <span class="st">" "</span>, clean, <span class="st">" "</span>, with_case)</span>
+<span id="cb73-12"><a href="tolerance-path.html#cb73-12" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb73-13"><a href="tolerance-path.html#cb73-13" tabindex="-1"></a>added <span class="op">=</span> <span class="fu">qnca_sensitivity</span>(X, Y; points <span class="op">=</span> (<span class="fl">2.0</span>, <span class="fl">95.0</span>), counts <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">5</span>, scope <span class="op">=</span> scope)</span>
+<span id="cb73-14"><a href="tolerance-path.html#cb73-14" tabindex="-1"></a><span class="fu">foreach</span>(println, <span class="fu">eachrow</span>(<span class="fu">round</span>.(added.retention; digits <span class="op">=</span> <span class="fl">3</span>)))</span>
+<span id="cb73-15"><a href="tolerance-path.html#cb73-15" tabindex="-1"></a><span class="co">#&gt; 1.0 0.4519739060081383 0.06605740917812972</span></span>
+<span id="cb73-16"><a href="tolerance-path.html#cb73-16" tabindex="-1"></a><span class="co">#&gt; 0.95 0.5097306277469752 0.43886808414885736</span></span>
+<span id="cb73-17"><a href="tolerance-path.html#cb73-17" tabindex="-1"></a><span class="co">#&gt; 0.9 0.5583811027836548 0.533247086375451</span></span>
+<span id="cb73-18"><a href="tolerance-path.html#cb73-18" tabindex="-1"></a><span class="co">#&gt; [1.0, 1.0, 1.0]</span></span>
+<span id="cb73-19"><a href="tolerance-path.html#cb73-19" tabindex="-1"></a><span class="co">#&gt; [0.146, 0.861, 0.955]</span></span>
+<span id="cb73-20"><a href="tolerance-path.html#cb73-20" tabindex="-1"></a><span class="co">#&gt; [0.146, 0.76, 0.858]</span></span>
+<span id="cb73-21"><a href="tolerance-path.html#cb73-21" tabindex="-1"></a><span class="co">#&gt; [0.146, 0.669, 0.833]</span></span>
+<span id="cb73-22"><a href="tolerance-path.html#cb73-22" tabindex="-1"></a><span class="co">#&gt; [0.146, 0.597, 0.743]</span></span>
+<span id="cb73-23"><a href="tolerance-path.html#cb73-23" tabindex="-1"></a><span class="co">#&gt; [0.146, 0.441, 0.703]</span></span></code></pre></div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></div>
+<div class="next"><a href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#tolerance-path"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="nav-link" href="#resistance-to-added-cases"><span class="header-section-number">9.1</span> Resistance to added cases</a></li>
+<li><a class="nav-link" href="#the-tolerance-path"><span class="header-section-number">9.2</span> The tolerance path</a></li>
+<li><a class="nav-link" href="#a-clean-and-a-planted-sample"><span class="header-section-number">9.3</span> A clean and a planted sample</a></li>
+<li><a class="nav-link" href="#the-pointwise-path"><span class="header-section-number">9.4</span> The pointwise path</a></li>
+<li><a class="nav-link" href="#the-resistance-bound-on-the-planted-sample"><span class="header-section-number">9.5</span> The resistance bound on the planted sample</a></li>
+<li><a class="nav-link" href="#deletion-and-addition-screens"><span class="header-section-number">9.6</span> Deletion and addition screens</a></li>
+<li><a class="nav-link" href="#outlier-fragility-and-spuriousness"><span class="header-section-number">9.7</span> Outlier-fragility and spuriousness</a></li>
+<li><a class="nav-link" href="#the-same-path-in-python-and-julia"><span class="header-section-number">9.8</span> The same path in Python and Julia</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/09-tolerance-path.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/09-tolerance-path.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

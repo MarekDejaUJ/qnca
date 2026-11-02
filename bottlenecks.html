@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>8 Bottleneck tables | Quantile Necessary Condition Analysis</title>
+<meta name="author" content="Marek Deja">
+<meta name="description" content="A bottleneck table answers a feasibility question: which level of the condition X each target of the outcome Y requires (Deja 2026b). Necessary Condition Analysis (NCA) reports the table for the...">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
+<meta property="og:title" content="8 Bottleneck tables | Quantile Necessary Condition Analysis">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://marekdejauj.github.io/qnca/bottlenecks.html">
+<meta property="og:description" content="A bottleneck table answers a feasibility question: which level of the condition X each target of the outcome Y requires (Deja 2026b). Necessary Condition Analysis (NCA) reports the table for the...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8 Bottleneck tables | Quantile Necessary Condition Analysis">
+<meta name="twitter:description" content="A bottleneck table answers a feasibility question: which level of the condition X each target of the outcome Y requires (Deja 2026b). Necessary Condition Analysis (NCA) reports the table for the...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="libs/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.10.0/transition.js"></script><script src="libs/bs3compat-0.10.0/tabs.js"></script><script src="libs/bs3compat-0.10.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A guide to tolerance-indexed necessity frontiers in R, Python and Julia">Quantile Necessary Condition Analysis</a>:
+        <small class="text-muted">A guide to tolerance-indexed necessity frontiers in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="necessity.html"><span class="header-section-number">1</span> Necessity as attainability of an outcome target</a></li>
+<li><a class="" href="scope.html"><span class="header-section-number">2</span> Cases, scope and the reverse-L scatter</a></li>
+<li><a class="" href="ceiling.html"><span class="header-section-number">3</span> The CE-FDH ceiling as the strict member</a></li>
+<li><a class="" href="tolerance.html"><span class="header-section-number">4</span> Tolerance and the type-1 quantile</a></li>
+<li><a class="" href="envelope.html"><span class="header-section-number">5</span> The monotone envelope</a></li>
+<li><a class="" href="effect-size.html"><span class="header-section-number">6</span> The empty zone and the effect size</a></li>
+<li><a class="" href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></li>
+<li><a class="active" href="bottlenecks.html"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="" href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></li>
+<li><a class="" href="reference-band.html"><span class="header-section-number">10</span> The dependence-matched reference band and the consistency probe</a></li>
+<li><a class="" href="frontiers.html"><span class="header-section-number">11</span> QNCA among frontier methods</a></li>
+<li><a class="" href="application.html"><span class="header-section-number">12</span> A technology acceptance reanalysis</a></li>
+<li><a class="" href="reporting.html"><span class="header-section-number">13</span> Reporting QNCA and QNCA in cIPMA</a></li>
+<li><a class="" href="implementations.html"><span class="header-section-number">14</span> The three implementations</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/MarekDejaUJ/qnca">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="bottlenecks" class="section level1" number="8">
+<h1>
+<span class="header-section-number">8</span> Bottleneck tables<a class="anchor" aria-label="anchor" href="#bottlenecks"><i class="fas fa-link"></i></a>
+</h1>
+<p>A bottleneck table answers a feasibility question: which level of the condition <code>X</code> each target of the outcome <code>Y</code> requires <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. Necessary Condition Analysis (NCA) reports the table for the CE-FDH ceiling, whose bottleneck at a target <span class="math inline">\(t_y\)</span> is the lowest condition value among the cases that reach <span class="math inline">\(Y \ge t_y\)</span> <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>. A condition value above the bottleneck satisfies the necessary condition at the target and leaves attainment open, because other constraints can hold the outcome down <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>; <a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<div id="the-bottleneck-of-a-tolerance-indexed-frontier" class="section level2" number="8.1">
+<h2>
+<span class="header-section-number">8.1</span> The bottleneck of a tolerance-indexed frontier<a class="anchor" aria-label="anchor" href="#the-bottleneck-of-a-tolerance-indexed-frontier"><i class="fas fa-link"></i></a>
+</h2>
+<p>Quantile Necessary Condition Analysis (QNCA) reports the bottleneck at a tolerance <code>pi</code> in (0, 1], which fixes the share <code>1 - pi</code> of successful cases that may sit below the requirement <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. At a target <span class="math inline">\(y_j\)</span> of an ordered outcome grid, the raw frontier takes the <span class="math inline">\(k_j\)</span> cases with <span class="math inline">\(Y_i \ge y_j\)</span> and returns the condition value of rank <span class="math inline">\(h_j = \max\{1, \lceil k_j (1 - \pi) \rceil\}\)</span> among the <span class="math inline">\(k_j\)</span> cases. The monotone envelope replaces each raw value by the running maximum over the lower targets, and the fixed scope sets the requirement to the upper condition bound <span class="math inline">\(x_{\max}\)</span> above the largest observed outcome. The fitted frontier <span class="math inline">\(\tilde\varphi_\pi\)</span> is linear between consecutive grid points. The bottleneck at the target <span class="math inline">\(t_y\)</span> is the value of the fitted frontier at <span class="math inline">\(t_y\)</span> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>:</p>
+<p><span class="math display">\[
+T_x(t_y; \pi) = \tilde\varphi_\pi(t_y).
+\]</span></p>
+<p>At the selected tolerance, a condition level below <span class="math inline">\(T_x(t_y; \pi)\)</span> falls short of the requirement for <span class="math inline">\(Y \ge t_y\)</span>, and a condition level above <span class="math inline">\(T_x(t_y; \pi)\)</span> leaves attainment uncertain, because the condition is necessary for the target and other conditions also constrain the outcome <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-table-of-the-synthetic-dataset" class="section level2" number="8.2">
+<h2>
+<span class="header-section-number">8.2</span> The table of the synthetic dataset<a class="anchor" aria-label="anchor" href="#the-table-of-the-synthetic-dataset"><i class="fas fa-link"></i></a>
+</h2>
+<p>The synthetic dataset of 1000 cases of the <code>qnca</code> repository has a condition and an outcome on a scale from 0 to 100, and the analysis fixes the scope at [0, 100] x [0, 100]. A grid of 101 outcome targets places every whole number from 0 to 100 on the grid, so the bottleneck at a whole-number target is a row of <code>qnca()$bottleneck</code>.</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MarekDejaUJ/qnca">qnca</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n1000.csv"</span><span class="op">)</span></span>
+<span><span class="va">scope</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">strict</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">1</span>, n_grid <span class="op">=</span> <span class="fl">101</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">bottleneck</span></span>
+<span><span class="va">tolerant</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, n_grid <span class="op">=</span> <span class="fl">101</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">bottleneck</span></span>
+<span><span class="va">table_10</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>outcome_level <span class="op">=</span> <span class="va">strict</span><span class="op">$</span><span class="va">outcome_level</span>,</span>
+<span>                       pi_1.00 <span class="op">=</span> <span class="va">strict</span><span class="op">$</span><span class="va">X_required</span>, pi_0.95 <span class="op">=</span> <span class="va">tolerant</span><span class="op">$</span><span class="va">X_required</span><span class="op">)</span></span>
+<span><span class="va">table_10</span><span class="op">[</span><span class="va">table_10</span><span class="op">$</span><span class="va">outcome_level</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">10</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;     outcome_level      pi_1.00    pi_0.95</span></span>
+<span><span class="co">#&gt; 1               0   0.08246168   4.887538</span></span>
+<span><span class="co">#&gt; 11             10   0.27072737   9.675290</span></span>
+<span><span class="co">#&gt; 21             20   7.02333709  17.292731</span></span>
+<span><span class="co">#&gt; 31             30  15.70254973  28.058862</span></span>
+<span><span class="co">#&gt; 41             40  28.05886205  40.130634</span></span>
+<span><span class="co">#&gt; 51             50  43.93500619  54.839774</span></span>
+<span><span class="co">#&gt; 61             60  56.05994751  58.617630</span></span>
+<span><span class="co">#&gt; 71             70  67.14035242  71.076154</span></span>
+<span><span class="co">#&gt; 81             80  88.65579137  88.655791</span></span>
+<span><span class="co">#&gt; 91             90 100.00000000 100.000000</span></span>
+<span><span class="co">#&gt; 101           100 100.00000000 100.000000</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 89.06887</span></span></code></pre></div>
+<p>At <code>pi = 1</code>, the table holds the CE-FDH bottlenecks of NCA. At <code>pi = 0.95</code>, the requirement rises at the low and middle targets, from 7.02 to 17.29 at the target 20 and from 43.94 to 54.84 at the target 50, and both tolerances require 88.66 at the target 80. Above the largest observed outcome of 89.07, the fixed scope sets the requirement to 100 at both tolerances.</p>
+</div>
+<div id="the-account-of-each-target" class="section level2" number="8.3">
+<h2>
+<span class="header-section-number">8.3</span> The account of each target<a class="anchor" aria-label="anchor" href="#the-account-of-each-target"><i class="fas fa-link"></i></a>
+</h2>
+<p>The function <code>qnca_resolution()</code> returns one row per target with the conditioning-set size <code>k</code>, the selected <code>rank</code>, the <code>raw</code> order statistic, the <code>fitted</code> requirement after the envelope, the flag <code>inherited</code>, the number <code>below</code> and the <code>exception_share</code> of successful cases strictly below the fitted requirement, and the <code>resistance</code> <code>rank - 1</code> <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The resistance counts the added cases that the raw requirement absorbs while the raw requirement stays at or above the lowest condition value of the original successful cases.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">qnca_resolution</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="fl">0.95</span>, n_grid <span class="op">=</span> <span class="fl">101</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">fitted</span>, <span class="va">tolerant</span><span class="op">$</span><span class="va">X_required</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="va">res</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">y</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">40</span>, <span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">70</span>, <span class="fl">80</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;     y   k rank      raw   fitted inherited below exception_share resistance</span></span>
+<span><span class="co">#&gt; 21 20 357   18 17.29273 17.29273     FALSE    17      0.04761905         17</span></span>
+<span><span class="co">#&gt; 41 40 158    8 39.65527 40.13063      TRUE     8      0.05063291          7</span></span>
+<span><span class="co">#&gt; 51 50  91    5 51.58989 54.83977      TRUE     5      0.05494505          4</span></span>
+<span><span class="co">#&gt; 61 60  50    3 58.61763 58.61763     FALSE     2      0.04000000          2</span></span>
+<span><span class="co">#&gt; 71 70  16    1 67.14035 71.07615      TRUE     1      0.06250000          0</span></span>
+<span><span class="co">#&gt; 81 80   6    1 88.65579 88.65579     FALSE     0      0.00000000          0</span></span>
+<span><span class="va">res</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">raw</span> <span class="op">==</span> <span class="va">res</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">y</span> <span class="op">==</span> <span class="fl">50</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 48</span></span></code></pre></div>
+<p>At the target 20, 357 cases reach the target, the tolerance selects rank 18, and 17 successful cases, a share of 0.048, sit below the requirement. The resistance of 17 states that up to 17 added cases leave the raw requirement at or above the lowest condition value of the 357 original successful cases.</p>
+<p>The selected rank grows with the conditioning set. At <code>pi = 0.95</code>, the rank exceeds 1 when more than 20 cases reach the target, since <span class="math inline">\(\lceil 0.05\,k \rceil = 1\)</span> for <span class="math inline">\(k \le 20\)</span>. At the targets 70 and 80, 16 and 6 cases reach the target, the rank is 1, and the tolerant requirement rests on the minimum, as the strict requirement does. A report marks a tolerant bottleneck with rank 1 as limited by tail size, because too few cases remain to express the intended tolerance, and shows the selected rank or the conditioning-set size beside each important bottleneck <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+<p>At the target 50, the raw order statistic is 51.59 and the fitted requirement is 54.84, the raw requirement of the target 48, which the envelope carries upward. The inherited value repeats a requirement established at a lower target, so a report marks the bottleneck as inherited <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. Inheritance has a cost: at the target 50, 5 of the 91 successful cases sit below the fitted requirement, a share of 0.055 that exceeds the tolerance of 0.05. The excess arises because the exceptions admitted at the lower target concentrate among the cases that reach the higher target <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="required-levels-at-decision-targets" class="section level2" number="8.4">
+<h2>
+<span class="header-section-number">8.4</span> Required levels at decision targets<a class="anchor" aria-label="anchor" href="#required-levels-at-decision-targets"><i class="fas fa-link"></i></a>
+</h2>
+<p>A bottleneck table for a decision lists the required level at the targets of the decision, with the conditioning-set size and the selected rank beside each requirement and with flags for inherited and tail-limited bottlenecks <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>. The table holds the targets 20, 40, 60 and 80 at the tolerances 1.00, 0.95 and 0.90.</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">targets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">40</span>, <span class="fl">60</span>, <span class="fl">80</span><span class="op">)</span></span>
+<span><span class="va">decision</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">qnca_resolution</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="va">p</span>, n_grid <span class="op">=</span> <span class="fl">101</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span></span>
+<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="va">r</span><span class="op">[</span><span class="va">r</span><span class="op">$</span><span class="va">y</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">targets</span>, <span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>target <span class="op">=</span> <span class="va">r</span><span class="op">$</span><span class="va">y</span>, pi <span class="op">=</span> <span class="va">p</span>, k <span class="op">=</span> <span class="va">r</span><span class="op">$</span><span class="va">k</span>, rank <span class="op">=</span> <span class="va">r</span><span class="op">$</span><span class="va">rank</span>,</span>
+<span>             required <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">fitted</span>, <span class="fl">2</span><span class="op">)</span>, inherited <span class="op">=</span> <span class="va">r</span><span class="op">$</span><span class="va">inherited</span>,</span>
+<span>             tail_limited <span class="op">=</span> <span class="va">p</span> <span class="op">&lt;</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">r</span><span class="op">$</span><span class="va">rank</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">decision</span> <span class="op">&lt;-</span> <span class="va">decision</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">decision</span><span class="op">$</span><span class="va">target</span>, <span class="op">-</span><span class="va">decision</span><span class="op">$</span><span class="va">pi</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">decision</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span><span class="va">decision</span></span>
+<span><span class="co">#&gt;    target   pi   k rank required inherited tail_limited</span></span>
+<span><span class="co">#&gt; 1      20 1.00 357    1     7.02     FALSE        FALSE</span></span>
+<span><span class="co">#&gt; 2      20 0.95 357   18    17.29     FALSE        FALSE</span></span>
+<span><span class="co">#&gt; 3      20 0.90 357   36    25.52     FALSE        FALSE</span></span>
+<span><span class="co">#&gt; 4      40 1.00 158    1    28.06     FALSE        FALSE</span></span>
+<span><span class="co">#&gt; 5      40 0.95 158    8    40.13      TRUE        FALSE</span></span>
+<span><span class="co">#&gt; 6      40 0.90 158   16    48.70      TRUE        FALSE</span></span>
+<span><span class="co">#&gt; 7      60 1.00  50    1    56.06     FALSE        FALSE</span></span>
+<span><span class="co">#&gt; 8      60 0.95  50    3    58.62     FALSE        FALSE</span></span>
+<span><span class="co">#&gt; 9      60 0.90  50    5    60.39      TRUE        FALSE</span></span>
+<span><span class="co">#&gt; 10     80 1.00   6    1    88.66     FALSE        FALSE</span></span>
+<span><span class="co">#&gt; 11     80 0.95   6    1    88.66     FALSE         TRUE</span></span>
+<span><span class="co">#&gt; 12     80 0.90   6    1    88.66     FALSE         TRUE</span></span></code></pre></div>
+<p>The required level rises with each step down in tolerance at the targets 20, 40 and 60. At the target 20, the requirement moves from 7.02 to 17.29 and 25.52, at the target 40 from 28.06 to 40.13 and 48.70, and at the target 60 from 56.06 to 58.62 and 60.39. Three tolerant requirements, at the target 40 for both tolerances and at the target 60 for <code>pi = 0.90</code>, are inherited from lower targets. At the target 80, 6 cases reach the target, every tolerance selects rank 1, and all three tolerances require 88.66. The two tolerant bottlenecks at the target 80 are therefore limited by tail size.</p>
+<p>The requirement is a floor of feasibility. At <code>pi = 0.95</code>, the target 60 requires 58.62, and the count of cases at or above the requirement shows how many of the cases reach the target.</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">req_60</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">fitted</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">y</span> <span class="op">==</span> <span class="fl">60</span><span class="op">]</span></span>
+<span><span class="va">above</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">$</span><span class="va">X</span> <span class="op">&gt;=</span> <span class="va">req_60</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>cases_above <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">above</span><span class="op">)</span>, reach_target <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">above</span> <span class="op">&amp;</span> <span class="va">d</span><span class="op">$</span><span class="va">Y</span> <span class="op">&gt;=</span> <span class="fl">60</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  cases_above reach_target </span></span>
+<span><span class="co">#&gt;          420           48</span></span></code></pre></div>
+<p>Of the 420 cases at or above the requirement, 48 reach the target 60. A case above the floor meets the necessary condition for the target, and the outcome of the case depends on the other conditions of the outcome <span class="citation">(<a href="references.html#ref-Dul2016">Dul 2016</a>)</span>.</p>
+</div>
+<div id="comparison-with-the-stored-table" class="section level2" number="8.5">
+<h2>
+<span class="header-section-number">8.5</span> Comparison with the stored table<a class="anchor" aria-label="anchor" href="#comparison-with-the-stored-table"><i class="fas fa-link"></i></a>
+</h2>
+<p>The file <code>bottleneck_comparison_n1000.csv</code> of the repository stores the bottlenecks of the same dataset at the targets 0, 20, 50, 70 and 80, with the CE-FDH bottlenecks of the R package <code>NCA</code> rounded to three decimals <span class="citation">(<a href="references.html#ref-NCAPackage2026">Dul 2026</a>)</span>.</p>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stored</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/bottleneck_comparison_n1000.csv"</span><span class="op">)</span></span>
+<span><span class="va">stored</span><span class="op">[</span>, <span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   outcome_level dul_ce_fdh qnca_pi1_00 qnca_pi0_95 qnca_pi0_90</span></span>
+<span><span class="co">#&gt; 1             0      0.082  0.08246168    4.887538    9.422986</span></span>
+<span><span class="co">#&gt; 2            20      7.023  7.02333709   17.292731   25.518651</span></span>
+<span><span class="co">#&gt; 3            50     43.935 43.93500619   54.839774   58.617630</span></span>
+<span><span class="co">#&gt; 4            70     67.140 67.14035242   71.076154   77.668868</span></span>
+<span><span class="co">#&gt; 5            80     88.656 88.65579137   88.655791   88.655791</span></span>
+<span><span class="va">own</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">qnca</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">X</span>, <span class="va">d</span><span class="op">$</span><span class="va">Y</span>, pi <span class="op">=</span> <span class="va">p</span>, n_grid <span class="op">=</span> <span class="fl">101</span>, B <span class="op">=</span> <span class="fl">0</span>, scope <span class="op">=</span> <span class="va">scope</span><span class="op">)</span><span class="op">$</span><span class="va">bottleneck</span></span>
+<span>  <span class="va">b</span><span class="op">$</span><span class="va">X_required</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">stored</span><span class="op">$</span><span class="va">outcome_level</span>, <span class="va">b</span><span class="op">$</span><span class="va">outcome_level</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">own</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">stored</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"qnca_pi1_00"</span>, <span class="st">"qnca_pi0_95"</span>, <span class="st">"qnca_pi0_90"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4.973799e-13</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">own</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="fl">3</span><span class="op">)</span> <span class="op">==</span> <span class="va">stored</span><span class="op">$</span><span class="va">dul_ce_fdh</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>The computed bottlenecks differ from the stored values by at most 5e-13, and the strict column rounded to three decimals equals the CE-FDH column of NCA at every stored target. The bottleneck table of NCA reports the attained levels, so the stored comparison ends at the target 80, whereas the fixed scope of QNCA sets the requirement to 100 at the levels from 90 upward <span class="citation">(<a href="references.html#ref-Deja2026QNCA">Deja 2026b</a>)</span>.</p>
+</div>
+<div id="the-same-table-in-python-and-julia" class="section level2" number="8.6">
+<h2>
+<span class="header-section-number">8.6</span> The same table in Python and Julia<a class="anchor" aria-label="anchor" href="#the-same-table-in-python-and-julia"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Python package <code>qnca</code> and the Julia package <code>QuantileNecessity</code> return the same conditioning-set sizes, ranks and requirements at the decision targets.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb61-1"><a href="bottlenecks.html#cb61-1" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb61-2"><a href="bottlenecks.html#cb61-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb61-3"><a href="bottlenecks.html#cb61-3" tabindex="-1"></a><span class="im">from</span> qnca <span class="im">import</span> qnca_resolution</span>
+<span id="cb61-4"><a href="bottlenecks.html#cb61-4" tabindex="-1"></a></span>
+<span id="cb61-5"><a href="bottlenecks.html#cb61-5" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n1000.csv"</span></span>
+<span id="cb61-6"><a href="bottlenecks.html#cb61-6" tabindex="-1"></a>X, Y <span class="op">=</span> np.loadtxt(urlopen(url), delimiter<span class="op">=</span><span class="st">","</span>, skiprows<span class="op">=</span><span class="dv">1</span>, unpack<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb61-7"><a href="bottlenecks.html#cb61-7" tabindex="-1"></a>scope <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb61-8"><a href="bottlenecks.html#cb61-8" tabindex="-1"></a><span class="cf">for</span> pi <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>):</span>
+<span id="cb61-9"><a href="bottlenecks.html#cb61-9" tabindex="-1"></a>    res <span class="op">=</span> qnca_resolution(X, Y, pi<span class="op">=</span>pi, n_grid<span class="op">=</span><span class="dv">101</span>, scope<span class="op">=</span>scope)</span>
+<span id="cb61-10"><a href="bottlenecks.html#cb61-10" tabindex="-1"></a>    rows <span class="op">=</span> np.isin(res.y, [<span class="fl">20.0</span>, <span class="fl">40.0</span>, <span class="fl">60.0</span>, <span class="fl">80.0</span>])</span>
+<span id="cb61-11"><a href="bottlenecks.html#cb61-11" tabindex="-1"></a>    <span class="bu">print</span>(pi, res.k[rows], res.rank[rows], np.<span class="bu">round</span>(res.fitted[rows], <span class="dv">2</span>))</span>
+<span id="cb61-12"><a href="bottlenecks.html#cb61-12" tabindex="-1"></a><span class="co">#&gt; 1.0 [357 158  50   6] [1 1 1 1] [ 7.02 28.06 56.06 88.66]</span></span>
+<span id="cb61-13"><a href="bottlenecks.html#cb61-13" tabindex="-1"></a><span class="co">#&gt; 0.95 [357 158  50   6] [18  8  3  1] [17.29 40.13 58.62 88.66]</span></span>
+<span id="cb61-14"><a href="bottlenecks.html#cb61-14" tabindex="-1"></a><span class="co">#&gt; 0.9 [357 158  50   6] [36 16  5  1] [25.52 48.7  60.39 88.66]</span></span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb62-1"><a href="bottlenecks.html#cb62-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">QuantileNecessity</span>, <span class="bu">Downloads</span>, <span class="bu">DelimitedFiles</span></span>
+<span id="cb62-2"><a href="bottlenecks.html#cb62-2" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="bottlenecks.html#cb62-3" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n1000.csv"</span></span>
+<span id="cb62-4"><a href="bottlenecks.html#cb62-4" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">readdlm</span>(<span class="bu">Downloads</span>.<span class="fu">download</span>(url), <span class="ch">','</span>, <span class="dt">Float64</span>; skipstart <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb62-5"><a href="bottlenecks.html#cb62-5" tabindex="-1"></a>X, Y <span class="op">=</span> data[<span class="op">:</span>, <span class="fl">1</span>], data[<span class="op">:</span>, <span class="fl">2</span>]</span>
+<span id="cb62-6"><a href="bottlenecks.html#cb62-6" tabindex="-1"></a>scope <span class="op">=</span> (<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="fl">0.0</span>, <span class="fl">100.0</span>)</span>
+<span id="cb62-7"><a href="bottlenecks.html#cb62-7" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> (<span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.90</span>)</span>
+<span id="cb62-8"><a href="bottlenecks.html#cb62-8" tabindex="-1"></a>    res <span class="op">=</span> <span class="fu">qnca_resolution</span>(X, Y; <span class="cn">pi</span> <span class="op">=</span> p, n_grid <span class="op">=</span> <span class="fl">101</span>, scope <span class="op">=</span> scope)</span>
+<span id="cb62-9"><a href="bottlenecks.html#cb62-9" tabindex="-1"></a>    rows <span class="op">=</span> <span class="fu">findall</span>(<span class="fu">in</span>([<span class="fl">20.0</span>, <span class="fl">40.0</span>, <span class="fl">60.0</span>, <span class="fl">80.0</span>]), res.y)</span>
+<span id="cb62-10"><a href="bottlenecks.html#cb62-10" tabindex="-1"></a>    <span class="fu">println</span>(p, <span class="st">" "</span>, res.k[rows], <span class="st">" "</span>, res.rank[rows], <span class="st">" "</span>, <span class="fu">round</span>.(res.fitted[rows]; digits <span class="op">=</span> <span class="fl">2</span>))</span>
+<span id="cb62-11"><a href="bottlenecks.html#cb62-11" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb62-12"><a href="bottlenecks.html#cb62-12" tabindex="-1"></a><span class="co">#&gt; 1.0 [357, 158, 50, 6] [1, 1, 1, 1] [7.02, 28.06, 56.06, 88.66]</span></span>
+<span id="cb62-13"><a href="bottlenecks.html#cb62-13" tabindex="-1"></a><span class="co">#&gt; 0.95 [357, 158, 50, 6] [18, 8, 3, 1] [17.29, 40.13, 58.62, 88.66]</span></span>
+<span id="cb62-14"><a href="bottlenecks.html#cb62-14" tabindex="-1"></a><span class="co">#&gt; 0.9 [357, 158, 50, 6] [36, 16, 5, 1] [25.52, 48.7, 60.39, 88.66]</span></span></code></pre></div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="permutation.html"><span class="header-section-number">7</span> The permutation test</a></div>
+<div class="next"><a href="tolerance-path.html"><span class="header-section-number">9</span> Paths across tolerances and outlier-fragility</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#bottlenecks"><span class="header-section-number">8</span> Bottleneck tables</a></li>
+<li><a class="nav-link" href="#the-bottleneck-of-a-tolerance-indexed-frontier"><span class="header-section-number">8.1</span> The bottleneck of a tolerance-indexed frontier</a></li>
+<li><a class="nav-link" href="#the-table-of-the-synthetic-dataset"><span class="header-section-number">8.2</span> The table of the synthetic dataset</a></li>
+<li><a class="nav-link" href="#the-account-of-each-target"><span class="header-section-number">8.3</span> The account of each target</a></li>
+<li><a class="nav-link" href="#required-levels-at-decision-targets"><span class="header-section-number">8.4</span> Required levels at decision targets</a></li>
+<li><a class="nav-link" href="#comparison-with-the-stored-table"><span class="header-section-number">8.5</span> Comparison with the stored table</a></li>
+<li><a class="nav-link" href="#the-same-table-in-python-and-julia"><span class="header-section-number">8.6</span> The same table in Python and Julia</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/MarekDejaUJ/qnca/blob/main/book/08-bottlenecks.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/MarekDejaUJ/qnca/edit/main/book/08-bottlenecks.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Quantile Necessary Condition Analysis</strong>: A guide to tolerance-indexed necessity frontiers in R, Python and Julia" was written by Marek Deja. It was last built on 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
