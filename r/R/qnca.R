@@ -1,22 +1,23 @@
-#' Quantile Necessary Condition Analysis (QNCA)
-#'
-#' QNCA generalises Dul's Necessary Condition Analysis. At each outcome target
-#' the frontier is a low type-1 quantile of the condition among the cases that
-#' attain the target; the deterministic NCA CE-FDH ceiling is the \code{pi = 1}
-#' member of these tolerance-indexed frontiers. The raw frontier is made
-#' non-decreasing by its monotone envelope (the running maximum over targets,
-#' the default) or by least-squares isotonic projection
-#' (\code{monotone = "isotonic"}, the 0.3 behaviour).
-#'
-#' This file is intentionally dependency-free (base R + \pkg{stats} only) so it
-#' agrees, to floating point, with the Python and Julia siblings. Tolerances are
-#' read as exact decimals before the type-1 rank is formed.
+# Quantile Necessary Condition Analysis (QNCA)
+#
+# QNCA generalises Dul's Necessary Condition Analysis. At each outcome target
+# the frontier is a low type-1 quantile of the condition among the cases that
+# attain the target; the deterministic NCA CE-FDH ceiling is the \code{pi = 1}
+# member of these tolerance-indexed frontiers. The raw frontier is made
+# non-decreasing by its monotone envelope (the running maximum over targets,
+# the default) or by least-squares isotonic projection
+# (\code{monotone = "isotonic"}, the 0.3 behaviour).
+#
+# This file is intentionally dependency-free (base R + \pkg{stats} only) so it
+# agrees, to floating point, with the Python and Julia siblings. Tolerances are
+# read as exact decimals before the type-1 rank is formed.
 
 #' Exact decimal parts of a tolerance.
 #'
 #' Returns the tail probability \code{1 - pi} as a reduced fraction
 #' \code{num / den} of whole numbers, read from the shortest decimal that
 #' round-trips to \code{pi}. Tolerances may carry at most nine decimal places.
+#' @noRd
 qnca_tail_fraction <- function(pi) {
   if (length(pi) != 1L || !is.numeric(pi) || !is.finite(pi)) {
     stop("pi must be a single finite number")
@@ -52,6 +53,10 @@ qnca_tail_fraction <- function(pi) {
 #' of \code{pi}, so \code{pi = 0.95} and \code{k = 100} select rank 5.
 #' @param k conditioning-set size (positive whole number).
 #' @param pi tolerance in (0, 1].
+#' @return The selected rank, a whole number from 1 to \code{k}.
+#' @examples
+#' qnca_rank(100, 0.95)
+#' qnca_rank(100, 1)
 #' @export
 qnca_rank <- function(k, pi) {
   if (length(k) != 1L || !is.finite(k) || k < 1 || k != floor(k)) {
@@ -76,6 +81,13 @@ qnca_rank_from_fraction <- function(k, fr) {
 }
 
 #' Type-1 quantile parameterised by the QNCA tolerance \code{pi}.
+#'
+#' @param values numeric vector.
+#' @param pi tolerance in (0, 1].
+#' @return The order statistic of rank \code{qnca_rank(length(values), pi)},
+#'   or \code{NA} for an empty vector.
+#' @examples
+#' qnca_quantile_type1_pi(c(12, 3, 7, 30, 18), 0.6)
 #' @export
 qnca_quantile_type1_pi <- function(values, pi) {
   if (length(values) == 0L) return(NA_real_)
@@ -116,6 +128,9 @@ qnca_validate_grid <- function(y_grid) {
 #' Applied to the raw quantile frontier, a requirement established at a lower
 #' outcome target is carried to every higher target.
 #' @param v numeric vector.
+#' @return Numeric vector of the same length: the running maximum of \code{v}.
+#' @examples
+#' monotone_envelope(c(10, 25, 18, 40, 33))
 #' @export
 monotone_envelope <- function(v) {
   cummax(as.numeric(v))
@@ -126,6 +141,10 @@ monotone_envelope <- function(v) {
 #' Pools in the same order and with the same arithmetic as the Julia and Python
 #' implementations, so the three agree to the last bit.
 #' @param y numeric vector.
+#' @return Numeric vector of the same length: the least-squares non-decreasing
+#'   fit to \code{y}.
+#' @examples
+#' qnca_isotonic_increasing(c(10, 25, 18, 40, 33))
 #' @export
 qnca_isotonic_increasing <- function(y) {
   y <- as.numeric(y)
@@ -194,6 +213,11 @@ qnca_fit_frontier <- function(phi, y_grid, x_max, mode) {
 #' @param monotone "envelope" (running maximum, default) or "isotonic"
 #'   (least-squares isotonic projection).
 #' @return numeric vector of required-X values, one per grid level.
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(200)
+#' grid <- seq(0, 100, length.out = 11)
+#' qnca_frontier(d$X, d$Y, pi = 0.95, y_grid = grid, x_max = 100)
 #' @export
 qnca_frontier <- function(X, Y, pi, y_grid, x_max = NULL, monotone = "envelope") {
   X <- as.numeric(X); Y <- as.numeric(Y); y_grid <- as.numeric(y_grid)
@@ -210,6 +234,19 @@ qnca_frontier_validated <- function(X, Y, pi, y_grid, x_max = NULL, monotone = "
 }
 
 #' Effect size d_pi: trapezoidal empty-zone area left of the frontier / scope.
+#'
+#' @param phi fitted frontier, one required-X value per grid level.
+#' @param y_grid numeric grid of outcome levels.
+#' @param x_min lower bound of the condition scope.
+#' @param scope area of the scope rectangle,
+#'   \code{(x_max - x_min) * (y_max - y_min)}.
+#' @return The effect size, a number in [0, 1].
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(200)
+#' grid <- seq(0, 100, length.out = 51)
+#' phi <- qnca_frontier(d$X, d$Y, pi = 0.95, y_grid = grid, x_max = 100)
+#' qnca_d(phi, grid, x_min = 0, scope = 100 * 100)
 #' @export
 qnca_d <- function(phi, y_grid, x_min, scope) {
   w <- pmax(0, phi - x_min)
@@ -247,6 +284,12 @@ qnca_validate_permutations <- function(permutations, n) {
 #' @param permutations optional one-based B x n permutation matrix.
 #' @param monotone "envelope" (default) or "isotonic".
 #' @return list with pi, d_pi, p_pi, scope, monotone and the bottleneck data frame.
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(200)
+#' fit <- qnca(d$X, d$Y, pi = 0.95, B = 199, scope = c(0, 100, 0, 100))
+#' fit$d_pi
+#' fit$p_pi
 #' @export
 qnca <- function(X, Y, pi = 1, n_grid = 50L, B = 1999L, scope = NULL,
                  permutations = NULL, monotone = "envelope") {
@@ -293,6 +336,13 @@ qnca <- function(X, Y, pi = 1, n_grid = 50L, B = 1999L, scope = NULL,
 #' the empty zone exactly. Lets the validation invariant d_pi(pi = 1) == this be
 #' checked without the \pkg{NCA} package. Equivalent to \code{qnca}'s d at pi = 1
 #' up to grid discretization.
+#'
+#' @inheritParams qnca
+#' @return The CE-FDH effect size, a number in [0, 1].
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(200)
+#' nca_ce_fdh_d(d$X, d$Y, scope = c(0, 100, 0, 100))
 #' @export
 nca_ce_fdh_d <- function(X, Y, scope = NULL) {
   X <- as.numeric(X); Y <- as.numeric(Y)
@@ -377,6 +427,11 @@ qnca_rank_normal_correlation <- function(X, Y) {
 #' @param uniform_draws optional uniform array with dimensions M x n x 2.
 #' @param monotone "envelope" (default) or "isotonic".
 #' @return list with a band data frame, null effect matrix and rank correlation.
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(100)
+#' band <- spuriousness_band(d$X, d$Y, M = 49, scope = c(0, 100, 0, 100), seed = 2)
+#' band$band
 #' @export
 spuriousness_band <- function(X, Y, pi_grid = c(1, 0.95, 0.90), n_grid = 50L,
                               M = 999L, scope = NULL, seed = NULL,
@@ -467,6 +522,11 @@ spuriousness_band <- function(X, Y, pi_grid = c(1, 0.95, 0.90), n_grid = 50L,
 #' @param subsamples optional list of one-based reps x size matrices.
 #' @param monotone "envelope" (default) or "isotonic".
 #' @return list with per-size summaries, effects, drift slopes and divergence.
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(100)
+#' probe <- consistency_probe(d$X, d$Y, reps = 10, scope = c(0, 100, 0, 100), seed = 3)
+#' probe$summary
 #' @export
 consistency_probe <- function(X, Y, pi_pair = c(1, 0.90), sizes = NULL,
                               reps = 100L, n_grid = 50L, scope = NULL,
@@ -544,6 +604,10 @@ consistency_probe <- function(X, Y, pi_pair = c(1, 0.90), sizes = NULL,
 #'
 #' @inheritParams qnca
 #' @return data frame with one row per outcome target.
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(200)
+#' head(qnca_resolution(d$X, d$Y, pi = 0.95, scope = c(0, 100, 0, 100)))
 #' @export
 qnca_resolution <- function(X, Y, pi = 1, n_grid = 50L, scope = NULL,
                             monotone = "envelope") {
@@ -593,6 +657,11 @@ qnca_combinations <- function(items, r) {
 #' @param min_dif relative change that flags a row.
 #' @return list with the full-sample effects, the deleted cases, effect
 #'   matrices, flags and a summary data frame.
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(100)
+#' screen <- qnca_outliers(d$X, d$Y, scope = c(0, 100, 0, 100))
+#' head(screen$table)
 #' @export
 qnca_outliers <- function(X, Y, pi_grid = c(1, 0.95, 0.90), k = 1L, n_grid = 50L,
                           scope = NULL, monotone = "envelope", max_candidates = 12L,
@@ -661,6 +730,12 @@ qnca_outliers <- function(X, Y, pi_grid = c(1, 0.95, 0.90), k = 1L, n_grid = 50L
 #' @param counts numbers of added cases.
 #' @param pi_grid tolerance values.
 #' @return list with counts, tolerances, effect matrix and retention ratios.
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(100)
+#' curve <- qnca_sensitivity(d$X, d$Y, points = c(5, 95), counts = 0:3,
+#'                           scope = c(0, 100, 0, 100))
+#' curve$d
 #' @export
 qnca_sensitivity <- function(X, Y, points, counts = 0:5, pi_grid = c(1, 0.95, 0.90),
                              n_grid = 50L, scope = NULL, monotone = "envelope") {

@@ -2,18 +2,27 @@ Package: qnca
 Type: Package
 Title: Quantile Necessary Condition Analysis
 Version: 0.4.0
-Authors@R: person("QNCA", "authors", role = c("aut", "cre"),
-                  email = "qnca@example.org")
-Description: A tolerance-parameterised generalisation of Necessary Condition
-    Analysis (Dul, 2016). For a tolerance pi in (0, 1], QNCA estimates a quantile
-    necessity frontier, an effect size, a bottleneck table and a permutation
-    p-value. The deterministic NCA CE-FDH ceiling is recovered as the pi = 1
-    limit, which the package verifies against a native CE-FDH implementation and,
-    when available, against Jan Dul's 'NCA' package.
+Authors@R: person("Marek", "Deja", email = "marek.deja@uj.edu.pl",
+    role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0003-0015-2322"))
+Description: Estimates quantile necessity frontiers for Necessary Condition
+    Analysis (NCA) of Dul (2016) <doi:10.1177/1094428115584005>. For a
+    tolerance pi in (0, 1], the frontier at each outcome target is a low
+    type-1 quantile of the condition among the cases that attain the target,
+    and 1 - pi is the share of those cases allowed below the reported
+    requirement. The package reports the empty-zone effect size with its
+    permutation p-value, bottleneck tables, a target-by-target account of the
+    frontier, deletion and addition screens, a proposed dependence-matched
+    reference band and a consistency probe. At pi = 1 the frontier is the
+    ceiling envelopment-free disposal hull (CE-FDH) ceiling of NCA, which the
+    package checks against its own CE-FDH implementation and against the
+    'NCA' package.
 License: GPL-3
+URL: https://github.com/MarekDejaUJ/qnca, https://marekdejauj.github.io/qnca/
+BugReports: https://github.com/MarekDejaUJ/qnca/issues
 Encoding: UTF-8
+Language: en-GB
 Depends: R (>= 3.6.0)
 Imports: stats, utils
-Suggests: testthat (>= 3.0.0), NCA
+Suggests: NCA, testthat (>= 3.0.0)
 Config/testthat/edition: 3
-RoxygenNote: 7.2.3
+Config/roxygen2/version: 8.0.0

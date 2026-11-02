@@ -1,9 +1,4 @@
-# Changelog
-
-The Julia, R, and Python implementations share one version number. Each
-release keeps the three implementations in agreement on shared inputs.
-
-## 0.4.0
+# qnca 0.4.0
 
 - The raw quantile frontier is made non-decreasing by its monotone envelope,
   the running maximum over outcome targets, instead of least-squares isotonic
@@ -22,7 +17,7 @@ release keeps the three implementations in agreement on shared inputs.
 - New `monotone_envelope`, and a `monotone` argument on the frontier, the fit,
   the permutation test, and the reference band.
 
-## 0.3.2
+# qnca 0.3.2
 
 - The selected order statistic `max(1, ceil(k * (1 - pi)))` is now computed
   from the exact decimal value of the tolerance. In 0.3.1 the product was

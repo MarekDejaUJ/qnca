@@ -1,4 +1,4 @@
-^paper$
-^data$
-^build\.R$
+^LICENSE$
 ^\.gitignore$
+^cran-comments\.md$
+^CRAN-SUBMISSION$

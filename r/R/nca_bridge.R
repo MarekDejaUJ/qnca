@@ -11,6 +11,10 @@
 #' @param test.rep permutation repetitions for NCA's own test.
 #' @param n_grid QNCA frontier grid resolution.
 #' @return one-row data frame of comparison statistics.
+#' @examplesIf requireNamespace("NCA", quietly = TRUE)
+#' set.seed(1)
+#' d <- generate_reverse_L(100)
+#' compare_qnca_nca(d, test.rep = 0)
 #' @export
 compare_qnca_nca <- function(d, scope = c(0, 100, 0, 100), test.rep = 1999L,
                              n_grid = 200L) {

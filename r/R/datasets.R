@@ -10,6 +10,10 @@
 #' @param k efficiency exponent (larger pushes cases toward the floor).
 #' @param noise standard deviation of additive Gaussian noise.
 #' @return data frame with columns X and Y, both clamped to [0, 100].
+#' @examples
+#' set.seed(1)
+#' d <- generate_reverse_L(100)
+#' summary(d)
 #' @export
 generate_reverse_L <- function(n, ci = 15, cs = 0.85, k = 2, noise = 4) {
   X <- stats::runif(n, 0, 100)
