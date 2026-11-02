@@ -1,0 +1,5 @@
+NCA = 5.0.2
+seminr = 2.4.2
+cIPMA = 0.1.6
+R = R version 4.5.2 (2025-10-31)
+tam.csv sha256 = 48930f478d415c2724135493c77b101a4aa1954795d8dcc035ec835bd600c7de

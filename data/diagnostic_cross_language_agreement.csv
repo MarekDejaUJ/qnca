@@ -1,0 +1,3 @@
+generator,n,M,probe_reps,band_max_abs_d_obs_diff,band_max_abs_lower_diff,band_max_abs_median_diff,band_max_abs_upper_diff,band_max_abs_excess_diff,band_max_abs_p_null_diff,probe_max_abs_mean_d_diff,probe_max_abs_sd_d_diff,probe_max_abs_beta_diff,probe_max_abs_divergence_diff
+floor,200,19,12,1.11e-15,2.80e-15,2.44e-15,1.50e-15,1.58e-15,0.00e+00,1.11e-15,5.76e-16,3.60e-14,1.29e-14
+no_floor,200,19,12,8.88e-16,1.61e-15,1.36e-15,2.53e-15,3.41e-15,0.00e+00,1.28e-15,7.15e-16,5.43e-14,5.42e-14

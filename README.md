@@ -260,7 +260,11 @@ screen = qnca_outliers(X, Y; pi_grid=[1.0, 0.95, 0.90],
 
 ## Data
 
-The `data/` folder holds the synthetic datasets and the result tables of the strict-limit validation, the cross-language agreement, the bottleneck comparison, the outlier-fragility diagnostic, the calibration and power checks, and the illustration of the reference band.
+The `data/` folder holds the synthetic datasets and the result tables of the strict-limit validation, the cross-language agreement, the bottleneck comparison, the outlier-fragility diagnostic, the calibration and power checks, the illustration and the sample-size checks of the reference band, and the cross-language agreement of the diagnostics.
+
+## Replication
+
+The [`replication/`](https://github.com/MarekDejaUJ/qnca/tree/main/replication) folder holds the scripts and the results behind every number and figure of the article, with the commands that rerun them. The technology acceptance data of the application come from Richter, Hauff, Kolev and Schubring (2023), *Data in Brief* 48, 109190, and the application script downloads the data from Mendeley Data.
 
 ## Citation
 

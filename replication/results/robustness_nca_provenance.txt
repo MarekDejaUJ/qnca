@@ -1,0 +1,5 @@
+NCA = 5.0.2
+R = R version 4.5.2 (2025-10-31)
+cores = 8
+rows = 105000
+seconds = 3169

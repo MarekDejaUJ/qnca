@@ -39,3 +39,11 @@ qnca_qnq/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Data downloaded or computed by replication/studies/application.R
+replication/data/tam.csv
+replication/data/tam_scores_cipma.csv
+# Files written by the NCA bridge of the regeneration
+data/nca_dul_bridge.R
+data/dul_nca_r_bridge.log
+data/qnca_comparison.log
