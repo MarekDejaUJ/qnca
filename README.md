@@ -22,7 +22,7 @@ folder holds the shared datasets and validation results.
 |---|---|---|
 | R | `r/` | `remotes::install_github("MarekDejaUJ/qnca", subdir = "r")` |
 | Python | `python/` | `python -m pip install "git+https://github.com/MarekDejaUJ/qnca.git#subdirectory=python"` |
-| Julia | `julia/QuantileNCA.jl/` | `Pkg.add(url="https://github.com/MarekDejaUJ/qnca.git", subdir="julia/QuantileNCA.jl")` |
+| Julia | `julia/QuantileNecessity.jl/` | `Pkg.add(url="https://github.com/MarekDejaUJ/qnca.git", subdir="julia/QuantileNecessity.jl")` |
 
 The branches `qnca@R`, `qnca@py`, and `qnca@Julia` keep the 0.4.0 code as first
 published. The three implementations agree to floating point on shared data,
@@ -336,7 +336,7 @@ screen <- qnca_outliers(d$X, d$Y, pi_grid = c(1, 0.95, 0.90),
 ### Julia
 
 ```julia
-using QuantileNCA
+using QuantileNecessity
 using Random
 
 rng = MersenneTwister(42)

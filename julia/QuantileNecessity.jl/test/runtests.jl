@@ -1,7 +1,7 @@
 using Test
 using Random
-include(joinpath(@__DIR__, "..", "src", "QuantileNCA.jl"))
-using .QuantileNCA
+include(joinpath(@__DIR__, "..", "src", "QuantileNecessity.jl"))
+using .QuantileNecessity
 
 const SCOPE = (0.0, 100.0, 0.0, 100.0)
 
@@ -205,9 +205,9 @@ end
         c = rand(rng, 1:4)
         Xa = vcat(X, 20 .* rand(rng, c)); Ya = vcat(Y, 40 .+ 60 .* rand(rng, c))
         for p in (0.95, 0.90)
-            q = QuantileNCA.decimal_tail_probability(p)
-            _, k, h = QuantileNCA.raw_frontier(X, Y, q, grid)
-            raw_a, _, _ = QuantileNCA.raw_frontier(Xa, Ya, q, grid)
+            q = QuantileNecessity.decimal_tail_probability(p)
+            _, k, h = QuantileNecessity.raw_frontier(X, Y, q, grid)
+            raw_a, _, _ = QuantileNecessity.raw_frontier(Xa, Ya, q, grid)
             env_a = monotone_envelope(raw_a[.!isnan.(raw_a)])
             bound = fill(-Inf, length(grid))
             for j in eachindex(grid)

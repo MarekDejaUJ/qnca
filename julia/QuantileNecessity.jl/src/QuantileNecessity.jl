@@ -1,5 +1,5 @@
 """
-    QuantileNCA
+    QuantileNecessity
 
 Quantile Necessary Condition Analysis: a tolerance-parameterised generalisation
 of Dul's Necessary Condition Analysis. At each outcome target the frontier is a
@@ -14,7 +14,7 @@ the same inverse-empirical-CDF quantile, monotone step, and carry-forward of the
 frontier to the scope ceiling as the R and Python siblings. Configured decimal
 tolerances are converted to exact rational ranks before frontier evaluation.
 """
-module QuantileNCA
+module QuantileNecessity
 
 using Random, Statistics, Printf, Base.Threads
 

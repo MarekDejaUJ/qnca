@@ -1,4 +1,4 @@
-name = "QuantileNCA"
+name = "QuantileNecessity"
 uuid = "07f335f5-b023-47cd-9070-5c243d34135a"
 authors = ["QNCA authors"]
 version = "0.4.0"

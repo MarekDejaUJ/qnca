@@ -5,8 +5,8 @@ release keeps the three implementations in agreement on shared inputs.
 
 ## 0.4.0
 
-- The Julia package is named `QuantileNCA` (module `QuantileNCA`, folder
-  `julia/QuantileNCA.jl` of the repository) with a new UUID, the form of name
+- The Julia package is named `QuantileNecessity` (module `QuantileNecessity`, folder
+  `julia/QuantileNecessity.jl` of the repository) with a new UUID, the form of name
   the Julia General registry accepts.
 - The raw quantile frontier is made non-decreasing by its monotone envelope,
   the running maximum over outcome targets, instead of least-squares isotonic
