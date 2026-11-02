@@ -336,7 +336,7 @@ screen <- qnca_outliers(d$X, d$Y, pi_grid = c(1, 0.95, 0.90),
 ### Julia
 
 ```julia
-using QNCA
+using QuantileNCA
 using Random
 
 rng = MersenneTwister(42)
