@@ -1,0 +1,118 @@
+# Tolerance and the type-1 quantile {#tolerance}
+
+For each outcome target `y`, QNCA takes the cases that reach the target and reports a low quantile of the condition values of the successful cases [@Deja2026QNCA]. For observed cases `(X_i, Y_i)`, `i = 1, ..., n`, with condition `X` and outcome `Y`, the conditioning set at the target `y` is `I(y) = {i : Y_i >= y}`, and `k = |I(y)|` is the number of successful cases. The tolerance `pi` in (0, 1] sets the exception tolerance `1 - pi`, the share of the successful cases with the lowest condition values that may fall below the reported requirement [@Deja2026QNCA].
+
+The raw frontier at the target `y` is the type-1 empirical quantile at probability `1 - pi` of the successful condition values, `phi_pi(y) = Q^(1)_{1-pi}({X_i : i in I(y)})`. With the successful condition values sorted as `X_(1) <= ... <= X_(k)`, the frontier is the order statistic `X_(h)` of rank `h = max(1, ceil(k (1 - pi)))` [@Deja2026QNCA]. At `pi = 1` the rank is 1, and the frontier is the running minimum `r(y) = min{X_i : Y_i >= y}`, the CE-FDH ceiling of NCA [@Dul2016]. Every case of the conditioning set stays in the sample, and the tolerance selects which order statistic serves as the lower boundary of the set.
+
+The conditioning of QNCA runs from the outcome to the condition. Response quantile regression models a quantile of the outcome given the condition [@KoenkerBassett1978; @Koenker2005], whereas QNCA takes a quantile of the condition among the cases that reach an outcome target, so the conditioning direction of QNCA is the reverse of response quantile regression [@Deja2026QNCA]. The QNCA frontier maps an outcome target to an observed order statistic on the condition scale.
+
+## The selected rank from the exact decimal of the tolerance
+
+The function `qnca_rank()` computes the rank `h` in integer arithmetic from the exact decimal value of `pi`. Binary floating point stores `1 - 0.95` as a number slightly above 0.05, so rounding `100 * (1 - 0.95)` up in floating point gives 6, whereas the exact decimal gives 5.
+
+```{r tolerance-rank}
+library(qnca)
+sprintf("%.17g", 1 - 0.95)
+c(floating_point = ceiling(100 * (1 - 0.95)), exact_decimal = qnca_rank(100, 0.95))
+```
+
+The exact rank agrees with the decimal reading of the tolerance: with 100 successful cases, the tolerance `pi = 0.95` selects the fifth order statistic of the condition [@Deja2026QNCA]. The functions `qnca()`, `qnca_frontier()` and `qnca_resolution()` form the rank in the same exact arithmetic.
+
+## Resolution of the tolerance
+
+The rank stays at 1 while `k (1 - pi) <= 1`, so the rank is 1 for every conditioning set of at most `1 / (1 - pi)` cases. Up to the bound, the tolerant frontier equals the running minimum. At `pi = 0.95` the bound is 20 cases, and at `pi = 0.90` the bound is 10 cases.
+
+```{r tolerance-resolution}
+1 / (1 - c(0.95, 0.90))
+sizes <- c(19, 20, 21, 40, 100)
+setNames(sapply(sizes, qnca_rank, pi = 0.95), sizes)
+```
+
+With 19 or 20 successful cases the rank at `pi = 0.95` is 1, the minimum. With 21 successful cases the rank is 2, and with 100 successful cases the rank is 5. The loss of resolution near demanding targets follows from the shrinking conditioning set [@Deja2026QNCA]. The finite-sample meaning of a tolerance therefore varies by target, because the same percentage maps to different ranks as `k` falls. A report shows the selected rank or the conditioning-set size beside each important requirement and marks a requirement as limited by tail size where too few successful cases remain to express the intended tolerance [@Deja2026QNCA].
+
+## The type-1 quantile keeps observed values
+
+The type-1 quantile inverts the empirical distribution function and returns an observed value [@HyndmanFan1996]. The type-1 quantile at probability zero is the sample minimum, so `pi = 1` reproduces the running minimum before any numerical integration [@Deja2026QNCA]. An interpolating quantile, for example type 7 of the R function `quantile()`, replaces observed order statistics with interpolated values and weakens the strict-limit property [@HyndmanFan1996; @Deja2026QNCA]. Five values show the difference.
+
+```{r tolerance-type1}
+v <- c(12, 3, 7, 30, 18)
+c(qnca_pi_0.6 = qnca_quantile_type1_pi(v, 0.6),
+  type_1 = unname(quantile(v, 0.4, type = 1)),
+  type_7 = unname(quantile(v, 0.4, type = 7)),
+  qnca_pi_1 = qnca_quantile_type1_pi(v, 1))
+```
+
+At `pi = 0.6` the selected rank is `max(1, ceil(5 * 0.4)) = 2`, and `qnca_quantile_type1_pi()` returns 7, the second smallest of the five values. Type 1 of `quantile()` at probability 0.4 returns the same value. Type 7 returns 10, an interpolated value between the observed values 7 and 12. At `pi = 1` the type-1 quantile returns 3, the minimum.
+
+## Requirements at several targets and tolerances
+
+The 200 cases of the synthetic dataset of the repository carry a condition and an outcome on a scale from 0 to 100. The table gives the conditioning-set size `k`, the selected rank and the requirement at the targets 10, 30, 50, 70 and 90 and the tolerances 1, 0.95, 0.90 and 0.50.
+
+```{r tolerance-table}
+d <- read.csv("https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv")
+targets <- c(10, 30, 50, 70, 90)
+tols <- c(1, 0.95, 0.90, 0.50)
+k <- sapply(targets, function(y) sum(d$Y >= y))
+ranks <- sapply(tols, function(p) sapply(k, qnca_rank, pi = p))
+reqs <- sapply(tols, function(p) {
+  sapply(targets, function(y) qnca_quantile_type1_pi(d$X[d$Y >= y], p))
+})
+dimnames(ranks) <- list(target = targets, pi = format(tols))
+dimnames(reqs) <- list(target = targets, pi = format(tols))
+cbind(k = k, ranks)
+round(reqs, 2)
+```
+
+At the target 10, the 111 successful cases resolve the rank 6 at `pi = 0.95`, the rank 12 at `pi = 0.90` and the rank 56 at `pi = 0.50`, and the requirement rises from 9.04 at `pi = 1` to 11.92, 14.84 and 61.15. At the target 50, the 27 successful cases resolve the ranks 2 and 3 at the tolerances 0.95 and 0.90, with requirements of 53.27 and 57.24 above the strict requirement of 45.85. At the target 70, the 8 successful cases keep the rank at 1 for both small tolerances, because 8 cases lie within the bounds of 20 and 10 cases, and the requirement stays at the strict value 80.44. At the target 90 one case succeeds, and every tolerance returns the condition value 94.06 of the successful case.
+
+The frontier function at a single target returns the same type-1 quantile.
+
+```{r tolerance-frontier}
+qnca_frontier(d$X, d$Y, pi = 0.95, y_grid = 50)
+```
+
+The value 53.27223 is the requirement at the target 50 and the tolerance 0.95 in the table of requirements.
+
+## Choosing the tolerance
+
+The strict anchor `pi = 1` allows zero exceptions and reproduces CE-FDH [@Deja2026QNCA]. The strict value suits a decision in which a single observed success below a requirement must be enough to reject the requirement, whereas a small positive exception tolerance suits a decision that should rest on more than a few exceptional successes [@Deja2026QNCA]. The tolerances 0.95 and 0.90 illustrate exception tolerances of five and ten percent close to the strict boundary, and the two values are neither estimated optima nor proposed defaults [@Deja2026QNCA].
+
+Lowering `pi` has three costs [@Deja2026QNCA]. The requirement and the effect size `d_pi` rise by construction, the estimand changes, and the selected order statistic departs from the minimum only once `k` exceeds `1 / (1 - pi)`. At the target 10 of the synthetic data the requirement rises with each lower tolerance, and at the target 70 the 8 successful cases keep the rank at 1 for the tolerances 0.95 and 0.90.
+
+Tolerances far from 1 answer a different question. At `pi = 0.50` the requirement is the median condition level among the successful cases and describes the typical successful case, for example 80.44 at the target 50 of the synthetic data; at `pi = 0.10` the requirement is an upper-tail level of the condition [@Deja2026QNCA]. Both choices require a substantive loss function or an exception policy [@Deja2026QNCA].
+
+The grid of tolerances follows the decision context, is fixed before significance is inspected, and retains the strict anchor `pi = 1` [@Zadeh1994; @Deja2026QNCA]. The analyst discloses the conditioning-set size `k` near important targets, and the choice of the tolerance precedes every p-value of the analysis [@Deja2026QNCA].
+
+## The same call in Python and Julia
+
+The Python package `qnca` and the Julia package `QuantileNecessity` select the same ranks and return the same requirements. The Python function is `quantile_type1_pi()`, and the Julia function carries the same name.
+
+```{python tolerance-python}
+from urllib.request import urlopen
+import numpy as np
+from qnca import qnca_rank, quantile_type1_pi
+
+url = "https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"
+X, Y = np.loadtxt(urlopen(url), delimiter=",", skiprows=1, unpack=True)
+print(qnca_rank(100, 0.95), [qnca_rank(k, 0.95) for k in (19, 20, 21, 40, 100)])
+print(quantile_type1_pi(np.array([12.0, 3.0, 7.0, 30.0, 18.0]), 0.6))
+targets = (10.0, 30.0, 50.0, 70.0, 90.0)
+print([int(np.sum(Y >= y)) for y in targets])
+for p in (1.0, 0.95, 0.90, 0.50):
+    print(p, [round(quantile_type1_pi(X[Y >= y], p), 2) for y in targets])
+```
+
+```{julia tolerance-julia}
+using QuantileNecessity, Downloads, DelimitedFiles
+
+url = "https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n200.csv"
+data = readdlm(Downloads.download(url), ',', Float64; skipstart = 1)
+X, Y = data[:, 1], data[:, 2]
+println(qnca_rank(100, 0.95), " ", [qnca_rank(k, 0.95) for k in (19, 20, 21, 40, 100)])
+println(quantile_type1_pi([12.0, 3.0, 7.0, 30.0, 18.0], 0.6))
+targets = [10.0, 30.0, 50.0, 70.0, 90.0]
+println([count(>=(y), Y) for y in targets])
+for p in (1.0, 0.95, 0.90, 0.50)
+    println(p, " ", [round(quantile_type1_pi(X[Y .>= y], p); digits = 2) for y in targets])
+end
+```

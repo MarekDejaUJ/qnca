@@ -1,0 +1,167 @@
+# The three implementations {#implementations}
+
+The R package `qnca`, the Python package `qnca` and the Julia package `QuantileNecessity` implement one estimator. At each outcome target `y` on a grid, each implementation selects a low type-1 quantile of the condition among the cases with `Y >= y` at the tolerance `pi`. The monotone envelope makes the frontier non-decreasing, the frontier takes the upper bound of the condition in an unobserved top band of a fixed scope, and the trapezoid rule integrates the empty zone into the effect size `d_pi`. The implementations in R [@RCoreTeam2025], in Python with NumPy [@HarrisEtAl2020] and in Julia [@BezansonEtAl2017] carry out the same steps, so the three give the same effect sizes to floating point and the same bottlenecks on the same data [@Deja2026QNCA].
+
+The type-1 quantile is the inverse empirical distribution function, and the type-1 quantile at probability zero is the sample minimum. The tolerance `pi = 1` therefore reproduces the CE-FDH running minimum of Necessary Condition Analysis (NCA) before numerical integration, and every fitted value of the frontier at an attained target is an observed condition value. An interpolating quantile would replace the observed order statistics with interpolated values and weaken the strict-limit property [@HyndmanFan1996].
+
+## Installation
+
+The releases install from the registries of the three languages.
+
+```r
+install.packages("qnca")
+```
+
+```bash
+python -m pip install qnca
+```
+
+```julia
+using Pkg
+Pkg.add("QuantileNecessity")
+```
+
+## Functions across the three languages
+
+Table \@ref(tab:implementations-functions) maps the functions of the three packages. The R and Python functions take named arguments, and the Julia functions take keyword arguments after a semicolon. The monotone fit is the string `"envelope"` or `"isotonic"` in R and Python and the symbol `:envelope` or `:isotonic` in Julia. Permutation matrices and subsample matrices hold one-based indices in all three languages. A fit returns a list with a data frame in R, a data class in Python and a named tuple in Julia.
+
+Table: (\#tab:implementations-functions) Functions of the R package `qnca`, the Python package `qnca` and the Julia package `QuantileNecessity`.
+
+| Task | R | Python | Julia |
+|---|---|---|---|
+| Fit at one tolerance: `d_pi`, `p_pi`, bottleneck | `qnca()` | `qnca()` | `qnca()` |
+| Frontier on a grid of targets | `qnca_frontier()` | `qnca_frontier()` | `qnca_frontier()` |
+| Effect size of a fitted frontier | `qnca_d()` | `qnca_d()` | `qnca_d()` |
+| Exact CE-FDH effect size | `nca_ce_fdh_d()` | `nca_ce_fdh_d()` | `nca_ce_fdh_d()` |
+| Selected type-1 rank | `qnca_rank()` | `qnca_rank()` | `qnca_rank()` |
+| Type-1 quantile at a tolerance | `qnca_quantile_type1_pi()` | `quantile_type1_pi()` | `quantile_type1_pi()` |
+| Monotone envelope | `monotone_envelope()` | `monotone_envelope()` | `monotone_envelope()` |
+| Least squares isotonic fit | `qnca_isotonic_increasing()` | `isotonic_increasing()` | `isotonic_increasing()` |
+| Permutation p-value | inside `qnca()` | `permutation_test()`, inside `qnca()` | inside `qnca()` |
+| Dependence-matched reference band | `spuriousness_band()` | `spuriousness_band()` | `spuriousness_band()` |
+| Consistency probe | `consistency_probe()` | `consistency_probe()` | `consistency_probe()` |
+| Target-by-target resolution | `qnca_resolution()` | `qnca_resolution()` | `qnca_resolution()` |
+| Deletion screen | `qnca_outliers()` | `qnca_outliers()` | `qnca_outliers()` |
+| Addition screen | `qnca_sensitivity()` | `qnca_sensitivity()` | `qnca_sensitivity()` |
+| Synthetic reverse-L data | `generate_reverse_L()` | `generate_reverse_l()` | `generate_reverse_L()` |
+| Comparison with the NCA package | `compare_qnca_nca()` | `compare_native()`, `run_r_nca()` | |
+
+The random numbers come from different generators. The R function `qnca()` draws permutations from the random number stream of the session, which `set.seed()` fixes. The Python function `qnca()` takes a `seed` for `numpy.random.default_rng()`. The Julia function `qnca()` takes a `seed` for a Mersenne Twister stream and uses the seed 42 by default.
+
+## The selected rank from the exact decimal of the tolerance
+
+At a target with `k` attaining cases, the frontier selects the order statistic of rank `h = max(1, ceiling(k * (1 - pi)))`. In binary floating point, `1 - 0.95` is slightly larger than 0.05, so `100 * (1 - 0.95)` lies slightly above 5 and a direct ceiling returns 6.
+
+```{r implementations-rank}
+library(qnca)
+sprintf("%.20f", 1 - 0.95)
+c(direct = ceiling(100 * (1 - 0.95)), qnca_rank = qnca_rank(100, 0.95))
+c(direct = ceiling(1000 * (1 - 0.99)), qnca_rank = qnca_rank(1000, 0.99))
+```
+
+The three implementations read the tolerance from the shortest decimal that represents the floating-point value and form the rank in exact arithmetic. R splits the integer arithmetic below `2^53`, Python uses `fractions.Fraction` of the decimal text, and Julia parses a rational number from the decimal text. The tolerance 0.95 with 100 attaining cases therefore selects rank 5 in all three languages, and 0.99 with 1000 attaining cases selects rank 10.
+
+## Agreement to floating point
+
+The repository stores the strict-limit check against the NCA package and the cross-language check of the four synthetic datasets with 100, 200, 500 and 1000 cases on the fixed scope `[0, 100] x [0, 100]`.
+
+```{r implementations-agreement}
+dul <- read.csv("https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/dul_nca_results.csv")
+dul <- dul[dul$method == "ce_fdh", ]
+dul[, c("dataset", "qnca_d_pi1", "native_ce_fdh_d", "dul_d", "abs_diff_qnca_vs_dul", "abs_diff_native_vs_dul")]
+agree <- read.csv("https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/cross_language_agreement.csv")
+agree[, c("dataset", "pi", "d_pi_R", "max_abs_d_diff", "p_values_equal")]
+max(agree$max_abs_d_diff)
+all(agree$p_values_equal == "true")
+```
+
+The native CE-FDH effect size of `nca_ce_fdh_d()` matches the CE-FDH effect size of the NCA package [@NCAPackage2026] with a largest absolute difference of 1.17e-15 across the four datasets. The grid-based `d_1` with 400 outcome levels differs from the exact value by at most 3.29e-04, the discretisation of the trapezoid rule. Across the four datasets and the tolerances 1.00, 0.95 and 0.90, the largest difference in `d_pi` between the three implementations is 4.39e-13, and the permutation p-values are equal in every row.
+
+## A shared permutation matrix
+
+A permutation p-value depends on the permutations, and the three languages draw different permutations from the generator of each language. The argument `permutations` of `qnca()` accepts a matrix with `B` rows, each row a one-based permutation of the `n` cases, and three implementations that score the same matrix return the same p-value. The multiplicative congruential generator with multiplier 16807 and modulus `2^31 - 1` [@ParkMiller1988] runs in exact integer arithmetic in all three languages, so each language can build the same matrix by ordering consecutive blocks of `n` values.
+
+```{r implementations-same}
+d <- read.csv("https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n100.csv")
+lcg <- function(count, seed) {
+  x <- numeric(count)
+  s <- seed
+  for (k in seq_len(count)) {
+    s <- (16807 * s) %% 2147483647
+    x[k] <- s
+  }
+  x
+}
+B <- 199
+n <- nrow(d)
+perm <- t(apply(matrix(lcg(B * n, 1), nrow = B, byrow = TRUE), 1, order))
+perm[1, 1:10]
+for (p in c(1, 0.95, 0.90)) {
+  fit <- qnca(d$X, d$Y, pi = p, n_grid = 50, scope = c(0, 100, 0, 100), permutations = perm)
+  cat(sprintf("%.2f %.12f %.12f\n", p, fit$d_pi, fit$p_pi))
+}
+```
+
+On the dataset of 100 cases, R gives the effect sizes 0.496231091316, 0.521827525269 and 0.546650677260 at `pi = 1.00`, 0.95 and 0.90, the values of the stored cross-language check, and the p-value 0.005 at each tolerance, the smallest value that 199 permutations allow.
+
+The Julia function `qnca()` draws all `B` permutations from one seeded stream before the permutations are scored, and the scoring runs in a threaded loop. The p-value for a given seed is therefore the same for every number of threads with which Julia starts. The reference band of the Julia package draws the array of normal variates from one seeded stream in the same way before the threaded loop over the null replicates. The R and Python implementations score the permutations in sequence.
+
+## The same computation in Python and Julia
+
+The Python and Julia chunks build the same permutation matrix, print the same first row and give the same effect sizes and p-values to 12 decimals, together with the direct and the exact rank of `pi = 0.95` with 100 attaining cases.
+
+```{python implementations-python}
+from urllib.request import urlopen
+import math
+import numpy as np
+from qnca import qnca, qnca_rank
+
+url = "https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n100.csv"
+X, Y = np.loadtxt(urlopen(url), delimiter=",", skiprows=1, unpack=True)
+
+def lcg(count, seed):
+    x = np.empty(count)
+    s = seed
+    for k in range(count):
+        s = (16807 * s) % 2147483647
+        x[k] = s
+    return x
+
+B, n = 199, X.size
+perm = np.argsort(lcg(B * n, 1).reshape(B, n), axis=1, kind="stable") + 1
+print(perm[0, :10])
+for pi in (1.0, 0.95, 0.90):
+    fit = qnca(X, Y, pi=pi, n_grid=50, scope=(0, 100, 0, 100), permutations=perm)
+    print(f"{pi:.2f} {fit.d_pi:.12f} {fit.p_pi:.12f}")
+print(math.ceil(100 * (1 - 0.95)), qnca_rank(100, 0.95))
+```
+
+```{julia implementations-julia}
+using QuantileNecessity, Downloads, DelimitedFiles, Printf
+
+url = "https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/data/qnca_dataset_n100.csv"
+data = readdlm(Downloads.download(url), ',', Float64; skipstart = 1)
+X, Y = data[:, 1], data[:, 2]
+
+function lcg(count, seed)
+    x = zeros(count)
+    s = seed
+    for k in 1:count
+        s = mod(16807 * s, 2147483647)
+        x[k] = s
+    end
+    return x
+end
+
+B, n = 199, length(X)
+u = permutedims(reshape(lcg(B * n, 1), n, B))
+perm = reduce(vcat, [sortperm(u[b, :])' for b in 1:B])
+println(perm[1, 1:10])
+for pi in (1.0, 0.95, 0.90)
+    fit = qnca(X, Y; pi = pi, n_grid = 50, scope = (0, 100, 0, 100), permutations = perm)
+    @printf("%.2f %.12f %.12f\n", pi, fit.d_pi, fit.p_pi)
+end
+println(ceil(Int, 100 * (1 - 0.95)), " ", qnca_rank(100, 0.95))
+```
+
+Equal effect sizes need the same data, scope, grid and tolerance, and equal p-values need in addition the same permutation matrix; with both, an analysis moves between R, Python and Julia with every reported number unchanged.

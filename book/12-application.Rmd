@@ -1,0 +1,191 @@
+# A technology acceptance reanalysis {#application}
+
+The combined importance-performance map analysis (cIPMA) of Hauff, Richter, Sarstedt and Ringle reports the CE-FDH effect sizes of Necessary Condition Analysis (NCA) for the antecedents of technology use in a survey of adopters of e-book readers [@HauffRichterSarstedtRingle2024]. QNCA adds three questions to the published CE-FDH analysis [@Deja2026QNCA]. How does each boundary move over a small tolerance grid fixed in advance? Does the strict bottleneck depend on a few efficient cases? Does the empty zone exceed a benchmark that keeps the observed marginals and rank dependence? For an applied decision, the bottleneck is a feasibility floor.
+
+## Latent scores of the published model
+
+The survey of French adopters of e-book readers of @RichterHauffKolevSchubring2023 is the file "Extended TAM.csv" on Mendeley Data [@SchubringRichter2023]. The model has five composites with three items each on scales from 1 to 5: perceived usefulness (PU), compatibility (CO), ease of use (EOU), emotional value (EMV) and adoption intention (AD). Technology use (USE) is a single item on a scale from 1 to 7. PU, CO, EOU and EMV lead to AD, and all five constructs lead to USE. The package `seminr` estimates the model by partial least squares [@RayDanksCaleroValdez2026]. Each latent score is the weighted mean of the items of the construct with the normalised unstandardised weights of the model. The function `get_rescaled_scores()` of the `cIPMA` package rescales each score from the item scale to the range from 0 to 100, as in the cIPMA workflow [@HauffRichterSarstedtRingle2024].
+
+```{r application-scores}
+library(qnca)
+library(seminr)
+tam <- read.csv("https://data.mendeley.com/public-files/datasets/pd5dp3phx2/files/47b2cc21-ccde-48a1-a2af-9bcdad4e0e2f/file_downloaded",
+                fileEncoding = "UTF-8-BOM", check.names = FALSE)
+nrow(tam)
+mm <- constructs(
+  composite("PU", multi_items("PU_0", 1:3)),
+  composite("CO", multi_items("CO_0", 1:3)),
+  composite("EOU", multi_items("EOU_0", 1:3)),
+  composite("EMV", multi_items("EMV_0", 1:3)),
+  composite("AD", multi_items("AD_0", 1:3)),
+  composite("USE", single_item("USE_01"))
+)
+sm <- relationships(
+  paths(from = c("CO", "PU", "EOU", "EMV"), to = "AD"),
+  paths(from = c("AD", "CO", "PU", "EOU", "EMV"), to = "USE")
+)
+rescaled_scores <- function(model, data, scales) {
+  w <- as.data.frame(as.table(model$outer_weights))
+  names(w) <- c("item", "construct", "weight")
+  w <- w[w$weight != 0, ]
+  w$weight <- w$weight / model$sdData[as.character(w$item)]
+  w$weight <- w$weight / ave(w$weight, w$construct, FUN = sum)
+  model$measurement_model <- model$mmMatrix
+  model$construct_scores <- sapply(split(w, w$construct, drop = TRUE), function(s)
+    as.matrix(data[, as.character(s$item)]) %*% s$weight)
+  out <- as.data.frame(cIPMA::get_rescaled_scores(model, scales))
+  out[] <- lapply(out, function(v) pmin(100, pmax(0, v)))
+  out
+}
+scales <- setNames(rep(list(c(1, 5)), ncol(tam)), names(tam))
+scales$USE_01 <- c(1, 7)
+pls <- suppressMessages(estimate_pls(tam, mm, sm))
+scores <- rescaled_scores(pls, tam, scales)
+summary(scores[, c("AD", "EMV", "EOU", "PU", "CO", "USE")])
+```
+
+The function `nca_ce_fdh_d()` computes the CE-FDH effect size exactly on the empirical scope of each pair, the scope of the published illustration. The five effect sizes reproduce the published values of AD, EMV, EOU, PU and CO to printed rounding, with differences of at most 0.005 in absolute value.
+
+```{r application-reproduction}
+pairs <- c("AD", "EMV", "EOU", "PU", "CO")
+published <- c(AD = 0.29, EMV = 0.33, EOU = 0.24, PU = 0.24, CO = 0.21)
+ce_fdh <- sapply(pairs, function(x) nca_ce_fdh_d(scores[[x]], scores$USE))
+data.frame(published, ce_fdh = round(ce_fdh, 3), difference = round(ce_fdh - published, 3))
+```
+
+The latent scores depend on the structural model, because the inner weights of partial least squares shape the outer weights. A chain specification with the paths EOU to PU and AD, PU, EMV and CO to AD, and AD to USE, the specification of the replication archive of @Deja2026QNCA, gives a second set of scores from the same items.
+
+```{r application-specification}
+sm_chain <- relationships(
+  paths(from = "EOU", to = c("PU", "AD")),
+  paths(from = c("PU", "EMV", "CO"), to = "AD"),
+  paths(from = "AD", to = "USE")
+)
+scores_chain <- rescaled_scores(suppressMessages(estimate_pls(tam, mm, sm_chain)), tam, scales)
+effects <- function(s) c(
+  min_EOU = min(s$EOU),
+  EOU_1.00 = nca_ce_fdh_d(s$EOU, s$USE),
+  EOU_0.95 = qnca(s$EOU, s$USE, pi = 0.95, n_grid = 400, B = 0)$d_pi,
+  PU_1.00 = nca_ce_fdh_d(s$PU, s$USE),
+  PU_0.95 = qnca(s$PU, s$USE, pi = 0.95, n_grid = 400, B = 0)$d_pi)
+round(rbind(published_model = effects(scores), chain_model = effects(scores_chain)), 3)
+```
+
+The chain specification raises the lowest EOU score from 16.871 to 17.721 and lowers the strict EOU effect from 0.235 to 0.199, whereas the EOU effect at `pi = 0.95` moves from 0.432 to 0.424. A change of 0.036 in the strict effect between two nearly identical sets of scores is the kind of sensitivity that the tolerance path measures within one set of scores [@Deja2026QNCA]. The tolerance path, the deletion screen and the band follow the specification and the settings of the reanalysis in @Deja2026QNCA. The settings are the scores of the chain specification, the empirical scope of each pair, 400 outcome levels, one matrix of 1999 permutations per pair shared by the three tolerances, and 999 null replicates in the band.
+
+## The tolerance path and the permutation test
+
+The tolerance grid 1.00, 0.95 and 0.90 is fixed before the analysis and keeps the strict anchor.
+
+```{r application-path}
+s <- scores_chain
+n <- nrow(s)
+pi_grid <- c(1, 0.95, 0.90)
+fits <- lapply(seq_along(pairs), function(idx) {
+  X <- s[[pairs[idx]]]; Y <- s$USE
+  scope <- c(min(X), max(X), min(Y), max(Y))
+  set.seed(20260930L + idx)
+  perms <- t(replicate(1999, sample.int(n, n, replace = FALSE)))
+  lapply(pi_grid, function(pi)
+    qnca(X, Y, pi = pi, n_grid = 400L, B = NA, scope = scope, permutations = perms))
+})
+get <- function(field, j) sapply(fits, function(f) f[[j]][[field]])
+path <- data.frame(pair = paste(pairs, "-> USE"),
+                   d_1.00 = get("d_pi", 1), d_0.95 = get("d_pi", 2), d_0.90 = get("d_pi", 3),
+                   p_1.00 = get("p_pi", 1), p_0.95 = get("p_pi", 2), p_0.90 = get("p_pi", 3))
+path$gap_0.95 <- path$d_0.95 - path$d_1.00
+path$gap_0.90 <- path$d_0.90 - path$d_1.00
+path$relative_gap_0.95 <- path$gap_0.95 / path$d_1.00
+print(path, digits = 3, row.names = FALSE)
+```
+
+The strict effect sizes 0.294, 0.331 and 0.210 reproduce the published CE-FDH values of AD, EMV and CO to printed rounding, and the chain-specification scores give 0.199 for EOU and 0.248 for PU against the published 0.24 and 0.24. At `pi = 0.95`, all five pairs give p-values below 0.05, from 0.0005 to 0.0495. The strict p-values run from 0.0005 to 0.0555. EOU misses 0.05 at `pi = 1.00` and falls below 0.05 at both tolerances fixed in advance. The effect sizes rise from `pi = 1.00` to 0.95 and 0.90 in every pair as larger exception tolerances move the bottleneck away from the most efficient respondents, and the three effect sizes form a sensitivity reading [@Deja2026QNCA].
+
+## Dependence on a few efficient respondents
+
+The effect-size gap `d_0.95 - d_1.00` measures how far a five-percent exception tolerance moves the empty zone. The gap is 0.247 for AD, 0.225 for EOU, 0.197 for PU, 0.194 for CO and 0.169 for EMV, and the gaps at `pi = 0.90` run from 0.237 to 0.330. A five-percent exception tolerance therefore raises the empty zone by about four fifths or more for AD, EOU, PU and CO and by about half for EMV. Each strict boundary rests heavily on the few successful respondents with the lowest condition scores, and the strict member is the most outlier-fragile frontier of the grid. The application keeps the empirical scope of each pair, so the gap magnitudes compare within the table and transfer to other scopes only with a recalibration.
+
+```{r application-tail}
+table(round(s$USE, 1))
+top <- do.call(rbind, lapply(pairs, function(x) {
+  X <- s[[x]]; Y <- s$USE
+  r <- qnca_resolution(X, Y, pi = 0.95, n_grid = 400L, scope = c(min(X), max(X), min(Y), max(Y)))
+  cbind(pair = x, r[nrow(r), c("y", "k", "rank", "raw", "fitted", "inherited", "below")])
+}))
+print(top, digits = 4, row.names = FALSE)
+```
+
+Tail size limits the same reading. Nine respondents attain the highest level of USE, and with fewer than 20 successful cases the rank `max(1, ceiling(k * (1 - pi)))` at `pi = 0.95` selects the minimum. For AD, EOU and PU the minimum of the nine sets the bottleneck at the top of the scope. For EMV and CO the minimum lies below the requirement reached at a lower level, the envelope holds the inherited requirement, and one of the nine respondents falls below the bottleneck. A report marks the top bottlenecks as limited by tail size and the bottlenecks of EMV and CO at the top as inherited.
+
+```{r application-screen}
+screen <- do.call(rbind, lapply(pairs, function(x) {
+  X <- s[[x]]; Y <- s$USE
+  do.call(rbind, lapply(1:2, function(k) {
+    o <- qnca_outliers(X, Y, pi_grid = pi_grid, k = k, n_grid = 400L,
+                       scope = c(min(X), max(X), min(Y), max(Y)))
+    data.frame(pair = x, deleted = k, d_1.00 = o$d[1],
+               largest_rise_1.00 = max(o$dif_abs[, 1]),
+               share_of_d_1.00 = max(o$dif_abs[, 1]) / o$d[1],
+               change_0.95 = max(abs(o$dif_abs[, 2])),
+               change_0.90 = max(abs(o$dif_abs[, 3])))
+  }))
+}))
+print(screen, digits = 3, row.names = FALSE)
+```
+
+The deletion screen of `qnca_outliers()` gives the case-level view in the manner of the NCA outlier screen [@NCAPackage2026]. The largest rise of the strict effect from the deletion of one respondent is 0.05 to 0.08 across the five pairs, between 22 and 32 percent of the strict effect. The largest rise from the deletion of two respondents reaches 0.12, 60 percent of the strict EOU effect. The deletions change `d_0.95` by at most 0.041 for one respondent and 0.056 for two, and `d_0.90` by at most 0.028 and 0.042. The screen and the tolerance path agree that the strict boundaries rest on one or two respondents, and the path reports the dependence while keeping respondents whose answers may be valid.
+
+## The dependence-matched reference band
+
+The reference band compares each observed effect size with 999 datasets from a Gaussian copula that keeps the empirical marginals and the normal-score rank correlation of the pair and imposes no attainability floor. The band is a proposed diagnostic with operating characteristics still to be established.
+
+```{r application-band}
+band <- do.call(rbind, lapply(seq_along(pairs), function(idx) {
+  X <- s[[pairs[idx]]]; Y <- s$USE
+  b <- spuriousness_band(X, Y, pi_grid = pi_grid, n_grid = 400L, M = 999L,
+                         scope = c(min(X), max(X), min(Y), max(Y)), seed = 20261030L + idx)
+  cbind(pair = pairs[idx], rank_correlation = b$rank_correlation, b$band)
+}))
+print(band, digits = 3, row.names = FALSE)
+```
+
+Every excess `Delta = d_obs - U` is negative. At `pi = 0.95` the excess runs from -0.097 for EMV to -0.065 for PU, and the tail probabilities run from 0.441 to 0.895. All five pairs stay within the band at `pi = 1.00` and 0.90 as at 0.95, with rank correlations between 0.330 and 0.624. The result withholds warrant beyond the benchmark and leaves the five hypotheses open [@Deja2026QNCA].
+
+## The values of the article
+
+Table \@ref(tab:application-summary) collects the values in the layout of the technology acceptance table of @Deja2026QNCA.
+
+```{r application-summary}
+b95 <- band[band$pi == 0.95, ]
+summary_table <- data.frame(
+  pair = path$pair, rank_corr = b95$rank_correlation,
+  d_1.00 = path$d_1.00, d_0.95 = path$d_0.95, d_0.90 = path$d_0.90,
+  p_0.95 = path$p_0.95, U_0.95 = b95$upper, Delta_0.95 = b95$excess,
+  p_null_0.95 = b95$p_null,
+  verdict = ifelse(b95$excess > 0, "above band", "within band"))
+knitr::kable(summary_table, digits = c(0, 3, 3, 3, 3, 4, 3, 3, 3, 0), row.names = FALSE,
+             caption = "Technology acceptance reanalysis on the chain-specification scores with the empirical scope of each pair: rank correlation, effect sizes at the tolerances 1.00, 0.95 and 0.90, permutation p-value at 0.95 from 1999 permutations, and upper band limit, excess and tail probability at 0.95 from 999 null replicates.")
+```
+
+```{r application-stored}
+stored <- read.csv("https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/replication/results/application_table.csv")
+stored_band <- read.csv("https://raw.githubusercontent.com/MarekDejaUJ/qnca/main/replication/results/application_band.csv")
+printed <- data.frame(rank_corr = b95$rank_correlation,
+                      d_100 = path$d_1.00, d_095 = path$d_0.95, d_090 = path$d_0.90,
+                      p_100 = path$p_1.00, p_095 = path$p_0.95, p_090 = path$p_0.90,
+                      U_095 = b95$upper, delta_095 = b95$excess, p_null_095 = b95$p_null)
+sapply(names(printed), function(v) max(abs(printed[[v]] - stored[[v]])))
+sapply(c("d_obs", "lower", "median", "upper", "excess", "p_null"),
+       function(v) max(abs(band[[v]] - stored_band[[v]])))
+tail_check <- data.frame(pair = band$pair, pi = band$pi,
+                         printed = band$p_null, stored = stored_band$p_null)
+tail_check[tail_check$printed != tail_check$stored, ]
+```
+
+Every value of Table \@ref(tab:application-summary) equals the corresponding value of the technology acceptance table of @Deja2026QNCA at the printed precision. Against the stored results of the replication archive, the rank correlations, effect sizes, band limits and excess values differ by at most 3.4e-15, and the permutation p-values are equal. The tail probabilities at `pi = 0.90` of AD and EMV differ from the stored values by one and two of the 999 null replicates, 0.540 against 0.539 and 0.857 against 0.859; at `pi = 0.95`, the tolerance of the article's table, all five tail probabilities agree.
+
+## What QNCA adds to the published analysis
+
+A report needs both diagnostics beside the ordinary permutation result. The tolerance path shows that each strict boundary rests on a thin set of efficient respondents and that the published effect sizes move strongly with the exception tolerance. The band shows that every member of the grid stays within what the observed marginals and rank dependence reproduce in the absence of an attainability floor. The evidence leaves AD, EMV, EOU, PU and CO without support as necessary bottlenecks for USE beyond the reproduced dependence and skewness, and the strict bottlenecks that an applied report would quote are the bottlenecks most exposed to a single efficient respondent. A managerial threshold therefore rests on the permutation result, the tolerance path and the band together [@Deja2026QNCA].
+
+The latent scores come from the partial least squares model estimated with `seminr` in R, so every number of the reanalysis is computed in R.

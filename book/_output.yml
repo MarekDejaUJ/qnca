@@ -1,0 +1,11 @@
+bookdown::bs4_book:
+  theme:
+    primary: "#333333"
+    base_font:
+      google: "Source Sans Pro"
+    code_font:
+      google: "Source Code Pro"
+  repo:
+    base: https://github.com/MarekDejaUJ/qnca
+    branch: main
+    subdir: book

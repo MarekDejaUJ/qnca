@@ -1,0 +1,58 @@
+---
+title: "Quantile Necessary Condition Analysis"
+subtitle: "A guide to tolerance-indexed necessity frontiers in R, Python and Julia"
+author: "Marek Deja"
+date: "2026"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: references.bib
+link-citations: true
+url: https://marekdejauj.github.io/qnca/
+description: "A guide to Quantile Necessary Condition Analysis (QNCA) with the qnca packages for R and Python and the QuantileNecessity package for Julia."
+---
+
+# Preface {-}
+
+Quantile Necessary Condition Analysis (QNCA) asks how much of a condition the successful cases hold when a stated share of the successful cases may sit below the reported requirement. For each target level of an outcome, QNCA takes the cases that reach the target and reports a low quantile of the condition among the cases. The tolerance `pi` in (0, 1] fixes the share `1 - pi` of successful cases that may fall below the requirement. At `pi = 1` the requirement is the lowest condition value among the successful cases, which is the CE-FDH ceiling of Necessary Condition Analysis (NCA) [@Dul2016]. At `pi = 0.95` the requirement admits five percent of the successful cases below the reported level [@Deja2026QNCA].
+
+The guide explains the method and the software through one question per chapter. Each chapter defines the quantities the chapter uses and reads without the other chapters. Each chapter computes the example of the chapter in R and repeats the central call in Python and Julia, and every number in the text is the output of the code shown beside the number. The books of Jan Dul describe the procedure of NCA from theory to reporting [@Dul2020; @DulAdvancesNCA]; the guide cites the books for the procedure of NCA and builds the route of QNCA from the tolerance.
+
+| Chapter | Question |
+|---|---|
+| 1 | What does a necessity claim assert about an outcome target? |
+| 2 | Which cases and which scope does an analysis use? |
+| 3 | How does the CE-FDH ceiling set the strict requirement? |
+| 4 | How does the tolerance select the reported requirement? |
+| 5 | How does the frontier become non-decreasing? |
+| 6 | How large is the empty zone? |
+| 7 | Could an empty zone of the observed size arise under independence? |
+| 8 | What level of the condition does each target require? |
+| 9 | Which requirements rest on a few efficient cases? |
+| 10 | Does the empty zone exceed the dependence of the two variables? |
+| 11 | How does QNCA relate to other frontier methods? |
+| 12 | What does QNCA add to a published NCA application? |
+| 13 | How does a report present QNCA, and how does cIPMA use QNCA? |
+| 14 | How do the R, Python and Julia implementations correspond? |
+
+## Software {-}
+
+The R and Python packages are named `qnca`, and the Julia package is named `QuantileNecessity`. The three implementations give the same effect sizes and the same bottlenecks on the same data.
+
+```r
+install.packages("qnca")
+```
+
+```bash
+python -m pip install qnca
+```
+
+```julia
+using Pkg
+Pkg.add("QuantileNecessity")
+```
+
+The development versions install from the repository <https://github.com/MarekDejaUJ/qnca>, which also holds the datasets of the guide in the `data` folder. The examples read the datasets from the repository over the internet, so every example runs as printed.
+
+## Citation {-}
+
+The article that introduces the method is @Deja2026QNCA. The software of release 0.4.0 is archived at Zenodo [@Deja2026qnca].

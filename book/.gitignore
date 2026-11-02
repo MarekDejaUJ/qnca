@@ -1,0 +1,8 @@
+_book/
+_bookdown_files/
+*_files/
+*.rds
+_test*/
+_bookdown_test*.yml
+qnca-guide.Rmd
+raw.githubusercontent.com/

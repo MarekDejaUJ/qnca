@@ -1,0 +1,21 @@
+book_filename: "qnca-guide"
+delete_merged_file: true
+output_dir: "_book"
+before_chapter_script: "_common.R"
+rmd_files:
+  - index.Rmd
+  - 01-necessity.Rmd
+  - 02-scatter.Rmd
+  - 03-ceiling.Rmd
+  - 04-tolerance.Rmd
+  - 05-envelope.Rmd
+  - 06-effect-size.Rmd
+  - 07-permutation.Rmd
+  - 08-bottlenecks.Rmd
+  - 09-tolerance-path.Rmd
+  - 10-reference-band.Rmd
+  - 11-frontiers.Rmd
+  - 12-application.Rmd
+  - 13-reporting.Rmd
+  - 14-implementations.Rmd
+  - references.Rmd
