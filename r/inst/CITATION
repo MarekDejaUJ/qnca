@@ -17,5 +17,6 @@ bibentry(
   author = person("Marek", "Deja", comment = c(ORCID = "0000-0003-0015-2322")),
   year = "2026",
   note = paste("R package version", meta$Version),
+  doi = "10.5281/zenodo.23889752",
   url = "https://github.com/MarekDejaUJ/qnca"
 )

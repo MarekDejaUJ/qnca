@@ -64,6 +64,8 @@ The guide to QNCA is at <https://marekdejauj.github.io/qnca/>, and the source is
 
 Deja, M. (2026). Quantile Necessary Condition Analysis: A Tolerance-Parameterized Generalization of Necessary Condition Analysis. *Quality & Quantity* (accepted for publication).
 
+The software of release 0.4.0 is archived at Zenodo: Deja, M. (2026). *qnca: Quantile Necessary Condition Analysis*, version 0.4.0. Zenodo. <https://doi.org/10.5281/zenodo.23889752>.
+
 ## Licence
 
 GPL-3.0-only.
