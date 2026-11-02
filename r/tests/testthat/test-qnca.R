@@ -1,0 +1,226 @@
+test_that("validation invariant: d_pi(pi = 1) equals native CE-FDH d", {
+  set.seed(42)
+  for (n in c(100, 200, 500, 1000)) {
+    d <- generate_reverse_L(n)
+    for (scope in list(c(0, 100, 0, 100), NULL)) {
+      q1 <- qnca(d$X, d$Y, pi = 1, n_grid = 400L, B = NA, scope = scope)
+      ref <- nca_ce_fdh_d(d$X, d$Y, scope = scope)
+      expect_lt(abs(q1$d_pi - ref), 2e-3)
+    }
+  }
+})
+
+test_that("frontier is non-decreasing", {
+  set.seed(1)
+  d <- generate_reverse_L(300)
+  y_grid <- seq(0, 100, length.out = 50)
+  phi <- qnca_frontier(d$X, d$Y, pi = 0.95, y_grid = y_grid)
+  fin <- phi[is.finite(phi)]
+  expect_true(all(diff(fin) >= -1e-9))
+})
+
+test_that("effect size lies in [0, 1] and grows as pi falls", {
+  set.seed(2)
+  d <- generate_reverse_L(500)
+  d1  <- qnca(d$X, d$Y, pi = 1.00, n_grid = 200L, B = NA, scope = c(0,100,0,100))$d_pi
+  d95 <- qnca(d$X, d$Y, pi = 0.95, n_grid = 200L, B = NA, scope = c(0,100,0,100))$d_pi
+  d90 <- qnca(d$X, d$Y, pi = 0.90, n_grid = 200L, B = NA, scope = c(0,100,0,100))$d_pi
+  expect_true(d1 >= 0 && d90 <= 1)
+  expect_lte(d1, d95 + 1e-9)
+  expect_lte(d95, d90 + 1e-9)
+})
+
+test_that("permutation p-value respects the 1/(B+1) floor", {
+  set.seed(7)
+  d <- generate_reverse_L(200)
+  B <- 199L
+  res <- qnca(d$X, d$Y, pi = 0.95, B = B, scope = c(0,100,0,100))
+  expect_gte(res$p_pi, 1 / (B + 1) - 1e-12)
+  expect_lte(res$p_pi, 1)
+})
+
+test_that("supplied permutations control the p-value", {
+  set.seed(11)
+  d <- generate_reverse_L(50)
+  permutations <- matrix(rep(seq_len(nrow(d)), 5L), nrow = 5L, byrow = TRUE)
+  res <- qnca(d$X, d$Y, pi = 0.95, B = NA, scope = c(0,100,0,100),
+              permutations = permutations)
+  expect_equal(res$p_pi, 1)
+})
+
+test_that("no necessity signal gives a small effect size", {
+  set.seed(0)
+  X <- runif(500, 0, 100); Y <- runif(500, 0, 100)
+  res <- qnca(X, Y, pi = 1, n_grid = 200L, B = NA, scope = c(0,100,0,100))
+  expect_lt(res$d_pi, 0.10)
+})
+
+test_that("spuriousness band has expected shape and bounds", {
+  set.seed(21)
+  d <- generate_reverse_L(80)
+  set.seed(3)
+  draws <- array(rnorm(12L * nrow(d) * 2L), dim = c(12L, nrow(d), 2L))
+  res <- spuriousness_band(d$X, d$Y, pi_grid = c(1, 0.95), n_grid = 40L,
+                           M = 12L, scope = c(0,100,0,100),
+                           normal_draws = draws)
+  expect_equal(dim(res$band), c(2L, 7L))
+  expect_equal(dim(res$d_null), c(12L, 2L))
+  expect_true(all(is.finite(as.matrix(res$band))))
+  expect_true(all(res$band$lower <= res$band$median + 1e-12))
+  expect_true(all(res$band$median <= res$band$upper + 1e-12))
+  expect_true(all(res$band$p_null >= 1 / 13 - 1e-12))
+  expect_true(all(res$band$p_null <= 1))
+})
+
+test_that("spuriousness band accepts uniform draws", {
+  set.seed(31)
+  d <- generate_reverse_L(60)
+  set.seed(5)
+  uniforms <- array(runif(9L * nrow(d) * 2L), dim = c(9L, nrow(d), 2L))
+  res <- spuriousness_band(d$X, d$Y, pi_grid = c(1, 0.95), n_grid = 35L,
+                           M = 9L, scope = c(0,100,0,100),
+                           uniform_draws = uniforms)
+  expect_equal(dim(res$d_null), c(9L, 2L))
+  expect_true(all(is.finite(as.matrix(res$band))))
+})
+
+test_that("spuriousness band rejects two supplied streams", {
+  set.seed(32)
+  d <- generate_reverse_L(30)
+  uniforms <- array(runif(4L * nrow(d) * 2L), dim = c(4L, nrow(d), 2L))
+  normals <- array(rnorm(4L * nrow(d) * 2L), dim = c(4L, nrow(d), 2L))
+  expect_error(
+    spuriousness_band(d$X, d$Y, M = 4L, scope = c(0,100,0,100),
+                      uniform_draws = uniforms, normal_draws = normals),
+    "at most one"
+  )
+})
+
+test_that("consistency probe returns finite summaries", {
+  set.seed(22)
+  d <- generate_reverse_L(90)
+  res <- consistency_probe(d$X, d$Y, pi_pair = c(1, 0.90),
+                           sizes = c(30L, 60L, 90L), reps = 8L,
+                           n_grid = 40L, scope = c(0,100,0,100), seed = 4)
+  expect_equal(dim(res$effects), c(3L, 8L, 2L))
+  expect_equal(dim(res$summary), c(6L, 4L))
+  expect_true(all(is.finite(res$summary$mean_d)))
+  expect_true(all(is.finite(res$summary$sd_d)))
+  expect_true(all(is.finite(res$beta_drift)))
+  expect_true(is.finite(res$divergence))
+})
+
+test_that("decimal tolerance selects the stated type-1 rank", {
+  expect_equal(qnca_rank(100, 0.95), 5L)
+  expect_equal(qnca_rank(20, 0.95), 1L)
+  expect_equal(qnca_rank(21, 0.95), 2L)
+  expect_equal(qnca_rank(10, 0.90), 1L)
+  expect_equal(qnca_rank(11, 0.90), 2L)
+  expect_equal(qnca_rank(100, 1), 1L)
+  expect_equal(qnca_quantile_type1_pi(1:100, 0.95), 5)
+  for (k in 1:500) {
+    expect_equal(qnca_rank(k, 0.95), max(1L, as.integer(ceiling(k / 20))))
+    expect_equal(qnca_rank(k, 0.90), max(1L, as.integer(ceiling(k / 10))))
+  }
+  expect_error(qnca_rank(100, 0), "pi must be in")
+  expect_error(qnca_rank(100, 1.01), "pi must be in")
+})
+
+test_that("orientation sentinel distinguishes X from Y", {
+  X <- c(0.10, 0.20, 0.40, 0.80, 0.90)
+  Y <- c(0.10, 0.20, 0.60, 0.70, 0.95)
+  expect_equal(qnca_frontier(X, Y, 1, 0.60), 0.40)
+  expect_equal(qnca_frontier(Y, X, 1, 0.60), 0.70)
+})
+
+test_that("frontier uses the corrected rank at a decimal boundary", {
+  expect_equal(qnca_frontier(1:100, 1:100, 0.95, 1), 5)
+})
+
+test_that("invalid inputs and scopes fail explicitly", {
+  expect_error(qnca(c(1, 2), 1, B = 0), "equal lengths")
+  expect_error(qnca(c(1, NaN), c(1, 2), B = 0), "finite")
+  expect_error(qnca(c(1, 1), c(1, 2), B = 0), "non-degenerate")
+  expect_error(qnca(c(1, 2), c(1, 2), B = 0, scope = c(0, 1.5, 0, 2)), "inside scope")
+  expect_error(qnca(c(1, 2), c(1, 2), B = 0, n_grid = 1L), "n_grid")
+})
+
+test_that("zero-valued cohorts remain valid observations", {
+  res <- qnca(c(0, 0.2, 0.4, 0.8), c(0, 0.25, 0.5, 0.75), pi = 0.95,
+              n_grid = 101L, B = 0, scope = c(0, 1, 0, 1))
+  expect_true(is.finite(res$d_pi))
+  expect_true(res$d_pi >= 0 && res$d_pi <= 1)
+})
+
+test_that("envelope leaves the strict member unchanged", {
+  set.seed(401)
+  for (n in c(60, 300)) {
+    d <- generate_reverse_L(n)
+    a <- qnca(d$X, d$Y, pi = 1, n_grid = 120L, B = NA, scope = c(0, 100, 0, 100))
+    b <- qnca(d$X, d$Y, pi = 1, n_grid = 120L, B = NA, scope = c(0, 100, 0, 100),
+              monotone = "isotonic")
+    expect_equal(a$bottleneck$X_required, b$bottleneck$X_required)
+    expect_equal(a$d_pi, b$d_pi)
+  }
+  expect_equal(monotone_envelope(c(3, 1, 4, 2, 5)), c(3, 3, 4, 4, 5))
+  expect_error(qnca(c(1, 2), c(1, 2), B = NA, monotone = "median"), "monotone")
+})
+
+test_that("tolerance path is monotone in pi", {
+  set.seed(402)
+  grid <- c(1, 0.99, 0.975, 0.95, 0.925, 0.90, 0.85, 0.80, 0.50)
+  for (rep in 1:10) for (mode in c("envelope", "isotonic")) {
+    d <- generate_reverse_L(150)
+    eff <- vapply(grid, function(p) qnca(d$X, d$Y, pi = p, n_grid = 60L, B = NA,
+                                         scope = c(0, 100, 0, 100), monotone = mode)$d_pi,
+                  numeric(1))
+    expect_true(all(diff(eff) >= -1e-12))
+  }
+})
+
+test_that("resolution table agrees with the fitted frontier", {
+  set.seed(404)
+  d <- generate_reverse_L(250)
+  Xa <- c(d$X, 2); Ya <- c(d$Y, 95)
+  for (mode in c("envelope", "isotonic")) {
+    res <- qnca_resolution(Xa, Ya, pi = 0.95, n_grid = 80L, scope = c(0, 100, 0, 100),
+                           monotone = mode)
+    fit <- qnca(Xa, Ya, pi = 0.95, n_grid = 80L, B = NA, scope = c(0, 100, 0, 100),
+                monotone = mode)
+    expect_equal(res$fitted, fit$bottleneck$X_required)
+    ok <- res$k > 0
+    expect_equal(res$resistance[ok], res$rank[ok] - 1L)
+    if (mode == "envelope") {
+      keep <- ok & !res$inherited
+      expect_true(all(res$below[keep] <= res$rank[keep] - 1L))
+      expect_true(any(res$inherited))
+    }
+  }
+})
+
+test_that("deletion screen across the tolerance grid", {
+  set.seed(405)
+  d <- generate_reverse_L(600)
+  Xa <- c(d$X, 1); Ya <- c(d$Y, 50)
+  out <- qnca_outliers(Xa, Ya, pi_grid = c(1, 0.95), scope = c(0, 100, 0, 100), n_grid = 60L)
+  expect_equal(length(out$cases), 601L)
+  expect_equal(out$cases[[1]], 601L)
+  expect_true(out$flagged[1])
+  expect_gt(out$dif_abs[1, 1], 10 * abs(out$dif_abs[1, 2]))
+  joint <- qnca_outliers(Xa[1:200], Ya[1:200], pi_grid = c(1, 0.95), k = 2L,
+                         scope = c(0, 100, 0, 100), n_grid = 60L, max_candidates = 6L)
+  expect_equal(length(joint$cases), 15L)
+  expect_true(all(lengths(joint$cases) == 2L))
+})
+
+test_that("breakdown curve under added efficient cases", {
+  set.seed(406)
+  d <- generate_reverse_L(300)
+  res <- qnca_sensitivity(d$X, d$Y, points = c(3, 60), counts = 0:6,
+                          scope = c(0, 100, 0, 100), n_grid = 80L)
+  expect_true(all(res$retention[1, ] == 1))
+  expect_true(all(diff(res$d) <= 1e-12))
+  expect_lt(res$retention[2, 1], res$retention[2, 2])
+  expect_error(qnca_sensitivity(d$X, d$Y, points = c(150, 60), scope = c(0, 100, 0, 100)),
+               "inside the scope")
+})

@@ -14,29 +14,27 @@ a set of tolerance-indexed frontiers reported beside the CE-FDH anchor.
 
 ## Repository Layout
 
-The `main` branch contains the shared datasets and validation results.
+The R, Python, and Julia implementations of release 0.4.0 are folders of the
+`main` branch, and each folder lists its changes in `CHANGELOG.md`. The `data/`
+folder holds the shared datasets and validation results.
 
-Language implementations are published on separate branches. The current
-release of all three is 0.4.0, and each branch lists its changes in
-`CHANGELOG.md`.
-
-| Language | Branch | Install |
+| Language | Folder | Install from GitHub |
 |---|---|---|
-| R | `qnca@R` | `remotes::install_github("MarekDejaUJ/qnca", ref = "qnca@R")` |
-| Python | `qnca@py` | `python -m pip install "git+https://github.com/MarekDejaUJ/qnca.git@qnca%40py"` |
-| Julia | `qnca@Julia` | `Pkg.add(url="https://github.com/MarekDejaUJ/qnca.git", rev="qnca@Julia")` |
+| R | `r/` | `remotes::install_github("MarekDejaUJ/qnca", subdir = "r")` |
+| Python | `python/` | `python -m pip install "git+https://github.com/MarekDejaUJ/qnca.git#subdirectory=python"` |
+| Julia | `julia/QuantileNCA.jl/` | `Pkg.add(url="https://github.com/MarekDejaUJ/qnca.git", subdir="julia/QuantileNCA.jl")` |
 
-Quote branch names in shell commands because they contain `@`. The three
-implementations agree to floating point on shared data, scopes, tolerances, and
-permutation streams.
+The branches `qnca@R`, `qnca@py`, and `qnca@Julia` keep the 0.4.0 code as first
+published. The three implementations agree to floating point on shared data,
+scopes, tolerances, and permutation streams.
 
 ## Data
 
 The `data/` directory contains the synthetic datasets and result tables used for
 strict-limit validation, cross-language agreement, bottleneck comparisons,
 outlier-fragility diagnostics, calibration checks, power checks, and the
-pi-resolved spuriousness-band illustration. The same files are shipped on the
-three package branches.
+pi-resolved spuriousness-band illustration. The three 0.4.0 branches carry
+copies of the same files.
 
 ## Method
 
