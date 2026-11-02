@@ -330,12 +330,12 @@ qnca <- function(X, Y, pi = 1, n_grid = 50L, B = 1999L, scope = NULL,
        bottleneck = data.frame(outcome_level = y_grid, X_required = phi_obs))
 }
 
-#' Native CE-FDH effect size, computed the way Dul's NCA defines it.
+#' Native CE-FDH effect size, computed by the definition of Dul's NCA.
 #'
-#' Builds the upper-left free-disposal hull directly from the data and integrates
-#' the empty zone exactly. Lets the validation invariant d_pi(pi = 1) == this be
-#' checked without the \pkg{NCA} package. Equivalent to \code{qnca}'s d at pi = 1
-#' up to grid discretization.
+#' Builds the upper-left free-disposal hull from the data and integrates the
+#' empty zone exactly. The validation invariant, d_pi at pi = 1 equal to the
+#' CE-FDH effect size, can be checked with the native value alone. The value
+#' equals the d of \code{qnca} at pi = 1 up to the discretisation of the grid.
 #'
 #' @inheritParams qnca
 #' @return The CE-FDH effect size, a number in [0, 1].
@@ -413,9 +413,9 @@ qnca_rank_normal_correlation <- function(X, Y) {
 #' Proposed pi-resolved spuriousness band.
 #'
 #' Compares the observed d_pi curve with a Gaussian-copula null that preserves
-#' the empirical marginals and observed normal-score rank correlation. This is a
-#' diagnostic with unestablished operating characteristics; it does not modify
-#' the QNCA estimator.
+#' the empirical marginals and observed normal-score rank correlation. The band
+#' is a diagnostic with operating characteristics still to be established, and
+#' the QNCA estimator stays as defined.
 #'
 #' @param X,Y numeric vectors.
 #' @param pi_grid tolerance values.
@@ -509,8 +509,8 @@ spuriousness_band <- function(X, Y, pi_grid = c(1, 0.95, 0.90), n_grid = 50L,
 #' Proposed extreme-vs-consistent consistency probe.
 #'
 #' Tracks d_pi across increasing subsample sizes for pi = 1 and a lower
-#' tolerance. This is a descriptive diagnostic and can be confounded by hard
-#' support bounds or marginal skewness.
+#' tolerance. The probe is a descriptive diagnostic, and hard support bounds or
+#' marginal skewness can confound the probe.
 #'
 #' @param X,Y numeric vectors.
 #' @param pi_pair two tolerance values, usually c(1, 0.90).
@@ -645,7 +645,7 @@ qnca_combinations <- function(items, r) {
 #' In the form of the NCA outlier screen. With \code{k = 1} every case is
 #' deleted in turn. With \code{k > 1} all combinations of \code{k} cases are
 #' deleted among the \code{max_candidates} cases lying farthest below the most
-#' tolerant frontier at a target they attain, which keeps cases that mask one
+#' tolerant frontier at an attained target, which keeps cases that mask one
 #' another together. The scope stays fixed at the full-sample rectangle. Rows are
 #' sorted by the largest absolute change over the grid, and a row is flagged when
 #' a relative change reaches \code{min_dif} at some tolerance.

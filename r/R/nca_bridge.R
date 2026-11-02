@@ -2,9 +2,9 @@
 #'
 #' Requires the \pkg{NCA} package. Runs \code{NCA::nca_analysis} with the CE-FDH
 #' and CR-FDH ceilings on a fixed scope, extracts the effect size and p-value,
-#' and returns them alongside QNCA's d_pi at pi = 1 and the native CE-FDH value.
-#' The three CE-FDH numbers should agree up to grid discretization, which is the
-#' validation invariant reported in the paper.
+#' and returns the NCA results beside the QNCA d_pi at pi = 1 and the native
+#' CE-FDH value. The three CE-FDH numbers agree up to the discretisation of the
+#' outcome grid, the validation invariant of QNCA.
 #'
 #' @param d data frame with columns X and Y.
 #' @param scope length-4 c(x_min, x_max, y_min, y_max).

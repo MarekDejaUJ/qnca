@@ -41,8 +41,8 @@ list with per-size summaries, effects, drift slopes and divergence.
 }
 \description{
 Tracks d_pi across increasing subsample sizes for pi = 1 and a lower
-tolerance. This is a descriptive diagnostic and can be confounded by hard
-support bounds or marginal skewness.
+tolerance. The probe is a descriptive diagnostic, and hard support bounds or
+marginal skewness can confound the probe.
 }
 \examples{
 set.seed(1)

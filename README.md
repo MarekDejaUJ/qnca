@@ -1,181 +1,120 @@
-# QNCA — Quantile Necessary Condition Analysis
+# qnca: Quantile Necessary Condition Analysis
 
-Quantile Necessary Condition Analysis (QNCA) is a tolerance-parameterised
-extension of Necessary Condition Analysis. It keeps the NCA bottleneck reading,
-empty-zone effect size, and permutation logic. At each outcome target, the
-frontier is a low type-1 quantile of the condition among the cases that attain
-the target, indexed by a tolerance `pi` in (0, 1]; `1 - pi` is the share of
-attaining cases allowed below the reported requirement.
+Quantile Necessary Condition Analysis (QNCA) extends Necessary Condition Analysis (NCA) with a tolerance. For each outcome target, the QNCA frontier is a low type-1 quantile of the condition among the cases that attain the target. The tolerance `pi` in (0, 1] sets the share `1 - pi` of attaining cases allowed below the reported requirement, and the analyst fixes `pi` before the analysis.
 
-At `pi = 1.00`, QNCA reproduces the CE-FDH ceiling of NCA. At lower tolerances,
-a requirement no longer rests on the single most efficient attaining case, and
-each bottleneck absorbs a stated number of added efficient cases. The result is
-a set of tolerance-indexed frontiers reported beside the CE-FDH anchor.
+At `pi = 1`, the QNCA frontier equals the CE-FDH ceiling of NCA. At `pi < 1`, each requirement rests on a stated order statistic of the attaining cases, so each requirement absorbs a known number of unusually efficient cases. QNCA keeps the bottleneck table, the empty-zone effect size and the permutation test of NCA, and the frontiers at several tolerances are reported beside the CE-FDH ceiling.
 
-## Repository Layout
+The guide to QNCA is at <https://marekdejauj.github.io/qnca/>.
 
-The R, Python, and Julia implementations of release 0.4.0 are folders of the
-`main` branch, and each folder lists its changes in `CHANGELOG.md`. The `data/`
-folder holds the shared datasets and validation results.
+## Packages
 
-| Language | Folder | Install from GitHub |
-|---|---|---|
-| R | `r/` | `remotes::install_github("MarekDejaUJ/qnca", subdir = "r")` |
-| Python | `python/` | `python -m pip install "git+https://github.com/MarekDejaUJ/qnca.git#subdirectory=python"` |
-| Julia | `julia/QuantileNecessity.jl/` | `Pkg.add(url="https://github.com/MarekDejaUJ/qnca.git", subdir="julia/QuantileNecessity.jl")` |
+The repository holds three implementations of release 0.4.0, one per folder, and each folder lists its changes in its changelog.
 
-The branches `qnca@R`, `qnca@py`, and `qnca@Julia` keep the 0.4.0 code as first
-published. The three implementations agree to floating point on shared data,
-scopes, tolerances, and permutation streams.
+| Language | Package | Folder | Release |
+|---|---|---|---|
+| R | `qnca` | [`r/`](https://github.com/MarekDejaUJ/qnca/tree/main/r) | `install.packages("qnca")` |
+| Python | `qnca` | [`python/`](https://github.com/MarekDejaUJ/qnca/tree/main/python) | `python -m pip install qnca` |
+| Julia | `QuantileNecessity` | [`julia/QuantileNecessity.jl/`](https://github.com/MarekDejaUJ/qnca/tree/main/julia/QuantileNecessity.jl) | `Pkg.add("QuantileNecessity")` |
 
-## Data
+The development versions install from the folders:
 
-The `data/` directory contains the synthetic datasets and result tables used for
-strict-limit validation, cross-language agreement, bottleneck comparisons,
-outlier-fragility diagnostics, calibration checks, power checks, and the
-pi-resolved spuriousness-band illustration. The three 0.4.0 branches carry
-copies of the same files.
+```r
+remotes::install_github("MarekDejaUJ/qnca", subdir = "r")
+```
+
+```bash
+python -m pip install "git+https://github.com/MarekDejaUJ/qnca.git#subdirectory=python"
+```
+
+```julia
+using Pkg
+Pkg.add(url="https://github.com/MarekDejaUJ/qnca.git", subdir="julia/QuantileNecessity.jl")
+```
+
+The branches `qnca@R`, `qnca@py` and `qnca@Julia` keep the 0.4.0 code as first published. The three implementations agree to floating point on shared data, scopes, tolerances and permutation streams.
 
 ## Method
 
-Let `X` be the candidate necessary condition and `Y` the desired outcome, both
-on a comparable scale. The scope is the rectangle
-`[x_min, x_max] x [y_min, y_max]`.
-
 ### Raw frontier
 
-For each target outcome level `y`, QNCA looks only at the `k` cases that reached
-that level and selects a low order statistic of their condition values:
+Let `X` be the candidate necessary condition and `Y` the outcome, both on a comparable scale, and let the scope be the rectangle `[x_min, x_max] x [y_min, y_max]`. For each outcome target `y`, QNCA takes the `k` cases with `Y >= y` and selects a low order statistic of their condition values:
 
 ```text
 phi_pi(y) = X_(h; y),    h = max(1, ceil(k * (1 - pi))),    pi in (0, 1].
 ```
 
-This is the type-1 empirical quantile. The rank `h` is evaluated in exact
-arithmetic from the decimal value of `pi`, so `pi = 0.95` with `k = 100` selects
-the fifth order statistic. At `pi = 1`, `h = 1` and `phi_1(y)` is the CE-FDH
-running minimum. When `k < 1 / (1 - pi)`, the selected rank is still the
-minimum, so tolerant frontiers coincide with CE-FDH where few cases attain the
-target.
+The selection is the type-1 empirical quantile. The rank `h` comes from the exact decimal value of `pi`, so `pi = 0.95` with `k = 100` selects the fifth order statistic. At `pi = 1`, the rank `h` equals 1 and `phi_1(y)` is the CE-FDH running minimum. Where fewer than `1 / (1 - pi)` cases attain a target, the selected rank is the minimum, and the tolerant frontier coincides with the CE-FDH ceiling at the target.
 
 ### Monotone envelope
 
-A necessity boundary is non-decreasing. Every case attaining a higher target
-also attains every lower one, so a requirement established at a lower target
-also holds at a higher one. The fitted frontier is the monotone envelope of the
-raw frontier, its running maximum over the outcome grid:
+A necessity frontier is non-decreasing: every case that attains a higher target attains every lower target, so a requirement established at a lower target holds at every higher target. The fitted frontier is the monotone envelope of the raw frontier, the running maximum over the outcome grid:
 
 ```text
 phi_tilde_pi(y_j) = max_{l <= j} phi_pi(y_l).
 ```
 
-The envelope carries each requirement upward and never lowers it, and every
-fitted value is an observed order statistic. Least-squares isotonic projection
-(pool-adjacent-violators) is available as an alternative
-(`monotone = "isotonic"`; Julia `:isotonic`). It replaces each decreasing block
-by its mean, so a low requirement at a sparse high target, where the tolerance
-cannot resolve a rank above the minimum, is averaged into the resolved targets
-below it. The two fits coincide at `pi = 1`.
+The envelope carries each requirement upward, and every fitted value is an observed order statistic. The least-squares isotonic projection (pool-adjacent-violators) is an option, with `monotone = "isotonic"` in R and Python and `monotone = :isotonic` in Julia. The projection replaces each decreasing block by its mean, which averages a low requirement at a sparse high target into the resolved targets below the block. The envelope and the projection coincide at `pi = 1`.
 
-Under a fixed scope, outcome levels above the highest observed `Y` have no
-conditioning set. Dul's CE-FDH counts that top band as fully empty, so the
-implementations carry the trailing frontier to `x_max`. This fixed-scope
-convention is required for the `pi = 1` validation against Dul's `NCA` package.
+Under a fixed scope, outcome levels above the highest observed `Y` have an empty conditioning set. The CE-FDH ceiling counts the top band as fully empty, and the implementations carry the last frontier value to `x_max`, which the comparison with the 'NCA' package at `pi = 1` requires.
 
 ### Resistance
 
-Add `c` cases at arbitrary positions in the scope. At every target where
-`h > c`, the raw requirement cannot fall below the `(h - c)`th smallest
-condition value of the original attaining cases, nor rise above the `(h + c)`th
-when that many cases attain the target. The envelope carries the lower bound to
-every higher target. At `pi = 0.95`, one added case
-is absorbed wherever more than 20 cases attain the target, and three wherever
-more than 60 do. At `pi = 1`, `h = 1` everywhere, and one added case can lower
-every bottleneck it attains to its own condition value. The fitted frontier and
-`d_pi` cannot decrease as `pi` falls, so the tolerance moves the result in one
-known direction.
+Suppose `c` cases are added at arbitrary positions in the scope. At every target where `h > c`, the raw requirement stays at or above the `(h - c)`th smallest condition value of the original attaining cases, and at or below the `(h + c)`th value when at least `h + c` cases attain the target. The envelope carries the lower bound to every higher target. At `pi = 0.95`, the frontier absorbs one added case wherever more than 20 cases attain the target, and three added cases wherever more than 60 cases attain the target. At `pi = 1`, the rank `h` equals 1 everywhere, and one added case can lower every bottleneck the case attains to the condition value of the case. The fitted frontier and `d_pi` rise or stay level as `pi` falls, so the tolerance moves the result in one known direction.
 
-### Effect size, permutation test, and bottlenecks
+### Effect size, permutation test and bottlenecks
 
-The effect size keeps Dul's empty-zone-over-scope form:
+The effect size keeps the empty-zone-over-scope form of NCA:
 
 ```text
 d_pi = integral_y (phi_tilde_pi(y) - x_min) dy
        / ((x_max - x_min) * (y_max - y_min)).
 ```
 
-The implementations compute this integral by the trapezoid rule over the
-outcome grid and clamp the result to `[0, 1]`. The formula is inherited from
-NCA, but the estimator is `pi`-relative: lowering `pi` raises the frontier and
-enlarges the empty zone. Dul's conventional magnitude landmarks should therefore
-be used only for the `pi = 1` CE-FDH comparison unless new calibration is done
-for lower tolerances.
+The implementations integrate by the trapezoid rule over the outcome grid and clamp the result to `[0, 1]`. The formula comes from NCA, and the estimator is relative to `pi`: a lower `pi` raises the frontier and enlarges the empty zone. The magnitude landmarks of NCA therefore apply to the comparison at `pi = 1`, and lower tolerances call for a calibration of their own.
 
-The permutation test keeps Dul's finite-sample tail probability:
+The permutation test keeps the finite-sample tail probability of NCA:
 
 ```text
 p_pi = (1 + #{ b : d_pi^(b) >= d_pi^obs }) / (B + 1).
 ```
 
-Every permutation recomputes the whole estimator: the quantile frontier, the
-monotone envelope, the area, and `d_pi`. The p-value supports a necessity
-reading when paired with a meaningful effect size; it does not prove the
-substantive theory. With `B = 1999`, the smallest reportable p-value is exactly
-`0.0005`, which means that no permutation matched or exceeded the observed
-statistic. The Julia implementation evaluates permutations in parallel and
-draws them from one seeded stream, so the same seed gives the same p-value at
-any thread count.
+Every permutation recomputes the whole estimator: the quantile frontier, the monotone envelope, the area and `d_pi`. A small p-value with a meaningful effect size supports a necessity interpretation. With `B = 1999`, the smallest reportable p-value is exactly 0.0005, the value at which every permuted effect size stays below the observed effect size. The Julia implementation evaluates permutations in parallel from one seeded stream, so one seed gives one p-value at any number of threads.
 
-The practitioner-facing bottleneck table is the frontier read at decision
-levels:
+The bottleneck table reads the frontier at decision levels:
 
 ```text
 T_x(t_y; pi) = phi_tilde_pi(t_y).
 ```
 
-It is the minimum condition level required for a realistic chance of reaching
-`Y >= t_y` at the selected tolerance. Necessity gives a floor, not sufficiency:
-being above the threshold does not guarantee the outcome.
+Each entry is the condition level required for a realistic chance of reaching `Y >= t_y` at the selected tolerance. A bottleneck states a necessary floor, and a case at or above the floor may still miss the outcome.
 
-## Robustness Tools
+## Diagnostics
 
-- `qnca_resolution` reports, target by target, the conditioning-set size, the
-  selected rank, the raw and fitted requirement, whether the fitted value is
-  inherited from a lower target, the realised share of attaining cases below
-  it, and the resistance `rank - 1`.
-- `qnca_outliers` deletes one case at a time, or `k` cases jointly, and reports
-  the change in `d_pi` at every tolerance, in the form of the NCA outlier
-  screen.
-- `qnca_sensitivity` adds cases at declared positions and returns the
-  empirical breakdown curve of `d_pi`.
+`qnca_resolution` reports, target by target, the conditioning-set size, the selected rank, the raw and fitted requirement, a flag for a fitted value inherited from a lower target, the realised share of attaining cases below the requirement, and the resistance `rank - 1`.
 
-The proposed `spuriousness_band` compares the observed `d_pi` with a
-Gaussian-copula benchmark that preserves the empirical marginals and rank
-dependence but imposes no attainability floor. It is a diagnostic with
-unestablished operating characteristics, reported beside the permutation test.
+`qnca_outliers` deletes one case at a time, or `k` cases jointly, and reports the change in `d_pi` at every tolerance, in the form of the outlier screen of NCA.
 
-## Current Results
+`qnca_sensitivity` adds cases at declared positions and returns the empirical breakdown curve of `d_pi`.
 
-All numbers below come from the tracked result files under `data/`.
+The proposed `spuriousness_band` compares the observed `d_pi` with a Gaussian-copula benchmark that preserves the empirical marginals and the rank dependence and imposes no attainability floor. The band is a diagnostic with operating characteristics still to be established, reported beside the permutation test.
 
-### Gate Summary
+## Results
+
+Every number in the tables comes from the result files in [`data/`](https://github.com/MarekDejaUJ/qnca/tree/main/data).
+
+### Agreement
 
 | Check | Result |
 |---|---:|
-| Cross-language max `d_pi` difference | `4.390e-13` |
+| Cross-language maximum `d_pi` difference | `4.390e-13` |
 | Cross-language p-values equal | `true` |
-| Native CE-FDH vs Dul CE-FDH max `d` difference | `1.166e-15` |
+| Native CE-FDH and 'NCA' CE-FDH maximum `d` difference | `1.166e-15` |
 
-Interpretation: Python, R, and Julia agree to floating point on the same data,
-scope, `pi` grid, and permutation stream (`data/cross_language_agreement.csv`).
-The native CE-FDH implementation matches the CE-FDH effect size of Dul's `NCA`
-package (version 5.0.2) under the fixed `[0,100]^2` scope
-(`data/dul_nca_results.csv`).
+Python, R and Julia agree to floating point on the same data, scope, `pi` grid and permutation stream (`data/cross_language_agreement.csv`). The native CE-FDH implementation matches the CE-FDH effect size of the 'NCA' package, version 5.0.2, under the fixed scope `[0,100]^2` (`data/dul_nca_results.csv`).
 
-### Validation Invariant
+### Strict limit
 
-`d_pi(pi = 1)` is compared to the native exact CE-FDH effect size using
-`n_grid = 400`.
+The table compares `d_pi` at `pi = 1` with the native exact CE-FDH effect size, with `n_grid = 400` (`data/validation_invariant.csv`).
 
 | Dataset | n | QNCA `d_pi(1)` | Native CE-FDH `d` | Absolute difference |
 |---|---:|---:|---:|---:|
@@ -184,12 +123,11 @@ package (version 5.0.2) under the fixed `[0,100]^2` scope
 | n500 | 500 | 0.450484 | 0.450813 | 3.29e-04 |
 | n1000 | 1000 | 0.451198 | 0.451110 | 8.78e-05 |
 
-The remaining difference is grid discretization in the QNCA area integral. The
-native CE-FDH value is exact on the observed step frontier.
+The difference is the discretisation of the QNCA area integral on the outcome grid. The native CE-FDH value is exact on the observed step frontier.
 
-### QNCA d and p Across pi
+### Effect size and p-value across tolerances
 
-These values use `B = 1999`, scope `[0,100]^2`, and `n_grid = 50`.
+The values use `B = 1999`, the scope `[0,100]^2` and `n_grid = 50` (`data/pi_grid_results.csv`).
 
 | Dataset | n | pi | `d_pi` | `p_pi` |
 |---|---:|---:|---:|---:|
@@ -206,18 +144,13 @@ These values use `B = 1999`, scope `[0,100]^2`, and `n_grid = 50`.
 | n1000 | 1000 | 0.95 | 0.515166 | 0.000500 |
 | n1000 | 1000 | 0.90 | 0.558699 | 0.000500 |
 
-Interpretation: the empty-zone signal is strong on the shipped reverse-L
-datasets. Lower `pi` increases `d_pi` because the frontier rises once efficient
-boundary cases are tolerated. The p-values sit at the `1/(1999+1)` floor, so the
-correct reading is "no permutation matched or exceeded the observed effect",
-not "p = 0".
+The empty zone is large on the four reverse-L datasets. A lower `pi` gives a larger `d_pi`, because the frontier rises once the tolerance admits efficient boundary cases below the requirement. Every p-value sits at the floor of `1/(1999 + 1)`, which means that every permuted effect size stayed below the observed effect size.
 
-### Dul NCA Comparison
+### Comparison with the 'NCA' package
 
-The CE-FDH rows are the validation target. CR-FDH is included because Dul's
-package reports it as a standard alternative ceiling.
+The CE-FDH rows are the target of the comparison. The CR-FDH rows show the second standard ceiling of the 'NCA' package.
 
-| Dataset | n | Method | QNCA `d_pi(1)` | Native CE-FDH `d` | Dul `d` | Dul `p` | Native vs Dul diff |
+| Dataset | n | Method | QNCA `d_pi(1)` | Native CE-FDH `d` | 'NCA' `d` | 'NCA' `p` | Native and 'NCA' difference |
 |---|---:|---|---:|---:|---:|---:|---:|
 | n100 | 100 | ce_fdh | 0.495553 | 0.495353 | 0.495353 | 0.0005002501 | 0 |
 | n100 | 100 | cr_fdh | 0.495553 | 0.495353 | 0.468644 | 0.0005002501 | 0.0267089700 |
@@ -228,18 +161,13 @@ package reports it as a standard alternative ceiling.
 | n1000 | 1000 | ce_fdh | 0.451198 | 0.451110 | 0.451110 | 0.0005002501 | 1.166e-15 |
 | n1000 | 1000 | cr_fdh | 0.451198 | 0.451110 | 0.441200 | 0.0005002501 | 0.0099101730 |
 
-Interpretation: the CE-FDH equality holds against Dul's package. QNCA
-`d_pi(1)` differs slightly from Dul CE-FDH because QNCA integrates over a finite
-grid; the native CE-FDH function integrates the same CE-FDH geometry exactly and
-matches Dul to floating point. CR-FDH is not the reduction target, so its
-different `d` values are expected.
+The native CE-FDH effect size equals the CE-FDH effect size of the 'NCA' package to floating point. QNCA `d_pi(1)` differs slightly from the CE-FDH value because QNCA integrates over a finite grid. The CR-FDH ceiling is a straight line fitted to the corner points of the CE-FDH ceiling and gives a smaller empty zone on every dataset.
 
 ### Bottlenecks
 
-For the n1000 dataset, the thresholds below show how the tolerance changes the
-required condition floor (`data/bottleneck_comparison_n1000.csv`).
+The thresholds for the n1000 dataset show how the tolerance changes the required condition level (`data/bottleneck_comparison_n1000.csv`).
 
-| Outcome level | Dul CE-FDH | QNCA pi=1.00 | QNCA pi=0.95 | QNCA pi=0.90 |
+| Outcome level | 'NCA' CE-FDH | QNCA pi=1.00 | QNCA pi=0.95 | QNCA pi=0.90 |
 |---:|---:|---:|---:|---:|
 | 0 | 0.082 | 0.082 | 4.888 | 9.423 |
 | 20 | 7.023 | 7.023 | 17.293 | 25.519 |
@@ -247,33 +175,22 @@ required condition floor (`data/bottleneck_comparison_n1000.csv`).
 | 70 | 67.140 | 67.140 | 71.076 | 77.669 |
 | 80 | 88.656 | 88.656 | 88.656 | 88.656 |
 
-Interpretation: at `pi = 1`, QNCA reproduces Dul's CE-FDH bottleneck. At lower
-`pi`, thresholds rise at lower and middle outcome levels because unusually
-efficient cases no longer set the floor. At the top of the observed outcome
-range, few cases attain the target, the selected rank is the minimum, and all
-tolerances return the CE-FDH value.
+At `pi = 1`, QNCA reproduces the CE-FDH bottlenecks of the 'NCA' package. At lower `pi`, the thresholds rise at low and middle outcome levels, where unusually efficient cases set the CE-FDH floor. At the top of the observed outcome range, few cases attain the target, the selected rank is the minimum, and all tolerances return the CE-FDH value.
 
-### Outlier-Fragility Diagnostic
+### Outlier-fragility
 
-The outlier diagnostic adds one efficient case at `(X, Y) = (2, 95)` to an
-otherwise clean reverse-L sample of 300 cases (`data/outlier_diagnostic.csv`).
+The diagnostic adds one efficient case at `(X, Y) = (2, 95)` to a reverse-L sample of 300 cases (`data/outlier_diagnostic.csv`).
 
 | Case | `d_pi(1.00)` | `d_pi(0.95)` | Gap |
 |---|---:|---:|---:|
 | clean | 0.457386 | 0.515699 | 0.058312 |
 | with efficient outlier | 0.064953 | 0.451162 | 0.386209 |
 
-Interpretation: the strict CE-FDH effect collapses from 0.457 to 0.065 when one
-unusually efficient case is added. The `pi = 0.95` effect moves from 0.516 to
-0.451, because the frontier absorbs the case wherever more than 20 cases attain
-the target and the envelope holds the requirement reached there above that
-level. The widening gap is the diagnostic: a wide gap means the strict floor is
-held down by unusually efficient boundary cases.
+The strict CE-FDH effect falls from 0.457 to 0.065 when the single efficient case joins the sample. The effect at `pi = 0.95` moves from 0.516 to 0.451, because the frontier absorbs the case wherever more than 20 cases attain the target and the envelope carries the requirements of the resolved targets to every higher level. A wide gap between the two effects marks a strict floor held down by unusually efficient boundary cases.
 
-### Calibration and Power
+### Calibration and power
 
-The null calibration run uses 300 independent uniform samples with `n = 150` and
-`B = 999` (`data/calibration_null.csv`).
+The null calibration uses 300 independent uniform samples with `n = 150` and `B = 999` (`data/calibration_null.csv`).
 
 | pi | reps | rejections at 0.05 | false-positive rate |
 |---:|---:|---:|---:|
@@ -281,15 +198,9 @@ The null calibration run uses 300 independent uniform samples with `n = 150` and
 | 0.95 | 300 | 12 | 0.0400 |
 | 0.90 | 300 | 8 | 0.0267 |
 
-Interpretation: under independence, the tolerant frontiers sit below the 0.05
-nominal level in this fixed-seed run, while the strict `pi = 1` frontier is
-somewhat liberal. Other null designs give different rates
-(`data/calibration_reconciliation.csv`), so these values are screening checks,
-not fixed decision thresholds.
+Under independence, the tolerant frontiers reject below the nominal level of 0.05 in the fixed-seed run, and the strict frontier at `pi = 1` rejects above the nominal level. Other null designs give other rates (`data/calibration_reconciliation.csv`), so the rates serve as screening checks and leave the decision thresholds open.
 
-The power study varies ceiling strength directly. At strength 0, there is no
-necessity ceiling; at strength 1, the attainable ceiling is tightest. Each row
-uses 150 samples with `n = 120` and `B = 499` (`data/power_curve.csv`).
+The power study varies the strength of the ceiling, from 0 for a scatter with no necessity floor to 1 for the tightest attainable floor. Each row uses 150 samples with `n = 120` and `B = 499` (`data/power_curve.csv`).
 
 | Ceiling strength | Rejections | Power | Mean `d_pi(0.95)` |
 |---:|---:|---:|---:|
@@ -300,10 +211,25 @@ uses 150 samples with `n = 120` and `B = 499` (`data/power_curve.csv`).
 | 0.8 | 150 | 1.0000 | 0.448798 |
 | 1.0 | 150 | 1.0000 | 0.534241 |
 
-Interpretation: both the rejection rate and the mean tolerant effect size rise
-as the empty corner becomes a stronger structural feature of the data.
+The rejection rate and the mean tolerant effect size both rise as the empty corner becomes a stronger feature of the data.
 
-## Basic Use
+## Use
+
+### R
+
+```r
+library(qnca)
+
+set.seed(1)
+d <- generate_reverse_L(500)
+res <- qnca(d$X, d$Y, pi = 0.95, B = 1999, scope = c(0, 100, 0, 100))
+res$d_pi
+res$p_pi
+head(res$bottleneck)
+table <- qnca_resolution(d$X, d$Y, pi = 0.95, scope = c(0, 100, 0, 100))
+screen <- qnca_outliers(d$X, d$Y, pi_grid = c(1, 0.95, 0.90),
+                        scope = c(0, 100, 0, 100))
+```
 
 ### Python
 
@@ -318,29 +244,13 @@ table = qnca_resolution(X, Y, pi=0.95, scope=(0, 100, 0, 100))
 screen = qnca_outliers(X, Y, pi_grid=(1.0, 0.95, 0.90), scope=(0, 100, 0, 100))
 ```
 
-### R
-
-```r
-library(qnca)
-
-d <- generate_reverse_L(500)
-res <- qnca(d$X, d$Y, pi = 0.95, B = 1999, scope = c(0, 100, 0, 100))
-res$d_pi
-res$p_pi
-head(res$bottleneck)
-table <- qnca_resolution(d$X, d$Y, pi = 0.95, scope = c(0, 100, 0, 100))
-screen <- qnca_outliers(d$X, d$Y, pi_grid = c(1, 0.95, 0.90),
-                        scope = c(0, 100, 0, 100))
-```
-
 ### Julia
 
 ```julia
 using QuantileNecessity
 using Random
 
-rng = MersenneTwister(42)
-X, Y = generate_reverse_L(500; rng=rng)
+X, Y = generate_reverse_L(500; rng=MersenneTwister(42))
 res = qnca(X, Y; pi=0.95, B=1999, scope=(0.0, 100.0, 0.0, 100.0), seed=1)
 res.d_pi, res.p_pi
 table = qnca_resolution(X, Y; pi=0.95, scope=(0.0, 100.0, 0.0, 100.0))
@@ -348,6 +258,14 @@ screen = qnca_outliers(X, Y; pi_grid=[1.0, 0.95, 0.90],
                        scope=(0.0, 100.0, 0.0, 100.0))
 ```
 
-## License
+## Data
+
+The `data/` folder holds the synthetic datasets and the result tables of the strict-limit validation, the cross-language agreement, the bottleneck comparison, the outlier-fragility diagnostic, the calibration and power checks, and the illustration of the reference band.
+
+## Citation
+
+Deja, M. (2026). Quantile Necessary Condition Analysis: A Tolerance-Parameterized Generalization of Necessary Condition Analysis. *Quality & Quantity* (accepted for publication).
+
+## Licence
 
 GPL-3.0-only.

@@ -41,7 +41,7 @@ list with the full-sample effects, the deleted cases, effect
 In the form of the NCA outlier screen. With \code{k = 1} every case is
 deleted in turn. With \code{k > 1} all combinations of \code{k} cases are
 deleted among the \code{max_candidates} cases lying farthest below the most
-tolerant frontier at a target they attain, which keeps cases that mask one
+tolerant frontier at an attained target, which keeps cases that mask one
 another together. The scope stays fixed at the full-sample rectangle. Rows are
 sorted by the largest absolute change over the grid, and a row is flagged when
 a relative change reaches \code{min_dif} at some tolerance.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/qnca.R
 \name{nca_ce_fdh_d}
 \alias{nca_ce_fdh_d}
-\title{Native CE-FDH effect size, computed the way Dul's NCA defines it.}
+\title{Native CE-FDH effect size, computed by the definition of Dul's NCA.}
 \usage{
 nca_ce_fdh_d(X, Y, scope = NULL)
 }
@@ -15,10 +15,10 @@ nca_ce_fdh_d(X, Y, scope = NULL)
 The CE-FDH effect size, a number in [0, 1].
 }
 \description{
-Builds the upper-left free-disposal hull directly from the data and integrates
-the empty zone exactly. Lets the validation invariant d_pi(pi = 1) == this be
-checked without the \pkg{NCA} package. Equivalent to \code{qnca}'s d at pi = 1
-up to grid discretization.
+Builds the upper-left free-disposal hull from the data and integrates the
+empty zone exactly. The validation invariant, d_pi at pi = 1 equal to the
+CE-FDH effect size, can be checked with the native value alone. The value
+equals the d of \code{qnca} at pi = 1 up to the discretisation of the grid.
 }
 \examples{
 set.seed(1)

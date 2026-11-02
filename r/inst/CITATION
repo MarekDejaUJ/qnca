@@ -1,0 +1,21 @@
+bibentry(
+  bibtype = "Article",
+  title = "Quantile Necessary Condition Analysis: A Tolerance-Parameterized Generalization of Necessary Condition Analysis",
+  author = person("Marek", "Deja", comment = c(ORCID = "0000-0003-0015-2322")),
+  journal = "Quality {\\&} Quantity",
+  year = "2026",
+  note = "Accepted for publication",
+  textVersion = paste(
+    "Deja, M. (2026). Quantile Necessary Condition Analysis: A Tolerance-Parameterized",
+    "Generalization of Necessary Condition Analysis. Quality & Quantity (accepted for publication)."
+  )
+)
+
+bibentry(
+  bibtype = "Manual",
+  title = "qnca: Quantile Necessary Condition Analysis",
+  author = person("Marek", "Deja", comment = c(ORCID = "0000-0003-0015-2322")),
+  year = "2026",
+  note = paste("R package version", meta$Version),
+  url = "https://github.com/MarekDejaUJ/qnca"
+)

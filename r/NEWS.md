@@ -1,14 +1,14 @@
 # qnca 0.4.0
 
-- The raw quantile frontier is made non-decreasing by its monotone envelope,
-  the running maximum over outcome targets, instead of least-squares isotonic
-  projection. Least-squares pooling averaged a low requirement at a sparse
-  high target, where the tolerance cannot resolve a rank above the minimum,
-  into the resolved targets below it, so one efficient case could lower the
-  whole tolerant frontier. The envelope carries each requirement upward and
-  leaves every fitted value on an observed order statistic. Results at
-  `pi = 1` are unchanged. The previous behaviour remains available with
-  `monotone = "isotonic"` (Julia `:isotonic`).
+- The monotone envelope, the running maximum of the raw quantile frontier
+  over outcome targets, replaces the least-squares isotonic projection as the
+  default monotone step. Least-squares pooling averaged a low requirement at
+  a sparse high target, where the tolerance resolves only the minimum rank,
+  into the resolved targets below the sparse target, so one efficient case
+  could lower the whole tolerant frontier. The envelope carries each
+  requirement upward and keeps every fitted value on an observed order
+  statistic. Results at `pi = 1` stay the same. The isotonic projection stays
+  available with `monotone = "isotonic"` (Julia `:isotonic`).
 - New `qnca_resolution`: conditioning-set size, selected rank, raw and fitted
   requirement, inherited flag, realised exceptions, and resistance per target.
 - New `qnca_outliers`: single and joint deletion influence on `d_pi` across a

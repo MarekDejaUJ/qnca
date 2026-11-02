@@ -41,9 +41,9 @@ list with a band data frame, null effect matrix and rank correlation.
 }
 \description{
 Compares the observed d_pi curve with a Gaussian-copula null that preserves
-the empirical marginals and observed normal-score rank correlation. This is a
-diagnostic with unestablished operating characteristics; it does not modify
-the QNCA estimator.
+the empirical marginals and observed normal-score rank correlation. The band
+is a diagnostic with operating characteristics still to be established, and
+the QNCA estimator stays as defined.
 }
 \examples{
 set.seed(1)

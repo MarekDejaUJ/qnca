@@ -1,9 +1,9 @@
 #' Generate a reverse-L necessity scatter.
 #'
 #' The condition X is uniform on [0, 100]; the realised outcome is a fraction
-#' \code{U^k} of the linear ceiling \code{ci + cs * X}, plus Gaussian noise. This
-#' is the canonical scatter NCA and QNCA detect: a full lower-right triangle and
-#' an empty upper-left corner.
+#' \code{U^k} of the linear ceiling \code{ci + cs * X}, plus Gaussian noise. The
+#' scatter has the reverse-L shape that NCA and QNCA detect: a full lower-right
+#' triangle and an empty upper-left corner.
 #'
 #' @param n number of cases.
 #' @param ci,cs intercept and slope of the deterministic ceiling.

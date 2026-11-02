@@ -21,9 +21,9 @@ one-row data frame of comparison statistics.
 \description{
 Requires the \pkg{NCA} package. Runs \code{NCA::nca_analysis} with the CE-FDH
 and CR-FDH ceilings on a fixed scope, extracts the effect size and p-value,
-and returns them alongside QNCA's d_pi at pi = 1 and the native CE-FDH value.
-The three CE-FDH numbers should agree up to grid discretization, which is the
-validation invariant reported in the paper.
+and returns the NCA results beside the QNCA d_pi at pi = 1 and the native
+CE-FDH value. The three CE-FDH numbers agree up to the discretisation of the
+outcome grid, the validation invariant of QNCA.
 }
 \examples{
 \dontshow{if (requireNamespace("NCA", quietly = TRUE)) withAutoprint(\{ # examplesIf}

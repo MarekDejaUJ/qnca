@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "Cite the article in preferred-citation when you use the software."
+type: software
+title: "qnca: Quantile Necessary Condition Analysis"
+abstract: >-
+  Implementations in R (qnca), Python (qnca) and Julia (QuantileNecessity) of
+  Quantile Necessary Condition Analysis, which extends Necessary Condition
+  Analysis with a tolerance: for each outcome target, the frontier is a low
+  type-1 quantile of the condition among the cases that attain the target.
+authors:
+  - family-names: Deja
+    given-names: Marek
+    orcid: "https://orcid.org/0000-0003-0015-2322"
+    affiliation: Jagiellonian University
+version: 0.4.0
+license: GPL-3.0-only
+repository-code: "https://github.com/MarekDejaUJ/qnca"
+url: "https://marekdejauj.github.io/qnca/"
+keywords:
+  - necessary condition analysis
+  - quantile
+  - frontier
+  - bottleneck
+  - R
+  - Python
+  - Julia
+preferred-citation:
+  type: article
+  title: "Quantile Necessary Condition Analysis: A Tolerance-Parameterized Generalization of Necessary Condition Analysis"
+  authors:
+    - family-names: Deja
+      given-names: Marek
+      orcid: "https://orcid.org/0000-0003-0015-2322"
+      affiliation: Jagiellonian University
+  journal: "Quality & Quantity"
+  year: 2026
+  status: in-press
